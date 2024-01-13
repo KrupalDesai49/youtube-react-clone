@@ -1,17 +1,21 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React from "react";
 import "./App.css";
+import Navbar from "./components/Navbar";
+import Home from "./pages/Home";
+import VideoDetail from "./pages/VideoDetail";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <h1 className="text-3xl font-bold text-teal-400 underline ">
-        Hello world!
-      </h1>
-    </>
+    <div className="min-h-screen bg-black">
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route exact path="/" element={<Home />} />
+          <Route exact path="/video" element={<VideoDetail />} />
+        </Routes>
+      </Router>
+    </div>
   );
 }
 
