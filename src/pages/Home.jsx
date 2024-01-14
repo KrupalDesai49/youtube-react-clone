@@ -4,8 +4,9 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { db } from "../context/firebase";
 import { collection, onSnapshot, query } from "firebase/firestore";
+import { Link } from "react-router-dom";
 
-const Home = () => {
+const Home = ({sendData}) => {
   const [data, setData] = useState([]);
 
   //Read Data
@@ -17,17 +18,22 @@ const Home = () => {
         DataArr.push({ ...doc.data(), id: doc.id });
       });
       setData(DataArr);
-      // console.log('oooopoo'+DataArr);
+      // console.log('oooopoo:',data)
+
     });
 
     return () => getData();
   }, []);
 
+
   return (
+
     <div className="grid justify-center gap-4 bg-black px-8 font-roboto text-white md:grid-cols-2 md:justify-start lg:grid-cols-3 xl:grid-cols-4 ">
       {data.map((item, index) => (
-        <div className="flex max-w-[30rem] flex-col md:max-w-md" key={index}>
+        <Link to='/video'onClick={()=>(sendData(item))} className="flex max-w-[30rem] flex-col md:max-w-md" key={index}>
           {/* Tumbnail */}
+          {console.dir('oooopoo:'+item)}
+
           <div className="relative overflow-hidden rounded-xl">
             <span className=" absolute bottom-0 right-0 m-[0.35rem]  rounded bg-black px-1 py-[0.1rem] text-xs font-semibold">
               {item?.duration}
@@ -76,7 +82,7 @@ const Home = () => {
               </div>
             </div>
           </div>
-        </div>
+        </Link>
       ))}
     </div>
   );
