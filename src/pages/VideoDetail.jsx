@@ -1,10 +1,18 @@
 import React from "react";
 import tick from "../assets/tick.svg";
+import like from "../assets/like.svg";
+import dislike from "../assets/dislike.svg";
+import share from "../assets/share.svg";
+import download from "../assets/download.svg";
+import more from "../assets/more.svg";
+import ChannelButtonDetail from "../components/ChannelButtonDetail";
+import Comments from "../components/Comments";
 
 const VideoDetail = ({ videoData }) => {
   return (
-    <div class="mx-auto max-w-5xl px-6 pt-5 font-roboto text-white">
+    <div class="mx-auto max-w-4xl px-6 pt-5 font-roboto text-white">
       {/* Video & Channel Details */}
+
       <div className="flex flex-col">
         <iframe
           className="aspect-video w-full"
@@ -17,40 +25,16 @@ const VideoDetail = ({ videoData }) => {
       </div>
 
       {/* Video Title */}
-      <p className="py-3 text-lg font-bold md:py-5 md:text-xl">
+      <p className="pt-3 pb-3 md:pb-0 text-lg font-bold md:pt-5 md:text-xl">
         {videoData?.title}
       </p>
 
-      {/* Channel & Buttons */}
-      <div className="flex flex-col lg:flex-row ">
-        {/* Channel Details */}
-        <div className="flex items-center">
-          {/* Channel Logo */}
-          <img
-            src={videoData?.channel_logo}
-            alt=""
-            className="h-10 w-10 rounded-full"
-          />
+      {/* Channel & Buttons Section */}
+      
+     <ChannelButtonDetail videoData={videoData} />
 
-          {/* Channel Name & Subs*/}
-          <div className="ml-3 flex flex-col">
-            <div className="flex">
-              <p className=" font-[500] text-white">
-                {videoData?.channel_name}
-              </p>
-              {videoData?.channel_tick && (
-                <img src={tick} alt="" className="ml-1  w-3 fill-neutral-400" />
-              )}
-            </div>
-            <p className=" text-xs font-[450] text-neutral-400">
-              {videoData?.channel_sub} subscribers
-            </p>
-
-          </div>       
-               <button className="text-sm text-neutral-600 bg-white py-2 px-4 rounded-full ml-4 font-semibold hover:bg-white/85 '">Subscribe</button>
-
-        </div>
-      </div>
+     {/* Comment Section */}
+     <Comments  videoData={videoData} />
     </div>
   );
 };
