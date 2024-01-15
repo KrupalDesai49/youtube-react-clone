@@ -6,9 +6,7 @@ import VideoList from "../components/VideoList";
 
 const VideoDetail = ({ videoData, allData, sendVideoData }) => {
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+ 
   return (
     <div class="mx-auto max-w-[85rem] px-6 py-5 font-roboto text-white">
       <div className="flex flex-col space-x-0 md:flex-row items-center md:items-start md:space-x-6">
