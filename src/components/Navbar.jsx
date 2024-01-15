@@ -1,13 +1,15 @@
 import React from "react";
 import logo from "../assets/youtube_name_logo.svg";
 import search from "../assets/search.svg";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
     <div className="flex justify-between bg-black py-4 font-roboto">
       {/* Logo */}
+      <Link to='/' className="">
       <img src={logo} alt="" className="mx-6 w-24" />
-
+      </Link>
       {/* Search Bar */}
       <div className=" mr-4 flex w-[50%] max-w-md rounded-full bg-[#222222] text-white ring-1 ring-[#383838] ">
         <input

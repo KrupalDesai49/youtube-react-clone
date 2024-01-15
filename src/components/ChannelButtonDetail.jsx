@@ -1,15 +1,69 @@
-import React from 'react'
+import React from "react";
 import tick from "../assets/tick.svg";
 import like from "../assets/like.svg";
+import like_fill from "../assets/like_fill.svg";
 import dislike from "../assets/dislike.svg";
+import dislike_fill from "../assets/dislike_fill.svg";
 import share from "../assets/share.svg";
 import download from "../assets/download.svg";
 import more from "../assets/more.svg";
+import { useState } from "react";
+import { db } from "../context/firebase";
+import { doc, updateDoc } from "firebase/firestore";
 
-const ChannelButtonDetail = ({videoData}) => {
+const ChannelButtonDetail = ({ videoData, sendVideoData }) => {
+  const [liked, setLiked] = useState(false);
+  const [disliked, setDisliked] = useState(false);
+
+  const funLiked = () => {
+    if (!liked ) {
+      addLike(videoData)
+      sendVideoData({...videoData,like:parseInt(videoData.like)+1})
+      setLiked(true);
+      setDisliked(false);
+
+    }else if(liked){
+      subLike(videoData)
+      sendVideoData({...videoData,like:parseInt(videoData.like)-1})
+      setLiked(false);
+      setDisliked(false);
+    }
+  };
+
+  const funDisliked = () => {
+    if (!disliked && liked) {
+      subLike(videoData)
+      sendVideoData({...videoData,like:parseInt(videoData.like)-1})
+      setLiked(false);
+      setDisliked(true);
+    }else if (!disliked && !liked) {
+      setLiked(false);
+      setDisliked(true);
+    }else if(disliked){
+      setLiked(false);
+      setDisliked(false);
+    }
+  };
+
+  const addLike = async (item) => {
+    await updateDoc(doc(db, "ytvideo", item.id), {
+            // like: item.like + 1
+            like:     (parseInt(item.like) + 1)
+            // like: "ubhn"
+  
+    });
+  };
+  const subLike = async (item) => {
+    await updateDoc(doc(db, "ytvideo", item.id), {
+            like: (parseInt(item.like) - 1)
+            // like: "hbjnk"
+  
+    });
+  };
+
   return (
     <>
-       <div className="flex flex-col md:justify-between md:flex-row ">
+      <div className="flex flex-col xl:flex-row xl:justify-between ">
         {/* Channel Details */}
         <div className="flex items-center">
           {/* Channel Logo */}
@@ -43,15 +97,21 @@ const ChannelButtonDetail = ({videoData}) => {
           {/* Like & Dislike */}
           <div className="flex ">
             {/* Like */}
-            <div className="flex cursor-pointer items-center rounded-l-full bg-[#272727] py-1 pl-3 hover:bg-[#3f3f3f]">
-              <img src={like} alt="" className="w-7" />
+            <div
+              onClick={funLiked}
+              className="flex cursor-pointer items-center rounded-l-full bg-[#272727] py-1 pl-3 hover:bg-[#3f3f3f]"
+            >
+              <img src={liked?like_fill:like} alt="" className="w-5" />
               <p className="border-r border-r-zinc-600 pl-1 pr-3 font-[500]">
                 {videoData.like}
               </p>
             </div>
             {/* Dislike */}
-            <div className="flex cursor-pointer items-center rounded-r-full bg-[#272727] py-1 pl-1  pr-3 hover:bg-[#3f3f3f]">
-              <img src={dislike} alt="" className=" w-7" />
+            <div
+              onClick={funDisliked}
+              className="flex cursor-pointer items-center rounded-r-full bg-[#272727] py-1 pl-1.5  pr-3 hover:bg-[#3f3f3f]"
+            >
+              <img src={disliked?dislike_fill:dislike} alt="" className=" w-5" />
             </div>
           </div>
 
@@ -74,7 +134,7 @@ const ChannelButtonDetail = ({videoData}) => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default ChannelButtonDetail
+export default ChannelButtonDetail;

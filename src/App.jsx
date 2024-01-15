@@ -8,9 +8,16 @@ import { useState } from "react";
 
 function App() {
   const [videoData, setVideoData] = useState([])
+  const [allData, setAllData] = useState([])
 
-  const sendData=(item)=>{
+  const sendVideoData=(item)=>{
     setVideoData(item)
+
+  }
+ 
+
+  const sendAllData=(item)=>{
+    setAllData(item)
 
   }
   return (
@@ -18,8 +25,8 @@ function App() {
       <Router>
         <Navbar />
         <Routes>
-          <Route exact path="/" element={<Home sendData={sendData} />} />
-          <Route exact path="/video" element={<VideoDetail videoData={videoData}/>} />
+          <Route exact path="/" element={<Home sendVideoData={sendVideoData} sendAllData={sendAllData} allData={allData}/>} />
+          <Route exact path="/video" element={<VideoDetail sendVideoData={sendVideoData} allData={allData} videoData={videoData}/>} />
         </Routes>
       </Router>
     </div>

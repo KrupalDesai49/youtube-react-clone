@@ -6,8 +6,8 @@ import { db } from "../context/firebase";
 import { collection, onSnapshot, query } from "firebase/firestore";
 import { Link } from "react-router-dom";
 
-const Home = ({sendData}) => {
-  const [data, setData] = useState([]);
+const Home = ({sendVideoData, sendAllData, allData}) => {
+  // const [data, setData] = useState([]);
 
   //Read Data
   useEffect(() => {
@@ -17,7 +17,7 @@ const Home = ({sendData}) => {
       querySnapshot.forEach((doc) => {
         DataArr.push({ ...doc.data(), id: doc.id });
       });
-      setData(DataArr);
+      sendAllData(DataArr);
       // console.log('oooopoo:',data)
 
     });
@@ -29,10 +29,10 @@ const Home = ({sendData}) => {
   return (
 
     <div className="grid justify-center gap-4 bg-black px-8 font-roboto text-white md:grid-cols-2 md:justify-start lg:grid-cols-3 xl:grid-cols-4 ">
-      {data.map((item, index) => (
-        <Link to='/video'onClick={()=>(sendData(item))} className="flex max-w-[30rem] flex-col md:max-w-md" key={index}>
+      {allData.map((item, index) => (
+        <Link to='/video'onClick={()=>(sendVideoData(item))} className="flex max-w-[30rem] flex-col md:max-w-md" key={index}>
           {/* Tumbnail */}
-          {console.dir('oooopoo:'+item)}
+          {console.log('oooopoo:',item)}
 
           <div className="relative overflow-hidden rounded-xl">
             <span className=" absolute bottom-0 right-0 m-[0.35rem]  rounded bg-black px-1 py-[0.1rem] text-xs font-semibold">
