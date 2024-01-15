@@ -1,10 +1,5 @@
 import React from "react";
-import tick from "../assets/tick.svg";
-import like from "../assets/like.svg";
-import dislike from "../assets/dislike.svg";
-import share from "../assets/share.svg";
-import download from "../assets/download.svg";
-import more from "../assets/more.svg";
+
 import ChannelButtonDetail from "../components/ChannelButtonDetail";
 import Comments from "../components/Comments";
 
@@ -34,7 +29,7 @@ const VideoDetail = ({ videoData }) => {
      <ChannelButtonDetail videoData={videoData} />
 
      {/* Comment Section */}
-     <Comments  videoData={videoData} />
+     {/* <Comments  videoData={videoData} /> */}
     </div>
   );
 };
