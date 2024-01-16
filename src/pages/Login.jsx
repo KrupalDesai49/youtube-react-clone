@@ -23,11 +23,11 @@ const Login = () => {
 
   return (
     <>
-      <div className="h-full w-full">
+      <div className="h-full w-full ">
         <img
           src="https://media.wired.com/photos/631277a6ba2a66af641b132a/master/w_1920,c_limit/YouTube-Premium-Perks-Gear-Alamy-2F8A813.jpg"
           alt="/"
-          className="absolute hidden h-full w-full object-cover sm:block"
+          className="absolute  h-[40%] w-full object-cover "
         />
         <div className="fixed left-0 top-0 h-full w-full bg-black/65"></div>
         <div className="fixed z-10 w-full px-4 pt-[5%]">
@@ -52,6 +52,7 @@ const Login = () => {
                   className="my-2 rounded bg-gray-700 p-3"
                   type="password"
                   placeholder="Password"
+                  minlength="6" required 
                   autoComplete="current-password"
                 />
                 <button className="my-6 rounded bg-[#e50914] py-3 font-bold">

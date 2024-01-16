@@ -3,6 +3,7 @@ import { Link , useNavigate} from "react-router-dom";
 import { UserAuth } from "../components/AuthContext";
 
 const Signup = () => {
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { user, signUp } = UserAuth();
@@ -11,7 +12,7 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await signUp(email, password);
+      await signUp(email, password, username);
       navigate('/')
     } catch (error) {
       console.log(error);
@@ -24,7 +25,7 @@ const Signup = () => {
         <img
           src="https://media.wired.com/photos/631277a6ba2a66af641b132a/master/w_1920,c_limit/YouTube-Premium-Perks-Gear-Alamy-2F8A813.jpg"
           alt="/"
-          className="absolute hidden h-full w-full object-cover sm:block"
+          className="absolute   h-[40%] w-full object-cover "
         />
         <div className="fixed left-0 top-0 h-screen w-full bg-black/65"></div>
         <div className="fixed z-10 w-full px-4 pt-[5%] ">
@@ -35,6 +36,13 @@ const Signup = () => {
                 onSubmit={handleSubmit}
                 className="flex w-full flex-col py-4"
               >
+                <input
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="my-2 rounded bg-gray-700 p-3"
+                  type="text"
+                  placeholder="User Name"
+                  autoComplete="email"
+                />
                 <input
                   onChange={(e) => setEmail(e.target.value)}
                   className="my-2 rounded bg-gray-700 p-3"
@@ -47,6 +55,8 @@ const Signup = () => {
                   className="my-2 rounded bg-gray-700 p-3"
                   type="password"
                   placeholder="Password"
+                  minlength="6" required 
+
                   autoComplete="current-password"
                 />
                 <button className="my-6 rounded bg-[#e50914] py-3 font-bold">
