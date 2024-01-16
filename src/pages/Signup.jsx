@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link , useNavigate} from "react-router-dom";
 import { UserAuth } from "../components/AuthContext";
+import login_bg from "../assets/login_bg.webp";
 
 const Signup = () => {
   const [username, setUsername] = useState("");
@@ -23,7 +24,7 @@ const Signup = () => {
     <>
       <div className="h-full w-full ">
         <img
-          src="https://media.wired.com/photos/631277a6ba2a66af641b132a/master/w_1920,c_limit/YouTube-Premium-Perks-Gear-Alamy-2F8A813.jpg"
+          src={login_bg}
           alt="/"
           className="absolute   h-[40%] w-full object-cover "
         />
@@ -71,7 +72,7 @@ const Signup = () => {
                 </div>
                 <p className="py-8">
                   <span className="text-gray-600">
-                    Already subscribe to Netflix?
+                    Already Sign Up to Youtube?
                   </span>{" "}
                         <Link to="/login"> Log In</Link>
                 </p>
