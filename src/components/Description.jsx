@@ -30,7 +30,6 @@ const Description = ({ videoData }) => {
             desClicked ? "line-clamp-none" : "line-clamp-2"
           } pt-1 text-sm`}
         >
-          {" "}
           {videoData?.description}
         </p>
 

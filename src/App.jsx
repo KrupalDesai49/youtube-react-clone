@@ -5,6 +5,9 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import VideoDetail from "./pages/VideoDetail";
 import { useState } from "react";
+import { AuthContextProvider } from "./components/AuthContext";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 
 function App() {
   const [videoData, setVideoData] = useState([])
@@ -21,15 +24,23 @@ function App() {
 
   }
   return (
-    <div className="min-h-screen bg-black">
-      <Router>
+    <>
+            <AuthContextProvider>
+
+      <Router> 
+           <div className=" flex flex-col min-h-screen bg-black">
+
         <Navbar />
         <Routes>
           <Route exact path="/" element={<Home sendVideoData={sendVideoData} sendAllData={sendAllData} allData={allData}/>} />
           <Route exact path="/video" element={<VideoDetail sendVideoData={sendVideoData} allData={allData} videoData={videoData}/>} />
-        </Routes>
-      </Router>
-    </div>
+          <Route exact path="/login" element={<Login />} />
+          <Route exact path="/signup" element={<Signup />} />
+        </Routes></div>
+      </Router>    
+
+      </AuthContextProvider>
+      </>
   );
 }
 

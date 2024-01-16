@@ -8,7 +8,7 @@ const VideoList = ({sendVideoData, allData}) => {
       {allData.map((item, index) => (
         <div onClick={()=>(sendVideoData(item))} className="flex max-w-[30rem]  md:max-w-md" key={index}>
           {/* Tumbnail */}
-          <div className="relative flex-none cursor-pointer overflow-hidden rounded-xl">
+          <div className="relative flex-none cursor-pointer overflow-hidden rounded-md">
             <span className=" absolute bottom-0 right-0 m-[0.35rem]  rounded bg-black px-1 py-[0.1rem] text-xs font-semibold">
               {item?.duration}
             </span>
@@ -23,7 +23,7 @@ const VideoList = ({sendVideoData, allData}) => {
             {/* Video Text */}
             <div className="ml-3 flex flex-col">
               {/* Title */}
-              <p className="line-clamp-2 font-semibold text-sm">{item?.title}</p>
+              <p className="line-clamp-2 font-[500] text-sm">{item?.title}</p>
               {/* Channel Name */}
               <div className="flex">
                 <p className="mt-1 text-xs font-[500] text-neutral-400 line-clamp-1 hover:text-white">

@@ -1,11 +1,27 @@
 import React from "react";
 import logo from "../assets/youtube_name_logo.svg";
 import search from "../assets/search.svg";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
+import { UserAuth } from "./AuthContext";
 
 const Navbar = () => {
+
+  const {user, logOut} = UserAuth()
+  const navigate=useNavigate()
+  console.log(user)
+
+  const handleLogout = async()=>{
+    try{
+      await logOut()
+      navigate('/')
+    
+    }catch(e){
+      console.log(e)
+    }
+    }
+
   return (
-    <div className="flex justify-between bg-black py-4 font-roboto">
+    <div className="flex justify-between  py-4 font-roboto z-[100]">
       {/* Logo */}
       <Link to='/' className="">
       <img src={logo} alt="" className="mx-6 w-24" />
@@ -19,6 +35,27 @@ const Navbar = () => {
         />
         <img src={search} alt="" className="pointer-events-none mx-4 w-8" />
       </div>
+
+      {/* Log In & Sign in */}
+      {user?.email? <div>
+        <Link to="/account">
+          <button className="pr-4 text-white">Account</button>{" "}
+        </Link>
+          <button onClick={handleLogout} className="cursor-pointer rounded bg-[#e50914] px-6 py-2 text-white">
+            Logout
+          </button>
+      </div>
+      :
+      <div>
+        <Link to="/login">
+          <button className="pr-4 text-white">Sign In</button>{" "}
+        </Link>
+        <Link to="/signup">
+          <button className="cursor-pointer rounded bg-[#e50914] px-6 py-2 text-white">
+            Sign Up
+          </button>
+        </Link>
+      </div>}
     </div>
   );
 };

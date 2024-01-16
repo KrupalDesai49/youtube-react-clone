@@ -33,7 +33,7 @@ const VideoDetail = ({ videoData, allData, sendVideoData }) => {
             videoData={videoData}
           />
 
-          {/* Comment Section */}
+          {/* Description Section */}
           <Description videoData={videoData} />
 
           {/* Comment Section */}

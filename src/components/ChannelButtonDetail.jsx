@@ -79,9 +79,10 @@ const ChannelButtonDetail = ({ videoData, sendVideoData }) => {
               <p className=" font-[500] text-white">
                 {videoData?.channel_name}
               </p>
-              {videoData?.channel_tick && (
-                <img src={tick} alt="" className="ml-1  w-3 fill-neutral-400" />
-              )}
+              {videoData?.channel_tick ? (
+                <img src={tick} alt="" className="ml-1  w-3 fill-neutral-400" /> 
+               
+              )  :""  }
             </div>
             <p className=" text-xs font-[450] text-neutral-400">
               {videoData?.channel_sub} subscribers
