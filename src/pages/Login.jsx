@@ -33,7 +33,7 @@ const Login = () => {
         <div className="fixed z-10 w-full px-4 pt-[5%]">
           <div className="h-[460px]  mx-auto  max-w-[450px] rounded-xl bg-black/40 text-white backdrop-blur-md">
             <div className="mx-auto max-w-[320px]  py-16 ">
-              <h1 className="text-3xl font-bold">Sign In</h1>
+              <h1 className="text-3xl font-bold">Log In</h1>
 
               {error?<p className="p-3 bg-red-400 rounded my-2">{error}</p>:null}
               <form
@@ -55,7 +55,7 @@ const Login = () => {
                   autoComplete="current-password"
                 />
                 <button className="my-6 rounded bg-[#e50914] py-3 font-bold">
-                  Sign In
+                  Log In
                 </button>
                 <div className="flex items-center justify-between text-sm text-gray-600">
                   <p>
@@ -66,7 +66,7 @@ const Login = () => {
                 </div>
                 <p className="py-8">
                   <span className="text-gray-600">New to Netflix?</span>{" "}
-                  <Link to="/signup"> Sign Up</Link>
+                  <Link to="/signup"> Let's Create Account</Link>
                 </p>
               </form>
             </div>
