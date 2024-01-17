@@ -47,17 +47,13 @@ const ChannelButtonDetail = ({ videoData, sendVideoData }) => {
 
   const addLike = async (item) => {
     await updateDoc(doc(db, "ytvideo", item.id), {
-            // like: item.like + 1
             like:     (parseInt(item.like) + 1)
-            // like: "ubhn"
   
     });
   };
   const subLike = async (item) => {
     await updateDoc(doc(db, "ytvideo", item.id), {
-            like: (parseInt(item.like) - 1)
-            // like: "hbjnk"
-  
+            like: (parseInt(item.like) - 1)  
     });
   };
 

@@ -1,13 +1,11 @@
 import React from "react";
 import tick from "../assets/tick.svg";
-import { useState } from "react";
 import { useEffect } from "react";
 import { db } from "../context/firebase";
 import { collection, onSnapshot, query } from "firebase/firestore";
 import { Link } from "react-router-dom";
 
 const Home = ({sendVideoData, sendAllData, allData}) => {
-  // const [data, setData] = useState([]);
 
   //Read Data
   useEffect(() => {
@@ -32,7 +30,7 @@ const Home = ({sendVideoData, sendAllData, allData}) => {
       {allData.map((item, index) => (
         <Link to='/video'onClick={()=>(sendVideoData(item))} className="flex max-w-[30rem] flex-col md:max-w-md" key={index}>
           {/* Tumbnail */}
-          {console.log('oooopoo:',item)}
+          {/* {console.log('oooopoo:',item)} */}
 
           <div className="relative overflow-hidden rounded-xl">
             <span className=" absolute bottom-0 right-0 m-[0.35rem]  rounded bg-black px-1 py-[0.1rem] text-xs font-semibold">
