@@ -1,18 +1,18 @@
 import React from "react";
 
+import { useAtom } from "jotai";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import ChannelButtonDetail from "../components/ChannelButtonDetail";
+import Comments from "../components/Comments";
 import Description from "../components/Description";
 import VideoList from "../components/VideoList";
-import Comments from "../components/Comments";
-import { useParams } from "react-router-dom";
-import { useEffect } from "react";
-import { useAtom } from "jotai";
-import { videos_data } from "../context/atom";
-import { useState } from "react";
+import { video_item, videos_data } from "../context/atom";
 
-const VideoDetail = ({ videoItem, setVideoItem }) => {
-  
+const VideoDetail = () => {
   // let { videoId } = useParams();
+  const [videoItem, setVideoItem] = useAtom(video_item);
+  // const [videos , setVideos] = useAtom(videos_data)
 
   // useEffect(() => {
   //   if (!videoItem) {
@@ -54,11 +54,18 @@ const VideoDetail = ({ videoItem, setVideoItem }) => {
           <Description videoItem={videoItem} />
 
           {/* Comment Section */}
-          <Comments />
+          <div className="hidden md:block">
+            <Comments />
+          </div>
         </div>
 
         {/* Right Video List Section */}
-        <VideoList setVideoItem={setVideoItem} />
+        <div className="flex flex-col">
+          <VideoList setVideoItem={setVideoItem} />
+          <div className="block md:hidden">
+            <Comments />
+          </div>
+        </div>
       </div>
     </div>
   );

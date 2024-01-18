@@ -10,23 +10,19 @@ import share from "../assets/share.svg";
 import tick from "../assets/tick.svg";
 import { db } from "../context/firebase";
 
-const ChannelButtonDetail = ({videoItem, setVideoItem}) => {
-
+const ChannelButtonDetail = ({ videoItem, setVideoItem }) => {
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
 
-
-
   const funLiked = () => {
-    if (!liked ) {
-      addLike(videoItem)
-      setVideoItem({...videoItem,like:parseInt(videoItem.like)+1})
+    if (!liked) {
+      addLike(videoItem);
+      setVideoItem({ ...videoItem, like: parseInt(videoItem.like) + 1 });
       setLiked(true);
       setDisliked(false);
-
-    }else if(liked){
-      subLike(videoItem)
-      setVideoItem({...videoItem,like:parseInt(videoItem.like)-1})
+    } else if (liked) {
+      subLike(videoItem);
+      setVideoItem({ ...videoItem, like: parseInt(videoItem.like) - 1 });
       setLiked(false);
       setDisliked(false);
     }
@@ -34,14 +30,14 @@ const ChannelButtonDetail = ({videoItem, setVideoItem}) => {
 
   const funDisliked = () => {
     if (!disliked && liked) {
-      subLike(videoItem)
-      setVideoItem({...videoItem,like:parseInt(videoItem.like)-1})
+      subLike(videoItem);
+      setVideoItem({ ...videoItem, like: parseInt(videoItem.like) - 1 });
       setLiked(false);
       setDisliked(true);
-    }else if (!disliked && !liked) {
+    } else if (!disliked && !liked) {
       setLiked(false);
       setDisliked(true);
-    }else if(disliked){
+    } else if (disliked) {
       setLiked(false);
       setDisliked(false);
     }
@@ -49,13 +45,12 @@ const ChannelButtonDetail = ({videoItem, setVideoItem}) => {
 
   const addLike = async (item) => {
     await updateDoc(doc(db, "ytvideo", item.id), {
-            like:     (parseInt(item.like) + 1)
-  
+      like: parseInt(item.like) + 1,
     });
   };
   const subLike = async (item) => {
     await updateDoc(doc(db, "ytvideo", item.id), {
-            like: (parseInt(item.like) - 1)  
+      like: parseInt(item.like) - 1,
     });
   };
 
@@ -78,9 +73,10 @@ const ChannelButtonDetail = ({videoItem, setVideoItem}) => {
                 {videoItem?.channel_name}
               </p>
               {videoItem?.channel_tick ? (
-                <img src={tick} alt="" className="ml-1  w-3 fill-neutral-400" /> 
-               
-              )  :""  }
+                <img src={tick} alt="" className="ml-1  w-3 fill-neutral-400" />
+              ) : (
+                ""
+              )}
             </div>
             <p className=" text-xs font-[450] text-neutral-400">
               {videoItem?.channel_sub} subscribers
@@ -100,7 +96,7 @@ const ChannelButtonDetail = ({videoItem, setVideoItem}) => {
               onClick={funLiked}
               className="flex cursor-pointer items-center rounded-l-full bg-[#272727] py-1 pl-3 hover:bg-[#3f3f3f]"
             >
-              <img src={liked?like_fill:like} alt="" className="w-5" />
+              <img src={liked ? like_fill : like} alt="" className="w-5" />
               <p className="border-r border-r-zinc-600 pl-1 pr-3 font-[500]">
                 {videoItem.like}
               </p>
@@ -110,7 +106,11 @@ const ChannelButtonDetail = ({videoItem, setVideoItem}) => {
               onClick={funDisliked}
               className="flex cursor-pointer items-center rounded-r-full bg-[#272727] py-1 pl-1.5  pr-3 hover:bg-[#3f3f3f]"
             >
-              <img src={disliked?dislike_fill:dislike} alt="" className=" w-5" />
+              <img
+                src={disliked ? dislike_fill : dislike}
+                alt=""
+                className=" w-5"
+              />
             </div>
           </div>
 

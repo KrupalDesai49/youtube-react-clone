@@ -7,9 +7,10 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import VideoDetail from "./pages/VideoDetail";
+import NotFound from "./pages/NotFound";
 
 function App() {
-  const [videoItem, setVideoItem] = useState([])
+  // const [videoItem, setVideoItem] = useState([])
 
 
   const sendVideoData = (item) => {
@@ -29,7 +30,7 @@ function App() {
                 path="/"
                 element={
                   <Home
-                  setVideoItem={setVideoItem}
+                  // setVideoItem={setVideoItem}
                   />
                 }
               />
@@ -38,13 +39,14 @@ function App() {
                 path="/video/:videoId"
                 element={
                   <VideoDetail
-                  setVideoItem={setVideoItem}
-                  videoItem={videoItem}
+                  // setVideoItem={setVideoItem}
+                  // videoItem={videoItem}
                   />
                 }
               />
               <Route exact path="/login" element={<Login />} />
               <Route exact path="/signup" element={<Signup />} />
+              <Route path="*" element={<NotFound />} /> 
             </Routes>
           </div>
         </Router>

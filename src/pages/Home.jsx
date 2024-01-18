@@ -3,12 +3,13 @@ import { useAtom } from "jotai";
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import tick from "../assets/tick.svg";
-import { videos_data } from "../context/atom";
+import { video_item, videos_data } from "../context/atom";
 import { db } from "../context/firebase";
 
-const Home = ({ setVideoItem}) => {
+const Home = () => {
 
   const [videos , setVideos] = useAtom(videos_data)
+  const [videoItem , setVideoItem] = useAtom(video_item)
 
   //Read Data
   useEffect(() => {
