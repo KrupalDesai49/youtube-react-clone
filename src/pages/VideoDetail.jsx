@@ -54,7 +54,7 @@ const VideoDetail = () => {
           <Description videoItem={videoItem} />
 
           {/* Comment Section */}
-          <div className="hidden md:block">
+          <div className="hidden md:block mt-3">
             <CommentsSection />
           </div>
         </div>
