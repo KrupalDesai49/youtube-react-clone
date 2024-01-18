@@ -4,7 +4,7 @@ import { useAtom } from "jotai";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import ChannelButtonDetail from "../components/ChannelButtonDetail";
-import Comments from "../components/Comments";
+import CommentsSection from "../components/CommentsSection";
 import Description from "../components/Description";
 import VideoList from "../components/VideoList";
 import { video_item, videos_data } from "../context/atom";
@@ -55,7 +55,7 @@ const VideoDetail = () => {
 
           {/* Comment Section */}
           <div className="hidden md:block">
-            <Comments />
+            <CommentsSection />
           </div>
         </div>
 
@@ -63,7 +63,7 @@ const VideoDetail = () => {
         <div className="flex flex-col">
           <VideoList setVideoItem={setVideoItem} />
           <div className="block md:hidden">
-            <Comments />
+            <CommentsSection />
           </div>
         </div>
       </div>

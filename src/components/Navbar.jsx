@@ -44,7 +44,7 @@ const Navbar = () => {
         <div className="flex shrink-0 items-center pr-3">
           <button className="mr-3 h-10 w-10 rounded-full bg-[#ff0000] text-xl font-[500] text-white hover:bg-[#ff0000]/90">
             {user.displayName.charAt(0).toUpperCase()}
-          </button>{" "}
+          </button>
           <button
             onClick={handleLogout}
             className="flex cursor-pointer items-center justify-center rounded-full border border-[#37a6ff] bg-[#0d141c] px-3 py-2 text-[#37a6ff]"
