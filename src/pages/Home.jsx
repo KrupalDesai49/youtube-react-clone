@@ -1,11 +1,14 @@
-import React from "react";
-import tick from "../assets/tick.svg";
-import { useEffect } from "react";
-import { db } from "../context/firebase";
 import { collection, onSnapshot, query } from "firebase/firestore";
+import { useAtom } from "jotai";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import tick from "../assets/tick.svg";
+import { videos_data } from "../context/atom";
+import { db } from "../context/firebase";
 
-const Home = ({sendVideoData, sendAllData, allData}) => {
+const Home = ({ setVideoItem}) => {
+
+  const [videos , setVideos] = useAtom(videos_data)
 
   //Read Data
   useEffect(() => {
@@ -15,8 +18,8 @@ const Home = ({sendVideoData, sendAllData, allData}) => {
       querySnapshot.forEach((doc) => {
         DataArr.push({ ...doc.data(), id: doc.id });
       });
-      sendAllData(DataArr);
-      // console.log('oooopoo:',data)
+      setVideos(DataArr);
+      // console.log('oooopoo:',DataArr)
 
     });
 
@@ -27,8 +30,8 @@ const Home = ({sendVideoData, sendAllData, allData}) => {
   return (
 
     <div className="grid justify-center gap-4 bg-black px-8 font-roboto text-white md:grid-cols-2 md:justify-start lg:grid-cols-3 xl:grid-cols-4 ">
-      {allData.map((item, index) => (
-        <Link to='/video'onClick={()=>(sendVideoData(item))} className="flex max-w-[30rem] flex-col md:max-w-md" key={index}>
+      {videos.map((item, index) => (
+        <Link to={'/video/'+item.id}onClick={()=>(setVideoItem(item) )} className="flex max-w-[30rem] flex-col md:max-w-md" key={index}>
           {/* Tumbnail */}
           {/* {console.log('oooopoo:',item)} */}
 

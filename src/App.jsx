@@ -1,46 +1,55 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import React from "react";
+import React, { useState } from "react";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
+import { AuthContextProvider } from "./components/AuthContext";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
-import VideoDetail from "./pages/VideoDetail";
-import { useState } from "react";
-import { AuthContextProvider } from "./components/AuthContext";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import VideoDetail from "./pages/VideoDetail";
 
 function App() {
-  const [videoData, setVideoData] = useState([])
-  const [allData, setAllData] = useState([])
+  const [videoItem, setVideoItem] = useState([])
 
-  const sendVideoData=(item)=>{
-    setVideoData(item)
 
-  }
- 
+  const sendVideoData = (item) => {
+    setVideoItem(item);
+  };
 
-  const sendAllData=(item)=>{
-    setAllData(item)
 
-  }
   return (
     <>
-            <AuthContextProvider>
-
-      <Router> 
-           <div className=" flex flex-col min-h-screen bg-black">
-
-        <Navbar />
-        <Routes>
-          <Route exact path="/" element={<Home sendVideoData={sendVideoData} sendAllData={sendAllData} allData={allData}/>} />
-          <Route exact path="/video" element={<VideoDetail sendVideoData={sendVideoData} allData={allData} videoData={videoData}/>} />
-          <Route exact path="/login" element={<Login />} />
-          <Route exact path="/signup" element={<Signup />} />
-        </Routes></div>
-      </Router>    
-
+      <AuthContextProvider>
+        <Router>
+          <div className=" flex min-h-screen flex-col bg-black">
+            <Navbar />
+            <Routes>
+              <Route
+                exact
+                path="/"
+                element={
+                  <Home
+                  setVideoItem={setVideoItem}
+                  />
+                }
+              />
+              <Route
+                exact
+                path="/video/:videoId"
+                element={
+                  <VideoDetail
+                  setVideoItem={setVideoItem}
+                  videoItem={videoItem}
+                  />
+                }
+              />
+              <Route exact path="/login" element={<Login />} />
+              <Route exact path="/signup" element={<Signup />} />
+            </Routes>
+          </div>
+        </Router>
       </AuthContextProvider>
-      </>
+    </>
   );
 }
 

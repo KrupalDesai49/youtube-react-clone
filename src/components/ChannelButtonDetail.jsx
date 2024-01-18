@@ -1,30 +1,32 @@
-import React from "react";
-import tick from "../assets/tick.svg";
-import like from "../assets/like.svg";
-import like_fill from "../assets/like_fill.svg";
+import { doc, updateDoc } from "firebase/firestore";
+import React, { useState } from "react";
 import dislike from "../assets/dislike.svg";
 import dislike_fill from "../assets/dislike_fill.svg";
-import share from "../assets/share.svg";
 import download from "../assets/download.svg";
+import like from "../assets/like.svg";
+import like_fill from "../assets/like_fill.svg";
 import more from "../assets/more.svg";
-import { useState } from "react";
+import share from "../assets/share.svg";
+import tick from "../assets/tick.svg";
 import { db } from "../context/firebase";
-import { doc, updateDoc } from "firebase/firestore";
 
-const ChannelButtonDetail = ({ videoData, sendVideoData }) => {
+const ChannelButtonDetail = ({videoItem, setVideoItem}) => {
+
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
 
+
+
   const funLiked = () => {
     if (!liked ) {
-      addLike(videoData)
-      sendVideoData({...videoData,like:parseInt(videoData.like)+1})
+      addLike(videoItem)
+      setVideoItem({...videoItem,like:parseInt(videoItem.like)+1})
       setLiked(true);
       setDisliked(false);
 
     }else if(liked){
-      subLike(videoData)
-      sendVideoData({...videoData,like:parseInt(videoData.like)-1})
+      subLike(videoItem)
+      setVideoItem({...videoItem,like:parseInt(videoItem.like)-1})
       setLiked(false);
       setDisliked(false);
     }
@@ -32,8 +34,8 @@ const ChannelButtonDetail = ({ videoData, sendVideoData }) => {
 
   const funDisliked = () => {
     if (!disliked && liked) {
-      subLike(videoData)
-      sendVideoData({...videoData,like:parseInt(videoData.like)-1})
+      subLike(videoItem)
+      setVideoItem({...videoItem,like:parseInt(videoItem.like)-1})
       setLiked(false);
       setDisliked(true);
     }else if (!disliked && !liked) {
@@ -64,7 +66,7 @@ const ChannelButtonDetail = ({ videoData, sendVideoData }) => {
         <div className="flex items-center">
           {/* Channel Logo */}
           <img
-            src={videoData?.channel_logo}
+            src={videoItem?.channel_logo}
             alt=""
             className="h-10 w-10 rounded-full"
           />
@@ -73,15 +75,15 @@ const ChannelButtonDetail = ({ videoData, sendVideoData }) => {
           <div className="ml-3 flex flex-col">
             <div className="flex">
               <p className=" font-[500] text-white">
-                {videoData?.channel_name}
+                {videoItem?.channel_name}
               </p>
-              {videoData?.channel_tick ? (
+              {videoItem?.channel_tick ? (
                 <img src={tick} alt="" className="ml-1  w-3 fill-neutral-400" /> 
                
               )  :""  }
             </div>
             <p className=" text-xs font-[450] text-neutral-400">
-              {videoData?.channel_sub} subscribers
+              {videoItem?.channel_sub} subscribers
             </p>
           </div>
           <button className="' ml-4 rounded-full bg-white px-4 py-2 text-sm font-semibold text-neutral-600 hover:bg-white/85">
@@ -100,7 +102,7 @@ const ChannelButtonDetail = ({ videoData, sendVideoData }) => {
             >
               <img src={liked?like_fill:like} alt="" className="w-5" />
               <p className="border-r border-r-zinc-600 pl-1 pr-3 font-[500]">
-                {videoData.like}
+                {videoItem.like}
               </p>
             </div>
             {/* Dislike */}
