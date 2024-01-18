@@ -2,6 +2,7 @@ import { useAtom } from 'jotai';
 import React from 'react';
 import tick from "../assets/tick.svg";
 import { videos_data } from '../context/atom';
+import { Link } from 'react-router-dom';
 
 const VideoList = ({setVideoItem}) => {
 
@@ -15,7 +16,7 @@ const VideoList = ({setVideoItem}) => {
     <div>
           <div className="flex flex-col space-y-4 py-4 bg-black pr-8 font-roboto text-white ">
       {videos.map((item, index) => (
-        <div onClick={()=>(setVideoItem(item))} className="flex max-w-[30rem]  md:max-w-md" key={index}>
+        <Link to={'/video/'+item.id}  onClick={()=>(setVideoItem(item))} className="flex max-w-[30rem]  md:max-w-md" key={index}>
           {/* Tumbnail */}
           <div className="relative flex-none cursor-pointer overflow-hidden rounded-md">
             <span className=" absolute bottom-0 right-0 m-[0.35rem]  rounded bg-black px-1 py-[0.1rem] text-xs font-semibold">
@@ -60,7 +61,7 @@ const VideoList = ({setVideoItem}) => {
               </div>
             </div>
           </div>
-        </div>
+        </Link>
       ))}
     </div>
       

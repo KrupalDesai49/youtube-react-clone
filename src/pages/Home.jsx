@@ -31,7 +31,7 @@ const Home = ({ setVideoItem}) => {
 
     <div className="grid justify-center gap-4 bg-black px-8 font-roboto text-white md:grid-cols-2 md:justify-start lg:grid-cols-3 xl:grid-cols-4 ">
       {videos.map((item, index) => (
-        <Link to={'/video/'+item.id}onClick={()=>(setVideoItem(item) )} className="flex max-w-[30rem] flex-col md:max-w-md" key={index}>
+        <Link to={'/video/'+item.id} onClick={()=>(setVideoItem(item) )} className="flex max-w-[30rem] flex-col md:max-w-md" key={index}>
           {/* Tumbnail */}
           {/* {console.log('oooopoo:',item)} */}
 
