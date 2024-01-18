@@ -115,16 +115,20 @@ const ChannelButtonDetail = ({ videoItem, setVideoItem }) => {
           </div>
 
           {/* Share */}
+          <a href={videoItem.share_link} target="_blank" rel="noreferrer">
           <div className="flex cursor-pointer items-center rounded-full bg-[#272727] py-1 pl-3 pr-4 hover:bg-[#3f3f3f]">
             <img src={share} alt="" className="w-7" />
             <p className="pl-1 font-[500] ">Share</p>
           </div>
-
+          </a>
           {/* Download */}
+       
           <div className="flex cursor-pointer items-center rounded-full bg-[#272727] py-1 pl-3 pr-4 hover:bg-[#3f3f3f]">
             <img src={download} alt="" className="w-6" />
             <p className="pl-1 font-[500] ">Download</p>
           </div>
+          
+
 
           {/* More */}
           <div className="flex cursor-pointer items-center rounded-full bg-[#272727] px-2 py-1 hover:bg-[#3f3f3f]">
