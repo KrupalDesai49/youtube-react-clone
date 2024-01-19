@@ -2,10 +2,35 @@ import React from "react";
 import UserComment from "./UserComment";
 import { UserAuth } from "./AuthContext";
 import { useState } from "react";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { db } from "../context/firebase";
 
 const CommentsSection = () => {
   const { user } = UserAuth();
   const [commentEntring, setCommentEntring] = useState(false);
+  let { videoId } = useParams();
+
+  //Creating Comment
+  const createComment = async () => {
+    if (user) {
+      try {
+
+        const commentData = {
+          userEmail: user.email,
+          userId: "user1",
+          text: "Great video!",
+          likes: 5,
+          timestamp: Date.now(),
+        };
+        const commentRef = doc(db, "ytvideo", videoId, "comments", user.email);
+        await setDoc(commentRef, commentData);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
 
   return (
     <>
@@ -35,10 +60,22 @@ const CommentsSection = () => {
             />
             {/* Comment button  */}
             {commentEntring && (
-              <div className="flex flex-row-reverse pt-3">
+              // Comment Button
+              <div
+                className="flex flex-row-reverse pt-3"
+                onClick={() => {
+                  createComment()
+                    .then(() => console.log("Comment added successfully"))
+                    .catch((error) =>
+                      console.error("Error adding comment: ", error),
+                    );
+                }}
+              >
                 <button className="ml-3 rounded-full bg-[#3ea6ff] px-4 py-2 text-sm font-[500] text-black hover:bg-[#65b8ff]">
                   Comment
                 </button>
+
+                {/* Cancel Button */}
                 <button
                   className="rounded-full bg-transparent px-4 py-2 text-sm font-[500] hover:bg-[#3f3f3f]"
                   onClick={() => setCommentEntring(false)}

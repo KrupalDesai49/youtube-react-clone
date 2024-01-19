@@ -8,7 +8,7 @@ import person from "../assets/person.svg";
 const Navbar = () => {
   const { user, logOut } = UserAuth();
   const navigate = useNavigate();
-  // console.log(user)
+  console.log(user)
 
   const handleLogout = async () => {
     try {

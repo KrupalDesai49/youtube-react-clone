@@ -1,17 +1,19 @@
 import React from "react";
-
+import { useState } from "react";
 import dislike from "../assets/dislike.svg";
 import dislike_fill from "../assets/dislike_fill.svg";
+import down_arrow from "../assets/down_arrow.svg";
 import like from "../assets/like.svg";
 import like_fill from "../assets/like_fill.svg";
-import down_arrow from "../assets/down_arrow.svg";
 import up_arrow from "../assets/up_arrow.svg";
-import { useState } from "react";
 import ReplySection from "./ReplySection";
+import { UserAuth } from "./AuthContext";
+
 const UserComment = () => {
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
   const [isReply, setisReply] = useState(false);
+  const { user, logOut } = UserAuth();
 
   return (
     <div className="flex w-full py-2">
@@ -69,19 +71,24 @@ const UserComment = () => {
           </p>
         </div>
 
-          {/* No. Of reply */}
-          <div className="flex cursor-pointer" onClick={()=> setisReply(e=> e=!e)}>
-            <div className="flex flex-row space-x-1 rounded-full px-3 py-1.5 hover:bg-[#263850]">
-              <img src={!isReply ? down_arrow :up_arrow} alt="" className="w-3" />
+        {/* No. Of reply */}
+        <div
+          className="flex cursor-pointer"
+          onClick={() => setisReply((e) => (e = !e))}
+        >
+          <div className="flex flex-row space-x-1 rounded-full px-3 py-1.5 hover:bg-[#263850]">
+            <img
+              src={!isReply ? down_arrow : up_arrow}
+              alt=""
+              className="w-3"
+            />
 
-              <p className="pl-1.5 text-[#3ea6ff] "> 4 replies</p>
-            </div>
+            <p className="pl-1.5 text-[#3ea6ff] "> 4 replies</p>
           </div>
-           {/* Reply Section */}
+        </div>
+        {/* Reply Section */}
 
-        {isReply &&
-         (
-          <ReplySection />)}
+        {isReply && <ReplySection />}
       </div>
     </div>
   );
