@@ -53,6 +53,8 @@ const CommentsSection = () => {
         {/* User's Comment */}
         <div className="pt-2">
           <UserComment />
+          <UserComment />
+          <UserComment />
         </div>
       </div>
     </>

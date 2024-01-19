@@ -7,12 +7,14 @@ import like_fill from "../assets/like_fill.svg";
 import down_arrow from "../assets/down_arrow.svg";
 import up_arrow from "../assets/up_arrow.svg";
 import { useState } from "react";
+import ReplySection from "./ReplySection";
 const UserComment = () => {
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
+  const [isReply, setisReply] = useState(false);
 
   return (
-    <div className="flex w-full py-3">
+    <div className="flex w-full py-2">
       {/* User Logo */}
       <button className="mr-4 h-10 w-10 shrink-0 rounded-full bg-[#ff0000] text-center text-2xl font-[400] text-white hover:bg-[#ff0000]/90 ">
         {/* {user.displayName.charAt(0).toUpperCase()} */}
@@ -35,11 +37,11 @@ const UserComment = () => {
         </p>
 
         {/* Like & Dislike */}
-        <div className="flex items-center pt-1.5 -ml-1.5">
+        <div className="-ml-1.5 flex items-center ">
           {/* Like */}
           <div
             //   onClick={funLiked}
-            className="flex cursor-pointer items-center rounded-l-full  py-1 "
+            className="flex cursor-pointer items-center rounded-l-full  pt-1 "
           >
             <img
               src={liked ? like_fill : like}
@@ -50,10 +52,11 @@ const UserComment = () => {
               {/* {videoItem.like} */}97
             </p>
           </div>
+
           {/* Dislike */}
           <div
             //   onClick={funDisliked}
-            className="flex cursor-pointer items-center rounded-r-full bg-[#272727] py-1 "
+            className="flex cursor-pointer items-center rounded-r-full bg-[#272727] pt-1 "
           >
             <img
               src={disliked ? dislike_fill : dislike}
@@ -61,18 +64,24 @@ const UserComment = () => {
               className=" w-7  rounded-full p-1.5 hover:bg-[#3f3f3f]"
             />
           </div>
-          <p className=" ml-4  text-xs  font-[500] rounded-full px-3 py-2 hover:bg-[#3f3f3f]">
-             Reply
+          <p className=" ml-4  rounded-full  px-3 py-2 text-xs font-[500] hover:bg-[#3f3f3f]">
+            Reply
           </p>
         </div>
 
-        {/* No. Of reply */}
-        <div className="flex space-x-1 pt-1.5 pl-2.5">
-            <img src={down_arrow} alt="" className="w-3" />
+          {/* No. Of reply */}
+          <div className="flex cursor-pointer" onClick={()=> setisReply(e=> e=!e)}>
+            <div className="flex flex-row space-x-1 rounded-full px-3 py-1.5 hover:bg-[#263850]">
+              <img src={!isReply ? down_arrow :up_arrow} alt="" className="w-3" />
 
-    <p className="text-[#3ea6ff] pl-1.5"> 4 replies</p>
+              <p className="pl-1.5 text-[#3ea6ff] "> 4 replies</p>
+            </div>
+          </div>
+           {/* Reply Section */}
 
-        </div>
+        {isReply &&
+         (
+          <ReplySection />)}
       </div>
     </div>
   );
