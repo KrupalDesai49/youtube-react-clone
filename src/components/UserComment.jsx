@@ -8,13 +8,22 @@ import like_fill from "../assets/like_fill.svg";
 import up_arrow from "../assets/up_arrow.svg";
 import ReplySection from "./ReplySection";
 import { UserAuth } from "./AuthContext";
+import { collection, doc, getDoc, onSnapshot } from "firebase/firestore";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { db } from "../context/firebase";
 
 const UserComment = () => {
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
   const [isReply, setisReply] = useState(false);
   const { user, logOut } = UserAuth();
+  let { videoId } = useParams();
 
+
+
+ 
+  
   return (
     <div className="flex w-full py-2">
       {/* User Logo */}
@@ -93,5 +102,6 @@ const UserComment = () => {
     </div>
   );
 };
+
 
 export default UserComment;

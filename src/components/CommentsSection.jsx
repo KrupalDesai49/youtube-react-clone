@@ -2,15 +2,32 @@ import React from "react";
 import UserComment from "./UserComment";
 import { UserAuth } from "./AuthContext";
 import { useState } from "react";
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { addDoc, collection, doc, onSnapshot, setDoc } from "firebase/firestore";
 import { useParams } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { db } from "../context/firebase";
+import { useEffect } from "react";
 
 const CommentsSection = () => {
   const { user } = UserAuth();
   const [commentEntring, setCommentEntring] = useState(false);
+  const [comment, setComment] = useState("");
+  const [commentsData, setCommentsData] = useState([]);
+
   let { videoId } = useParams();
+
+  useEffect(() => {
+    const q = collection(db, "ytvideo", videoId, "comments");
+    onSnapshot(q, (querySnapshot) => {
+      let commentsArray = [];
+      querySnapshot.forEach((doc) => {
+        commentsArray.push({ ...doc.data(), id: doc.id });
+      });
+      setCommentsData(commentsArray)
+      // console.log(commentsArray)
+    });
+
+}, [])
 
   //Creating Comment
   const createComment = async () => {
@@ -18,19 +35,24 @@ const CommentsSection = () => {
       try {
 
         const commentData = {
-          userEmail: user.email,
-          userId: "user1",
-          text: "Great video!",
-          likes: 5,
+          name: user.displayName,
+          comment: comment,
+          likes: 0,
           timestamp: Date.now(),
+          reply: false
+
         };
-        const commentRef = doc(db, "ytvideo", videoId, "comments", user.email);
-        await setDoc(commentRef, commentData);
+        await addDoc(collection(db, "ytvideo", videoId, "comments"), commentData);
+
+        // const commentRef = doc(db, "ytvideo", videoId, "comments", user);
+        // await setDoc(commentRef, commentData);
       } catch (e) {
         console.log(e);
       }
     }
   };
+
+  //
 
   return (
     <>
@@ -55,6 +77,7 @@ const CommentsSection = () => {
             <input
               type="text"
               onClick={() => setCommentEntring(true)}
+              onChange={(e)=>setComment(e.target.value)}
               className="line-clamp-3 border-b border-b-stone-600 bg-transparent pt-0.5 text-sm transition duration-100 placeholder:text-stone-400 focus:border-b-white focus:outline-none"
               placeholder="Add a comment..."
             />
