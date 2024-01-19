@@ -8,14 +8,34 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import VideoDetail from "./pages/VideoDetail";
 import NotFound from "./pages/NotFound";
+import { collection, onSnapshot, query } from "firebase/firestore";
+import { db } from "./context/firebase";
+import { useEffect } from "react";
+import { useAtom } from "jotai";
+import { video_item, videos_data } from "./context/atom";
 
 function App() {
   // const [videoItem, setVideoItem] = useState([])
 
 
-  const sendVideoData = (item) => {
-    setVideoItem(item);
-  };
+  const [videos , setVideos] = useAtom(videos_data)
+  const [videoItem , setVideoItem] = useAtom(video_item)
+
+  //Read Data
+  useEffect(() => {
+    const q = query(collection(db, "ytvideo"));
+    const getData = onSnapshot(q, (querySnapshot) => {
+      let DataArr = [];
+      querySnapshot.forEach((doc) => {
+        DataArr.push({ ...doc.data(), id: doc.id });
+      });
+      setVideos(DataArr);
+      // console.log('oooopoo:',DataArr)
+
+    });
+
+    return () => getData();
+  }, []);
 
 
   return (

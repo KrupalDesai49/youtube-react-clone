@@ -2,7 +2,13 @@ import React from "react";
 import UserComment from "./UserComment";
 import { UserAuth } from "./AuthContext";
 import { useState } from "react";
-import { addDoc, collection, doc, onSnapshot, setDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  onSnapshot,
+  setDoc,
+} from "firebase/firestore";
 import { useParams } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { db } from "../context/firebase";
@@ -13,7 +19,7 @@ const CommentsSection = () => {
   const [commentEntring, setCommentEntring] = useState(false);
   const [comment, setComment] = useState("");
   const [commentsData, setCommentsData] = useState([]);
-
+  const [renderComment, setRenderComment] = useState(false);
   let { videoId } = useParams();
 
   useEffect(() => {
@@ -23,26 +29,30 @@ const CommentsSection = () => {
       querySnapshot.forEach((doc) => {
         commentsArray.push({ ...doc.data(), id: doc.id });
       });
-      setCommentsData(commentsArray)
+      setCommentsData(commentsArray);
       // console.log(commentsArray)
     });
-
-}, [])
+  }, [videoId]);
 
   //Creating Comment
   const createComment = async () => {
     if (user) {
       try {
-
         const commentData = {
           name: user.displayName,
           comment: comment,
-          likes: 0,
+          likes_count: 0,
           timestamp: Date.now(),
-          reply: false
-
+          reply: false,
+          like: false,
+          dislike: false,
         };
-        await addDoc(collection(db, "ytvideo", videoId, "comments"), commentData);
+        await addDoc(
+          collection(db, "ytvideo", videoId, "comments"),
+          commentData,
+        );
+
+        setComment("");
 
         // const commentRef = doc(db, "ytvideo", videoId, "comments", user);
         // await setDoc(commentRef, commentData);
@@ -52,14 +62,12 @@ const CommentsSection = () => {
     }
   };
 
-  //
-
   return (
     <>
       <div className=" flex w-full flex-col text-white">
         {/* No. of Comments & Sorting */}
         <div className="flex">
-          <p className="text-xl font-bold">2,294 Comments</p>
+          <p className="text-xl font-bold">{commentsData.length} Comments</p>
           {/* TODO Sorting.............. */}
         </div>
 
@@ -67,8 +75,9 @@ const CommentsSection = () => {
         <div className="mt-5 flex">
           {/* User Logo */}
           <button className="mr-4 h-11 w-11 shrink-0 rounded-full bg-[#ff0000] text-center text-2xl font-[400] text-white hover:bg-[#ff0000]/90 ">
-            {/* {user.displayName.charAt(0).toUpperCase()} */}
-            <p className="pt-1">K</p>
+            <p className="pt-1">
+               {user && user.displayName && user.displayName.charAt(0).toUpperCase()}
+            </p>
           </button>
 
           {/* Comment Edit box &  button */}
@@ -77,7 +86,8 @@ const CommentsSection = () => {
             <input
               type="text"
               onClick={() => setCommentEntring(true)}
-              onChange={(e)=>setComment(e.target.value)}
+              onChange={(e) => setComment(e.target.value)}
+              value={comment}
               className="line-clamp-3 border-b border-b-stone-600 bg-transparent pt-0.5 text-sm transition duration-100 placeholder:text-stone-400 focus:border-b-white focus:outline-none"
               placeholder="Add a comment..."
             />
@@ -112,9 +122,11 @@ const CommentsSection = () => {
 
         {/* User's Comment */}
         <div className="pt-2">
-          <UserComment />
-          <UserComment />
-          <UserComment />
+          {commentsData.map((item, index) => (
+            <div className="" key={index}>
+              <UserComment item={item} setRenderComment={setRenderComment}commentsData={commentsData} setCommentsData={setCommentsData} />
+            </div>
+          ))}
         </div>
       </div>
     </>

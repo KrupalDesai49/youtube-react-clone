@@ -10,7 +10,7 @@ import share from "../assets/share.svg";
 import tick from "../assets/tick.svg";
 import { db } from "../context/firebase";
 
-const ChannelButtonDetail = ({ videoItem, setVideoItem }) => {
+const ChannelButtonDetail = ({ videoItem, setVideoItem, }) => {
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
 

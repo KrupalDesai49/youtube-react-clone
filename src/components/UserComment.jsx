@@ -12,61 +12,116 @@ import { collection, doc, getDoc, onSnapshot } from "firebase/firestore";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { db } from "../context/firebase";
+import moment from "moment";
 
-const UserComment = () => {
+const UserComment = ({
+  item,
+  setRenderComment,
+  commentsData,
+  setCommentsData,
+}) => {
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
   const [isReply, setisReply] = useState(false);
   const { user, logOut } = UserAuth();
   let { videoId } = useParams();
 
+  const funLiked = () => {
+    setRenderComment((e) => (e = !e));
+    if (!liked) {
+      addLike(commentsData);
+      setCommentsData({
+        ...commentsData,
+        likes_count: parseInt(commentsData.likes_count) + 1,
+      });
+      setLiked(true);
+      setDisliked(false);
+    } else if (liked) {
+      subLike(videoItem);
+      setCommentsData({
+        ...commentsData,
+        likes_count: parseInt(commentsData.likes_count) - 1,
+      });
+      setLiked(false);
+      setDisliked(false);
+    }
+  };
 
+  const funDisliked = () => {
+    setRenderComment((e) => (e = !e));
 
- 
-  
+    if (!disliked && liked) {
+      subLike(commentsData);
+      setCommentsData({
+        ...commentsData,
+        likes_count: parseInt(commentsData.likes_count) - 1,
+      });
+      setLiked(false);
+      setDisliked(true);
+    } else if (!disliked && !liked) {
+      setLiked(false);
+      setDisliked(true);
+    } else if (disliked) {
+      setLiked(false);
+      setDisliked(false);
+    }
+  };
+
+  const addLike = async (item) => {
+    await updateDoc(doc(db, "ytvideo", videoId, "comments", item.id), {
+      likes_count: parseInt(item.like) + 1,
+    });
+  };
+  const subLike = async (item) => {
+    await updateDoc(doc(db, "ytvideo", videoId, "comments", item.id), {
+      likes_count: parseInt(item.like) - 1,
+    });
+  };
+
   return (
     <div className="flex w-full py-2">
       {/* User Logo */}
       <button className="mr-4 h-10 w-10 shrink-0 rounded-full bg-[#ff0000] text-center text-2xl font-[400] text-white hover:bg-[#ff0000]/90 ">
-        {/* {user.displayName.charAt(0).toUpperCase()} */}
-        <p className="pt-0.5">K</p>
+        <p className="pt-0.5">{item.name.charAt(0).toUpperCase()}</p>
       </button>
 
       {/* Comments */}
       <div className="flex flex-col">
         {/* Username & time */}
         <div className="flex">
-          <p className="text-xs">@abcdefghi123</p>
-          <p className="pl-1 text-xs text-stone-400">3 months ago</p>
+          <p className="text-xs">
+            @
+            {item.name
+              .split(" ")
+              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+              .join("")}
+          </p>
+          <p className="pl-1 text-xs text-stone-400">
+            {moment(item.timestamp).fromNow()}
+          </p>
         </div>
 
         {/* Comments */}
-        <p className="pt-1 text-sm">
-          Phoebe shares the humorous sarcastic quality with Chandler, the pure
-          innocent quality with Joey, and the quirky unorthodox quality with
-          Ross.
-        </p>
+        <p className="pt-1 text-sm">{item.comment}</p>
 
         {/* Like & Dislike */}
         <div className="-ml-1.5 flex items-center ">
           {/* Like */}
-          <div
-            //   onClick={funLiked}
-            className="flex cursor-pointer items-center rounded-l-full  pt-1 "
-          >
+          <div className="flex cursor-pointer items-center rounded-l-full  pt-1 ">
             <img
+              // onClick={()=>funLiked()}
               src={liked ? like_fill : like}
               alt=""
               className="w-7 rounded-full p-1.5 hover:bg-[#3f3f3f]"
             />
             <p className=" pl-0.5 pr-3 text-xs  font-[500] text-stone-400">
-              {/* {videoItem.like} */}97
+              {item.likes_count}
             </p>
           </div>
 
           {/* Dislike */}
           <div
-            //   onClick={funDisliked}
+            // onClick={()=>funDisliked()}
             className="flex cursor-pointer items-center rounded-r-full bg-[#272727] pt-1 "
           >
             <img
@@ -102,6 +157,5 @@ const UserComment = () => {
     </div>
   );
 };
-
 
 export default UserComment;

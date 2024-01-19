@@ -10,18 +10,18 @@ import VideoList from "../components/VideoList";
 import { video_item, videos_data } from "../context/atom";
 
 const VideoDetail = () => {
-  // let { videoId } = useParams();
+  let { videoId } = useParams();
   const [videoItem, setVideoItem] = useAtom(video_item);
-  // const [videos , setVideos] = useAtom(videos_data)
+  const [videos , setVideos] = useAtom(videos_data)
 
-  // useEffect(() => {
-  //   if (!videoItem) {
-  //     console.log("111", videoItem);
+  useEffect(() => {
+    if (Object.keys(videoItem).length==0 && videos.length>0) {
 
-  //     const currentVideo = videos.find((video) => video.id === videoId);
-  //     setVideoItem(currentVideo);
-  //   }
-  // }, [videoId, videoItem]);
+      const currentVideo = videos.find((video) => video.id === videoId);
+      setVideoItem(currentVideo);
+    }
+  }, [videoId, videoItem, videos]);
+
 
   return (
     <div className="mx-auto max-w-[85rem] px-6 py-5 font-roboto text-white">
@@ -29,7 +29,7 @@ const VideoDetail = () => {
         {/* Left Video Player Section */}
         {/* Video & Channel Details */}
         <div className="flex flex-col md:w-[70%]">
-          <iframe
+          {videoItem && Object.keys(videoItem).length!=0 && (<iframe
             className="aspect-video w-full rounded-md md:rounded-xl"
             src={videoItem.link}
             title="YouTube video player"
@@ -37,6 +37,7 @@ const VideoDetail = () => {
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen
           ></iframe>
+          )}
 
           {/* Video Title */}
           <p className="pb-3 pt-3 text-lg font-bold md:pb-0 md:pt-5 md:text-xl">
