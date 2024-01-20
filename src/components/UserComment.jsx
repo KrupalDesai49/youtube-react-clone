@@ -8,73 +8,116 @@ import like_fill from "../assets/like_fill.svg";
 import up_arrow from "../assets/up_arrow.svg";
 import ReplySection from "./ReplySection";
 import { UserAuth } from "./AuthContext";
-import { collection, doc, getDoc, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  onSnapshot,
+  updateDoc,
+} from "firebase/firestore";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { db } from "../context/firebase";
 import moment from "moment";
 
-const UserComment = ({
-  item,
-  setRenderComment,
-  commentsData,
-  setCommentsData,
-}) => {
-  const [liked, setLiked] = useState(false);
-  const [disliked, setDisliked] = useState(false);
+const UserComment = ({ item,  setCommentsData }) => {
+ 
   const [isReply, setisReply] = useState(false);
-  const { user, logOut } = UserAuth();
+  const { user } = UserAuth();
   let { videoId } = useParams();
 
   const funLiked = () => {
-    setRenderComment((e) => (e = !e));
-    if (!liked) {
-      addLike(commentsData);
-      setCommentsData({
-        ...commentsData,
-        likes_count: parseInt(commentsData.likes_count) + 1,
+
+    if (!item.like) {
+      if (item && item.id) {
+        addLike(item);
+      } else {
+        console("addLike error");
+      }
+      setCommentsData((prevComments) => {
+        return prevComments.map((comment) => {
+          if (comment.id === item.id) {
+            return {
+              ...comment,
+              likes_count: parseInt(comment.likes_count) + 1,
+              like:true,
+              dislike:false
+            };
+          } else {
+            return comment;
+          }
+        });
       });
-      setLiked(true);
-      setDisliked(false);
-    } else if (liked) {
-      subLike(videoItem);
-      setCommentsData({
-        ...commentsData,
-        likes_count: parseInt(commentsData.likes_count) - 1,
+
+    } else if (item.like) {
+      if (item && item.id) {
+        subLike(item);
+      } else {
+        console("subLike error");
+      }
+      setCommentsData((prevComments) => {
+        return prevComments.map((comment) => {
+          if (comment.id === item.id) {
+            return {
+              ...comment,
+              likes_count: parseInt(comment.likes_count) - 1,
+              like:false,
+              dislike:false
+            };
+          } else {
+            return comment;
+          }
+        });
       });
-      setLiked(false);
-      setDisliked(false);
     }
   };
 
   const funDisliked = () => {
-    setRenderComment((e) => (e = !e));
-
-    if (!disliked && liked) {
-      subLike(commentsData);
-      setCommentsData({
-        ...commentsData,
-        likes_count: parseInt(commentsData.likes_count) - 1,
+    if (!item.dislike && item.like) {
+      if (item && item.id) {
+        subLike(item);
+      } else {
+        console("subLike error");
+      }
+      setCommentsData((prevComments) => {
+        return prevComments.map((comment) => {
+          if (comment.id === item.id) {
+            return {
+              ...comment,
+              likes_count: parseInt(comment.likes_count) - 1,
+              like:false,
+            };
+          } else {
+            return comment;
+          }
+        });
       });
-      setLiked(false);
-      setDisliked(true);
-    } else if (!disliked && !liked) {
-      setLiked(false);
-      setDisliked(true);
-    } else if (disliked) {
-      setLiked(false);
-      setDisliked(false);
+    } else if (!item.like) {
+      if (item && item.id) {
+        onlyDislike(item);
+      } else {
+        console("onlyDislike error");
+      }
     }
   };
 
   const addLike = async (item) => {
     await updateDoc(doc(db, "ytvideo", videoId, "comments", item.id), {
-      likes_count: parseInt(item.like) + 1,
+      likes_count: parseInt(item.likes_count) + 1,
+      like:true,
+      dislike:false
     });
   };
   const subLike = async (item) => {
     await updateDoc(doc(db, "ytvideo", videoId, "comments", item.id), {
-      likes_count: parseInt(item.like) - 1,
+      likes_count: parseInt(item.likes_count) - 1,
+      like:false,
+    });
+  };
+  const onlyDislike = async (item) => {
+    await updateDoc(doc(db, "ytvideo", videoId, "comments", item.id), {
+      like:false,
+      dislike:!item.dislike
     });
   };
 
@@ -82,7 +125,9 @@ const UserComment = ({
     <div className="flex w-full py-2">
       {/* User Logo */}
       <button className="mr-4 h-10 w-10 shrink-0 rounded-full bg-[#ff0000] text-center text-2xl font-[400] text-white hover:bg-[#ff0000]/90 ">
-        <p className="pt-0.5">{item.name.charAt(0).toUpperCase()}</p>
+        <p className="pt-0.5">
+          {user && user.displayName && item.name?.charAt(0).toUpperCase()}
+        </p>
       </button>
 
       {/* Comments */}
@@ -92,7 +137,7 @@ const UserComment = ({
           <p className="text-xs">
             @
             {item.name
-              .split(" ")
+              ?.split(" ")
               .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
               .join("")}
           </p>
@@ -109,23 +154,23 @@ const UserComment = ({
           {/* Like */}
           <div className="flex cursor-pointer items-center rounded-l-full  pt-1 ">
             <img
-              // onClick={()=>funLiked()}
-              src={liked ? like_fill : like}
+              onClick={() => funLiked()}
+              src={item.like ? like_fill : like}
               alt=""
               className="w-7 rounded-full p-1.5 hover:bg-[#3f3f3f]"
             />
             <p className=" pl-0.5 pr-3 text-xs  font-[500] text-stone-400">
-              {item.likes_count}
+            {Number(item.likes_count)}
             </p>
           </div>
 
           {/* Dislike */}
           <div
-            // onClick={()=>funDisliked()}
-            className="flex cursor-pointer items-center rounded-r-full bg-[#272727] pt-1 "
+            onClick={() => funDisliked()}
+            className="flex cursor-pointer items-center rounded-r-full  pt-1 "
           >
             <img
-              src={disliked ? dislike_fill : dislike}
+              src={item.dislike ? dislike_fill : dislike}
               alt=""
               className=" w-7  rounded-full p-1.5 hover:bg-[#3f3f3f]"
             />
