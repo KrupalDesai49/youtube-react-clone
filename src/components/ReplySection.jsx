@@ -13,7 +13,7 @@ const ReplySection = () => {
       {/* User Logo */}
       <button className="text- mr-4 h-6 w-6 shrink-0 rounded-full bg-[#ff0000] text-center font-[400] text-white hover:bg-[#ff0000]/90 ">
         {/* {user.displayName.charAt(0).toUpperCase()} */}
-        <p className="">K</p>
+        <p className="">KKK</p>
       </button>
 
       {/* Reply */}

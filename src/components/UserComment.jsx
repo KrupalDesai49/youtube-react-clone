@@ -23,55 +23,62 @@ import moment from "moment";
 
 const UserComment = ({ item, setCommentsData }) => {
   const [isReply, setisReply] = useState(false);
-  const [reply, setReply] = useState('');
-  const [replyData, setReplyData] = useState('');
+  const [reply, setReply] = useState("");
+  const [replyData, setReplyData] = useState("");
   const [replyEntering, setReplyEntering] = useState(false);
   const { user } = UserAuth();
   let { videoId } = useParams();
 
   useEffect(() => {
-    if(item.reply){
-    const q = collection(db, "ytvideo", videoId, "comments", item.id, "reply");
-    onSnapshot(q, (querySnapshot) => {
-      let ReplyArray = [];
-      querySnapshot.forEach((doc) => {
-        ReplyArray.push({ ...doc.data(), id: doc.id });
+    if (item.reply) {
+      const q = collection(
+        db,
+        "ytvideo",
+        videoId,
+        "comments",
+        item.id,
+        "reply",
+      );
+      onSnapshot(q, (querySnapshot) => {
+        let ReplyArray = [];
+        querySnapshot.forEach((doc) => {
+          ReplyArray.push({ ...doc.data(), id: doc.id });
+        });
+        setReplyData(ReplyArray.sort((a, b) => b.timestamp - a.timestamp));
+        console.log("replyyyy", ReplyArray);
       });
-      setReplyData(ReplyArray.sort((a, b) => b.timestamp - a.timestamp));
-      console.log("replyyyy",ReplyArray)
-    });
-  }
+    }
   }, [videoId]);
 
-    //Creating Reply
-    const createReply = async () => {
-      if (user) {
-        try {
-          const commentData = {
-            name: user.displayName,
-            reply: reply,
-            likes_count: 0,
-            timestamp: Date.now(),
-            like: false,
-            dislike: false,
-          };
-          await addDoc(
-            collection(db, "ytvideo", videoId, "comments", item.id, "reply"),
-            commentData,
-          );
-          await updateDoc(doc(db, "ytvideo", videoId, "comments", item.id), {
-            reply: true,
-          });
-  
-          setReply("");
-  
-          // const commentRef = doc(db, "ytvideo", videoId, "comments", user);
-          // await setDoc(commentRef, commentData);
-        } catch (e) {
-          console.log(e);
-        }
+  //Creating Reply
+  const createReply = async () => {
+    if (user) {
+      try {
+        const commentData = {
+          name: user.displayName,
+          reply: reply,
+          likes_count: 0,
+          timestamp: Date.now(),
+          like: false,
+          dislike: false,
+        };
+        await addDoc(
+          collection(db, "ytvideo", videoId, "comments", item.id, "reply"),
+          commentData,
+        );
+        await updateDoc(doc(db, "ytvideo", videoId, "comments", item.id), {
+          reply: true,
+        });
+
+        setReply("");
+
+        // const commentRef = doc(db, "ytvideo", videoId, "comments", user);
+        // await setDoc(commentRef, commentData);
+      } catch (e) {
+        console.log(e);
       }
-    };
+    }
+  };
 
   const funLiked = () => {
     if (!item.like) {
@@ -176,8 +183,7 @@ const UserComment = ({ item, setCommentsData }) => {
       </button>
 
       {/* Comments */}
-      <div className="flex flex-col">
-
+      <div className="flex grow flex-col">
         {/* Username & time */}
         <div className="flex">
           <p className="text-xs">
@@ -223,48 +229,63 @@ const UserComment = ({ item, setCommentsData }) => {
           </div>
 
           {/* Reply */}
-          <p className=" ml-4  rounded-full  px-3 py-2 text-xs font-[500] hover:bg-[#3f3f3f]"
-          onClick={()=>setReplyEntering(true)}>
+          <p
+            className=" ml-4  rounded-full  px-3 py-2 text-xs font-[500] hover:bg-[#3f3f3f]"
+            onClick={() => setReplyEntering(true)}
+          >
             Reply
           </p>
         </div>
 
         {/* Rply Edit box &  button */}
-        {!replyEntering && (<div className="flex w-full flex-col">
-          {/* Comment Edit box */}
-          <input
-            type="text"
-            onChange={(e) => setReply(e.target.value)}
-            value={reply}
-            className="line-clamp-3 border-b border-b-stone-600 bg-transparent pt-0.5 text-sm transition duration-100 placeholder:text-stone-400 focus:border-b-white focus:outline-none"
-            placeholder="Add a reply..."
-          />
-          {/* Comment button  */}
-          <div
-            className="flex flex-row-reverse pt-3"
-            onClick={() => {
-              createReply()
-                .then(() => console.log("Reply added successfully"))
-                .catch((error) =>
-                  console.error("Error adding Reply: ", error),
-                );
-            }}
-          >
-            <button className="ml-3 rounded-full bg-[#3ea6ff] px-4 py-2 text-sm font-[500] text-black hover:bg-[#65b8ff]">
-              Reply
-            </button>
+        {!replyEntering && (
+          <div className="flex w-full flex-col">
+            <div className="flex w-full py-1">
+              {/* User Logo */}
+              <button className="text- mr-4 h-6 w-6 shrink-0 rounded-full bg-[#ff0000] text-center font-[400] text-white hover:bg-[#ff0000]/90 ">
+                {/* {user.displayName.charAt(0).toUpperCase()} */}
+                <p className="">
+                  {user &&
+                    user.displayName &&
+                    user.displayName.charAt(0).toUpperCase()}
+                </p>
+              </button>
+              <div className="flex w-full flex-col">
+                {/* Comment Edit box */}
+                <input
+                  type="text"
+                  onChange={(e) => setReply(e.target.value)}
+                  value={reply}
+                  className="line-clamp-3 border-b border-b-stone-600 bg-transparent pt-0.5 text-sm transition duration-100 placeholder:text-stone-400 focus:border-b-white focus:outline-none"
+                  placeholder="Add a reply..."
+                />
+                {/* Comment button  */}
+                <div
+                  className="flex flex-row-reverse pt-3"
+                  onClick={() => {
+                    createReply()
+                      .then(() => console.log("Reply added successfully"))
+                      .catch((error) =>
+                        console.error("Error adding Reply: ", error),
+                      );
+                  }}
+                >
+                  <button className="ml-3 rounded-full bg-[#3ea6ff] px-4 py-2 text-sm font-[500] text-black hover:bg-[#65b8ff]">
+                    Reply
+                  </button>
 
-            {/* Cancel Button */}
-            <button
-              className="rounded-full bg-transparent px-4 py-2 text-sm font-[500] hover:bg-[#3f3f3f]"
-              onClick={() => setReplyEntering(false)}
-            >
-              Cancel
-            </button>
+                  {/* Cancel Button */}
+                  <button
+                    className="rounded-full bg-transparent px-4 py-2 text-sm font-[500] hover:bg-[#3f3f3f]"
+                    onClick={() => setReplyEntering(false)}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
-       
-        </div>
- )}
+        )}
         {/* No. Of reply */}
         <div
           className="flex cursor-pointer"
@@ -281,15 +302,14 @@ const UserComment = ({ item, setCommentsData }) => {
           </div>
         </div>
 
-        {/*  */}
-
         {/* Reply Section */}
 
-
-        {isReply && replyData.map((replyItem,index) => 
-        <div className="" key={index}>
-        <ReplySection replyItem={replyItem} setReplyData={setReplyData}/>
-        </div>)}
+        {isReply &&
+          replyData.map((replyItem, index) => (
+            <div className="" key={index}>
+              <ReplySection replyItem={replyItem} setReplyData={setReplyData} />
+            </div>
+          ))}
       </div>
     </div>
   );
