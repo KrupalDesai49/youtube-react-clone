@@ -88,23 +88,25 @@ const CommentsSection = () => {
               onClick={() => setCommentEntring(true)}
               onChange={(e) => setComment(e.target.value)}
               value={comment}
-              className="line-clamp-3 border-b-2 border-b-stone-600 bg-transparent pt-0.5 text-sm transition duration-100 placeholder:text-stone-400 focus:border-b-white focus:outline-none"
+              className="line-clamp-3 border-b-2 peer border-b-stone-600 bg-transparent pt-0.5 text-sm transition duration-100 placeholder:text-stone-400  outline-none"
               placeholder="Add a comment..."
             />
+            <p className="border-t-2 border-white  w-full  -my-[2px]  peer-focus:scale-100 scale-0 transition duration-[300ms]  place-self-center "></p>
             {/* Comment button  */}
             {commentEntring && (
               // Comment Button
               <div
                 className="flex flex-row-reverse pt-3"
-                onClick={() => {
+               
+              >
+                <button className="ml-3 rounded-full bg-[#3ea6ff] px-4 py-2 text-sm font-[500] text-black hover:bg-[#65b8ff]"
+                 onClick={() => {
                   createComment()
                     .then(() => console.log("Comment added successfully"))
                     .catch((error) =>
                       console.error("Error adding comment: ", error),
                     );
-                }}
-              >
-                <button className="ml-3 rounded-full bg-[#3ea6ff] px-4 py-2 text-sm font-[500] text-black hover:bg-[#65b8ff]">
+                }}>
                   Comment
                 </button>
 
