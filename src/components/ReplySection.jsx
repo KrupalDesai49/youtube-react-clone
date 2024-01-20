@@ -4,10 +4,20 @@ import dislike_fill from "../assets/dislike_fill.svg";
 import like from "../assets/like.svg";
 import like_fill from "../assets/like_fill.svg";
 import { UserAuth } from "./AuthContext";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  onSnapshot,
+  updateDoc,
+} from "firebase/firestore";
 import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { db } from "../context/firebase";
 import moment from "moment";
 
-const ReplySection = ({ item, reply, setReplyData, setReply }) => {
+const ReplySection = ({ item, reply, setReplyData, setReply ,itemCommentId}) => {
   const [replyEntering, setReplyEntering] = useState(false);
 
   const { user } = UserAuth();
@@ -87,16 +97,23 @@ const ReplySection = ({ item, reply, setReplyData, setReply }) => {
   };
 
   const addLike = async (item) => {
-    await updateDoc(doc(db, "ytvideo", videoId, "comments", item.id), {
+    await updateDoc(doc(db, "ytvideo", videoId, "comments", itemCommentId, "reply", item.id), {
       likes_count: parseInt(item.likes_count) + 1,
       like: true,
       dislike: false,
     });
   };
   const subLike = async (item) => {
-    await updateDoc(doc(db, "ytvideo", videoId, "comments", item.id), {
+    await updateDoc(doc(db,"ytvideo", videoId, "comments", itemCommentId, "reply", item.id), {
       likes_count: parseInt(item.likes_count) - 1,
       like: false,
+    });
+  };
+
+  const onlyDislike = async (item) => {
+    await updateDoc(doc(db, "ytvideo", videoId, "comments", itemCommentId, "reply", item.id), {
+      like: false,
+      dislike: !item.dislike,
     });
   };
 

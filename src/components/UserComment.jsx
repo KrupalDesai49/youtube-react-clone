@@ -318,6 +318,7 @@ const UserComment = ({ item, setCommentsData }) => {
                 item={replyItem}
                 setReplyData={setReplyData}
                 createReply={createReply}
+                itemCommentId={item.id}
               />
             </div>
           ))}
