@@ -24,13 +24,13 @@ const VideoDetail = () => {
 
 
   return (
-    <div className="mx-auto max-w-[85rem] px-6 py-5 font-roboto text-white">
+    <div className="mx-auto max-w-[85rem]  bg-black px-6 py-5 font-roboto text-white">
       <div className="flex flex-col items-center space-x-0 md:flex-row md:items-start md:space-x-6">
         {/* Left Video Player Section */}
         {/* Video & Channel Details */}
-        <div className="flex flex-col md:w-[70%]">
+        <div className="flex flex-col md:w-[75%]">
           {videoItem && Object.keys(videoItem).length!=0 && (<iframe
-            className="aspect-video w-full rounded-md md:rounded-xl"
+            className="aspect-video w-full rounded-md md:rounded-xl "
             src={videoItem.link}
             title="YouTube video player"
             style={{ border: "none" }}

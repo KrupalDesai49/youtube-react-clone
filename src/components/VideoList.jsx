@@ -16,7 +16,7 @@ const VideoList = ({setVideoItem}) => {
     <div>
           <div className="flex flex-col space-y-4 py-4 bg-black pr-8 font-roboto text-white ">
       {videos.map((item, index) => (
-        <Link to={'/video/'+item.id}  onClick={()=>(setVideoItem(item))} className="flex max-w-[30rem]  md:max-w-md" key={index}>
+        <Link to={'/video/'+item.id}  onClick={()=>(setVideoItem(item))} className="flex max-w-[35rem]  md:max-w-md" key={index}>
           {/* Tumbnail */}
           <div className="relative flex-none cursor-pointer overflow-hidden rounded-md">
             <span className=" absolute bottom-0 right-0 m-[0.35rem]  rounded bg-black px-1 py-[0.1rem] text-xs font-semibold">
@@ -50,14 +50,10 @@ const VideoList = ({setVideoItem}) => {
               {/* View & Watch Hour */}
               <div className="flex">
                 <p className=" text-xs font-[500] text-neutral-400">
-                  {item?.view}
+                  {item?.view}{" "}views • {" "}{item?.upload_time}
                 </p>
-                <p className="ml-1 text-xs font-[500] text-neutral-400">
-                  views •
-                </p>
-                <p className="ml-1 text-xs font-[500] text-neutral-400">
-                  {item?.upload_time}
-                </p>
+            
+            
               </div>
             </div>
           </div>
