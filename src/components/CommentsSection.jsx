@@ -88,7 +88,7 @@ const CommentsSection = () => {
               onClick={() => setCommentEntring(true)}
               onChange={(e) => setComment(e.target.value)}
               value={comment}
-              className="line-clamp-3 border-b border-b-stone-600 bg-transparent pt-0.5 text-sm transition duration-100 placeholder:text-stone-400 focus:border-b-white focus:outline-none"
+              className="line-clamp-3 border-b-2 border-b-stone-600 bg-transparent pt-0.5 text-sm transition duration-100 placeholder:text-stone-400 focus:border-b-white focus:outline-none"
               placeholder="Add a comment..."
             />
             {/* Comment button  */}
