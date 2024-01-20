@@ -48,7 +48,7 @@ const UserComment = ({ item, setCommentsData }) => {
         console.log("replyyyy", ReplyArray);
       });
     }
-  }, [videoId]);
+  }, [videoId, replyEntering]);
 
   //Creating Reply
   const createReply = async () => {
@@ -71,7 +71,7 @@ const UserComment = ({ item, setCommentsData }) => {
         });
 
         setReply("");
-
+        setReplyEntering(false);
         // const commentRef = doc(db, "ytvideo", videoId, "comments", user);
         // await setDoc(commentRef, commentData);
       } catch (e) {
@@ -237,8 +237,8 @@ const UserComment = ({ item, setCommentsData }) => {
           </p>
         </div>
 
-        {/* Rply Edit box &  button */}
-        {!replyEntering && (
+        {/* Reply Edit box &  button */}
+        {replyEntering && (
           <div className="flex w-full flex-col">
             <div className="flex w-full py-1">
               {/* User Logo */}
@@ -260,17 +260,17 @@ const UserComment = ({ item, setCommentsData }) => {
                   placeholder="Add a reply..."
                 />
                 {/* Comment button  */}
-                <div
-                  className="flex flex-row-reverse pt-3"
-                  onClick={() => {
-                    createReply()
-                      .then(() => console.log("Reply added successfully"))
-                      .catch((error) =>
-                        console.error("Error adding Reply: ", error),
-                      );
-                  }}
-                >
-                  <button className="ml-3 rounded-full bg-[#3ea6ff] px-4 py-2 text-sm font-[500] text-black hover:bg-[#65b8ff]">
+                <div className="flex flex-row-reverse pt-3">
+                  <button
+                    className="ml-3 rounded-full bg-[#3ea6ff] px-4 py-2 text-sm font-[500] text-black hover:bg-[#65b8ff]"
+                    onClick={() => {
+                      createReply()
+                        .then(() => console.log("Reply added successfully"))
+                        .catch((error) =>
+                          console.error("Error adding Reply: ", error),
+                        );
+                    }}
+                  >
                     Reply
                   </button>
 
@@ -287,27 +287,38 @@ const UserComment = ({ item, setCommentsData }) => {
           </div>
         )}
         {/* No. Of reply */}
-        <div
-          className="flex cursor-pointer"
-          onClick={() => setisReply((e) => (e = !e))}
-        >
-          <div className="flex flex-row space-x-1 rounded-full px-3 py-1.5 hover:bg-[#263850]">
-            <img
-              src={!isReply ? down_arrow : up_arrow}
-              alt=""
-              className="w-3"
-            />
+        {item.reply && (
+          <div
+            className="flex cursor-pointer"
+            onClick={() => setisReply((e) => (e = !e))}
+          >
+            <div className="flex flex-row space-x-1 rounded-full px-3 py-1.5 hover:bg-[#263850]">
+              <img
+                src={!isReply ? down_arrow : up_arrow}
+                alt=""
+                className="w-3"
+              />
 
-            <p className="pl-1.5 text-[#3ea6ff] "> 4 replies</p>
+              <p className="pl-1.5 text-[#3ea6ff] ">
+                {" "}
+                {replyData?.length} replies
+              </p>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Reply Section */}
 
         {isReply &&
           replyData.map((replyItem, index) => (
             <div className="" key={index}>
-              <ReplySection replyItem={replyItem} setReplyData={setReplyData} />
+              <ReplySection
+                setReply={setReply}
+                reply={reply}
+                item={replyItem}
+                setReplyData={setReplyData}
+                createReply={createReply}
+              />
             </div>
           ))}
       </div>
