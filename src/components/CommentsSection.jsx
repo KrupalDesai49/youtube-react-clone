@@ -29,7 +29,7 @@ const CommentsSection = () => {
       querySnapshot.forEach((doc) => {
         commentsArray.push({ ...doc.data(), id: doc.id });
       });
-      setCommentsData(commentsArray);
+      setCommentsData(commentsArray.sort((a, b) => b.timestamp - a.timestamp));
       // console.log(commentsArray)
     });
   }, [videoId]);
@@ -72,7 +72,7 @@ const CommentsSection = () => {
         </div>
 
         {/* User Comment Box */}
-        <div className="mt-5 flex">
+        <div className="mt-5 flex mb-4">
           {/* User Logo */}
           <button className="mr-4 h-11 w-11 shrink-0 rounded-full bg-[#ff0000] text-center text-2xl font-[400] text-white hover:bg-[#ff0000]/90 ">
             <p className="pt-1">

@@ -9,6 +9,7 @@ import up_arrow from "../assets/up_arrow.svg";
 import ReplySection from "./ReplySection";
 import { UserAuth } from "./AuthContext";
 import {
+  addDoc,
   collection,
   doc,
   getDoc,
@@ -20,14 +21,59 @@ import { useEffect } from "react";
 import { db } from "../context/firebase";
 import moment from "moment";
 
-const UserComment = ({ item,  setCommentsData }) => {
- 
+const UserComment = ({ item, setCommentsData }) => {
   const [isReply, setisReply] = useState(false);
+  const [reply, setReply] = useState('');
+  const [replyData, setReplyData] = useState('');
+  const [replyEntering, setReplyEntering] = useState(false);
   const { user } = UserAuth();
   let { videoId } = useParams();
 
-  const funLiked = () => {
+  useEffect(() => {
+    if(item.reply){
+    const q = collection(db, "ytvideo", videoId, "comments", item.id, "reply");
+    onSnapshot(q, (querySnapshot) => {
+      let ReplyArray = [];
+      querySnapshot.forEach((doc) => {
+        ReplyArray.push({ ...doc.data(), id: doc.id });
+      });
+      setReplyData(ReplyArray.sort((a, b) => b.timestamp - a.timestamp));
+      console.log("replyyyy",ReplyArray)
+    });
+  }
+  }, [videoId]);
 
+    //Creating Reply
+    const createReply = async () => {
+      if (user) {
+        try {
+          const commentData = {
+            name: user.displayName,
+            reply: reply,
+            likes_count: 0,
+            timestamp: Date.now(),
+            like: false,
+            dislike: false,
+          };
+          await addDoc(
+            collection(db, "ytvideo", videoId, "comments", item.id, "reply"),
+            commentData,
+          );
+          await updateDoc(doc(db, "ytvideo", videoId, "comments", item.id), {
+            reply: true,
+          });
+  
+          setReply("");
+  
+          // const commentRef = doc(db, "ytvideo", videoId, "comments", user);
+          // await setDoc(commentRef, commentData);
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    };
+
+  const funLiked = () => {
     if (!item.like) {
       if (item && item.id) {
         addLike(item);
@@ -40,15 +86,14 @@ const UserComment = ({ item,  setCommentsData }) => {
             return {
               ...comment,
               likes_count: parseInt(comment.likes_count) + 1,
-              like:true,
-              dislike:false
+              like: true,
+              dislike: false,
             };
           } else {
             return comment;
           }
         });
       });
-
     } else if (item.like) {
       if (item && item.id) {
         subLike(item);
@@ -61,8 +106,8 @@ const UserComment = ({ item,  setCommentsData }) => {
             return {
               ...comment,
               likes_count: parseInt(comment.likes_count) - 1,
-              like:false,
-              dislike:false
+              like: false,
+              dislike: false,
             };
           } else {
             return comment;
@@ -85,7 +130,7 @@ const UserComment = ({ item,  setCommentsData }) => {
             return {
               ...comment,
               likes_count: parseInt(comment.likes_count) - 1,
-              like:false,
+              like: false,
             };
           } else {
             return comment;
@@ -104,20 +149,20 @@ const UserComment = ({ item,  setCommentsData }) => {
   const addLike = async (item) => {
     await updateDoc(doc(db, "ytvideo", videoId, "comments", item.id), {
       likes_count: parseInt(item.likes_count) + 1,
-      like:true,
-      dislike:false
+      like: true,
+      dislike: false,
     });
   };
   const subLike = async (item) => {
     await updateDoc(doc(db, "ytvideo", videoId, "comments", item.id), {
       likes_count: parseInt(item.likes_count) - 1,
-      like:false,
+      like: false,
     });
   };
   const onlyDislike = async (item) => {
     await updateDoc(doc(db, "ytvideo", videoId, "comments", item.id), {
-      like:false,
-      dislike:!item.dislike
+      like: false,
+      dislike: !item.dislike,
     });
   };
 
@@ -132,6 +177,7 @@ const UserComment = ({ item,  setCommentsData }) => {
 
       {/* Comments */}
       <div className="flex flex-col">
+
         {/* Username & time */}
         <div className="flex">
           <p className="text-xs">
@@ -149,7 +195,7 @@ const UserComment = ({ item,  setCommentsData }) => {
         {/* Comments */}
         <p className="pt-1 text-sm">{item.comment}</p>
 
-        {/* Like & Dislike */}
+        {/* Like & Dislike & Reply */}
         <div className="-ml-1.5 flex items-center ">
           {/* Like */}
           <div className="flex cursor-pointer items-center rounded-l-full  pt-1 ">
@@ -160,7 +206,7 @@ const UserComment = ({ item,  setCommentsData }) => {
               className="w-7 rounded-full p-1.5 hover:bg-[#3f3f3f]"
             />
             <p className=" pl-0.5 pr-3 text-xs  font-[500] text-stone-400">
-            {Number(item.likes_count)}
+              {Number(item.likes_count)}
             </p>
           </div>
 
@@ -175,11 +221,50 @@ const UserComment = ({ item,  setCommentsData }) => {
               className=" w-7  rounded-full p-1.5 hover:bg-[#3f3f3f]"
             />
           </div>
-          <p className=" ml-4  rounded-full  px-3 py-2 text-xs font-[500] hover:bg-[#3f3f3f]">
+
+          {/* Reply */}
+          <p className=" ml-4  rounded-full  px-3 py-2 text-xs font-[500] hover:bg-[#3f3f3f]"
+          onClick={()=>setReplyEntering(true)}>
             Reply
           </p>
         </div>
 
+        {/* Rply Edit box &  button */}
+        {!replyEntering && (<div className="flex w-full flex-col">
+          {/* Comment Edit box */}
+          <input
+            type="text"
+            onChange={(e) => setReply(e.target.value)}
+            value={reply}
+            className="line-clamp-3 border-b border-b-stone-600 bg-transparent pt-0.5 text-sm transition duration-100 placeholder:text-stone-400 focus:border-b-white focus:outline-none"
+            placeholder="Add a reply..."
+          />
+          {/* Comment button  */}
+          <div
+            className="flex flex-row-reverse pt-3"
+            onClick={() => {
+              createReply()
+                .then(() => console.log("Reply added successfully"))
+                .catch((error) =>
+                  console.error("Error adding Reply: ", error),
+                );
+            }}
+          >
+            <button className="ml-3 rounded-full bg-[#3ea6ff] px-4 py-2 text-sm font-[500] text-black hover:bg-[#65b8ff]">
+              Reply
+            </button>
+
+            {/* Cancel Button */}
+            <button
+              className="rounded-full bg-transparent px-4 py-2 text-sm font-[500] hover:bg-[#3f3f3f]"
+              onClick={() => setReplyEntering(false)}
+            >
+              Cancel
+            </button>
+          </div>
+       
+        </div>
+ )}
         {/* No. Of reply */}
         <div
           className="flex cursor-pointer"
@@ -195,9 +280,16 @@ const UserComment = ({ item,  setCommentsData }) => {
             <p className="pl-1.5 text-[#3ea6ff] "> 4 replies</p>
           </div>
         </div>
+
+        {/*  */}
+
         {/* Reply Section */}
 
-        {isReply && <ReplySection />}
+
+        {isReply && replyData.map((replyItem,index) => 
+        <div className="" key={index}>
+        <ReplySection replyItem={replyItem} setReplyData={setReplyData}/>
+        </div>)}
       </div>
     </div>
   );
