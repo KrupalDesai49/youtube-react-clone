@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import VideoDetail from "./pages/VideoDetail";
+import VideoComponent from "./pages/VideoComponent";
 import NotFound from "./pages/NotFound";
 import { collection, onSnapshot, query } from "firebase/firestore";
 import { db } from "./context/firebase";
@@ -38,6 +39,8 @@ function App() {
   }, []);
 
 
+
+
   return (
     <>
       <AuthContextProvider>
@@ -66,7 +69,13 @@ function App() {
               />
               <Route exact path="/login" element={<Login />} />
               <Route exact path="/signup" element={<Signup />} />
-              <Route path="*" element={<NotFound />} /> 
+             <Route path="*" element={<NotFound />} /> 
+             
+               <Route exact path="/vv" element={
+               <VideoComponent />
+              
+               } />
+             
             </Routes>
           </div>
         </Router>

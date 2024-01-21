@@ -28,6 +28,46 @@ const ChannelButtonDetail = ({ videoItem, setVideoItem, }) => {
     }
   };
 
+  // const funLiked = () => {
+  //   if (!videoItem.like) {
+  //     if (videoItem && videoItem.id) {
+  //       addLike(videoItem);
+  //     } else {
+  //       console("addLike error");
+  //     }
+  //     setVideoItem((prevComments) => {
+  //       return prevComments.map((comment) => {
+  //          {
+  //             ...comment,
+  //             likes_count: parseInt(comment.likes_count) + 1,
+  //             like: true,
+  //             dislike: false,
+  //           }
+  //       });
+  //     });
+  //   } else if (item.like) {
+  //     if (item && item.id) {
+  //       subLike(item);
+  //     } else {
+  //       console("subLike error");
+  //     }
+  //     setReplyData((prevComments) => {
+  //       return prevComments.map((comment) => {
+  //         if (comment.id === item.id) {
+  //           return {
+  //             ...comment,
+  //             likes_count: parseInt(comment.likes_count) - 1,
+  //             like: false,
+  //             dislike: false,
+  //           };
+  //         } else {
+  //           return comment;
+  //         }
+  //       });
+  //     });
+  //   }
+  // };
+
   const funDisliked = () => {
     if (!disliked && liked) {
       subLike(videoItem);
@@ -135,6 +175,8 @@ const ChannelButtonDetail = ({ videoItem, setVideoItem, }) => {
             <img src={more} alt="" className="w-5" />
           </div>
         </div>
+
+      
       </div>
     </>
   );

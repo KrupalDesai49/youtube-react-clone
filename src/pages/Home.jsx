@@ -68,10 +68,14 @@ const Home = () => {
                 </p>
               </div>
             </div>
+
           </div>
         </Link>
       ))}
-    </div>
+      <Link to='/vv'>okkk
+    
+        </Link>
+    </div>  
   );
 };
 

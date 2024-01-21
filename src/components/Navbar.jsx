@@ -4,11 +4,13 @@ import search from "../assets/search.svg";
 import { Link, useNavigate } from "react-router-dom";
 import { UserAuth } from "./AuthContext";
 import person from "../assets/person.svg";
+import { useParams } from "react-router-dom";
 
 const Navbar = () => {
   const { user, logOut } = UserAuth();
   const navigate = useNavigate();
-  console.log(user)
+  // console.log(user)
+useParams()
 
   const handleLogout = async () => {
     try {
