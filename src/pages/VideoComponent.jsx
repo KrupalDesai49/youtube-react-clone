@@ -4,16 +4,9 @@ import { useInView } from "react-intersection-observer";
 import YoutubeShort from "../components/YoutubeShort";
 
 const VideoComponent = () => {
-  // const videoIds = ["5vFhplWQJis", "WhD28kAD7oE", "tUqGNaEv_AA","5vFhplWQJis", "WhD28kAD7oE", "tUqGNaEv_AA","5vFhplWQJis", "WhD28kAD7oE", "tUqGNaEv_AA","5vFhplWQJis", "WhD28kAD7oE", "tUqGNaEv_AA","5vFhplWQJis", "WhD28kAD7oE", "tUqGNaEv_AA","5vFhplWQJis", "WhD28kAD7oE", "tUqGNaEv_AA"]; // Replace with your actual video IDs
-  const videoIds = ["5vFhplWQJis", "WhD28kAD7oE", "tUqGNaEv_AA","5vFhplWQJis", "WhD28kAD7oE", "tUqGNaEv_AA"]; // Replace with your actual video IDs
-  // const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const videoIds = ["5vFhplWQJis", "WhD28kAD7oE", "tUqGNaEv_AA","5vFhplWQJis", "WhD28kAD7oE", "tUqGNaEv_AA","5vFhplWQJis", "WhD28kAD7oE", "tUqGNaEv_AA","5vFhplWQJis", "WhD28kAD7oE", "tUqGNaEv_AA","5vFhplWQJis", "WhD28kAD7oE", "tUqGNaEv_AA","5vFhplWQJis", "WhD28kAD7oE", "tUqGNaEv_AA"]; // Replace with your actual video IDs
 
-  // const handleVideoEnded = () => {
-  //   if (currentVideoIndex < videoIds.length - 1) {
-  //     setCurrentVideoIndex(currentVideoIndex + 1);
-  //   }
-  // };
-
+  // const videoIds = ["5vFhplWQJis", "WhD28kAD7oE", "tUqGNaEv_AA","5vFhplWQJis", "WhD28kAD7oE", "tUqGNaEv_AA"]; 
 
   return (
     <div>

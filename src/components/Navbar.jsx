@@ -22,7 +22,7 @@ useParams()
   };
 
   return (
-    <div className="z-[100] flex items-center justify-between py-4 font-roboto">
+    <div className="z-[100] sticky top-0 bg-black flex items-center justify-between py-3 font-roboto">
       {/* Logo */}
       <Link to="/" className="">
         <img src={logo} alt="" className="mx-6 w-24" />
