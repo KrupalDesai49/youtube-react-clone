@@ -6,6 +6,7 @@ import {
   signOut,
   onAuthStateChanged,
   updateProfile,
+  signInWithPopup, signInWithRedirect ,GoogleAuthProvider
 } from "firebase/auth";
 import { setDoc, doc } from "firebase/firestore";
 
@@ -13,6 +14,11 @@ const AuthContext = createContext();
 
 export function AuthContextProvider({ children }) {
   const [user, setUser] = useState({});
+
+const googleSignIn = () =>{
+  const provider = new GoogleAuthProvider();
+  signInWithPopup(auth,provider)
+};
 
   async function signUp(email, password, displayName) {
     try {
@@ -52,15 +58,16 @@ export function AuthContextProvider({ children }) {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+      console.log("User::",currentUser)
     });
 
     return () => {
       unsubscribe();
     };
-  });
+  },[]);
 
   return (
-    <AuthContext.Provider value={{ signUp, logIn, logOut, user }}>
+    <AuthContext.Provider value={{ signUp, logIn, logOut, user, googleSignIn }}>
       {children}
     </AuthContext.Provider>
   );
