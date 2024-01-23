@@ -33,11 +33,13 @@ const VideoComponent = () => {
     console.log("videoIds", videoIds);
   }, []);
 
+  
+
   return (
     <div>
-      <div className="flex snap-y flex-col items-center space-y-6 scroll-smooth">
+      <div className="flex container container_short flex-col items-center justify-start space-y-6 ">
         {videoIds.map((videoId, index) => (
-          <div className="snap-start " key={index}>
+          <div className="section_short snap-start " key={index}>
             <YoutubeShort videoId={videoId} index={index} />
           </div>
         ))}

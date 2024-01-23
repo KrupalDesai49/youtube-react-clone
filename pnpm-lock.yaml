@@ -35,6 +35,9 @@ dependencies:
   react-router-dom:
     specifier: ^6.21.2
     version: 6.21.2(react-dom@18.2.0)(react@18.2.0)
+  react-use-scroll-snap:
+    specifier: ^1.0.0
+    version: 1.0.0(react@18.2.0)
 
 devDependencies:
   '@types/react':
@@ -3106,6 +3109,15 @@ packages:
       react: 18.2.0
     dev: false
 
+  /react-use-scroll-snap@1.0.0(react@18.2.0):
+    resolution: {integrity: sha512-oUt0+yuRh1qrBfVl2TfugM8pBq/d7mWZnCtSfPJesZmYIjoyWJM5mbMC2MtSWUR+/fT0GURmk49fkLozwmUu5Q==}
+    peerDependencies:
+      react: '>=18.2.0'
+    dependencies:
+      react: 18.2.0
+      tweezer.js: 1.5.0
+    dev: false
+
   /react@18.2.0:
     resolution: {integrity: sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==}
     engines: {node: '>=0.10.0'}
@@ -3465,6 +3477,10 @@ packages:
 
   /tslib@2.6.2:
     resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}
+    dev: false
+
+  /tweezer.js@1.5.0:
+    resolution: {integrity: sha512-aSiJz7rGWNAQq7hjMK9ZYDuEawXupcCWgl3woQQSoDP2Oh8O4srWb/uO1PzzHIsrPEOqrjJ2sUb9FERfzuBabQ==}
     dev: false
 
   /type-check@0.4.0:
