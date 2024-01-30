@@ -10,9 +10,56 @@ import share from "../assets/share.svg";
 import tick from "../assets/tick.svg";
 import { db } from "../context/firebase";
 
-const ChannelButtonDetail = ({ videoItem, setVideoItem, }) => {
+// import axios from 'axios';
+// import ytdl from "ytdl-core";
+// import fs from "fs";
+// import fileDownload from 'js-file-download';
+// import ytdl from "ytdl-core";
+
+const ChannelButtonDetail = ({ videoItem, setVideoItem }) => {
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
+  // const [videoUrl, setVideoUrl] = useState('https://www.youtube.com/watch?v=HpOBXh02rVc');
+
+  // const videoUrl = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"; // Replace with your video URL
+  // const outputFilename = "./output.mp4"; // Output file name
+
+  // ytdl(videoUrl)
+  //  .pipe(fs.createWriteStream(outputFilename))
+  //  .on('finish', () => {
+  //     console.log('Download finished');
+  //  });
+  // const [videoUrl, setVideoUrl] = useState('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+
+  // const handleDownload = async () => {
+  //   try {
+  //     ytdl(videoUrl)
+  //     .pipe(fs.createWriteStream('video.mp4'))
+  //     .on('finish', () => {
+  //       console.log('Download finished');
+  //     });
+  //   } catch (error) {
+  //     console.error('Error downloading video:', error);
+  //   }
+  // };
+
+  //   const handleDownload = async () => {
+  //  await   ytdl(videoUrl)
+  //  .pipe(fs.createWriteStream(outputFilename))
+  //  .on('finish', () => {
+  //     console.log('Download finished');
+  //  });
+  // const info = await ytdl.getInfo(videoUrl);
+  // const format = ytdl.chooseFormat(info.formats, { quality: 'highest' });
+  // const videoStream = ytdl(videoUrl, { format: format });
+
+  // const link = document.createElement('a');
+  // link.href = videoStream;
+  // link.download = `${info.videoDetails.title}.mp4`;
+  // document.body.appendChild(link);
+  // link.click();
+  // document.body.removeChild(link);
+  //  };
 
   const funLiked = () => {
     if (!liked) {
@@ -156,27 +203,26 @@ const ChannelButtonDetail = ({ videoItem, setVideoItem, }) => {
 
           {/* Share */}
           <a href={videoItem.share_link} target="_blank" rel="noreferrer">
-          <div className="flex cursor-pointer items-center rounded-full bg-[#272727] py-1 pl-3 pr-4 hover:bg-[#3f3f3f]">
-            <img src={share} alt="" className="w-7" />
-            <p className="pl-1 font-[500] ">Share</p>
-          </div>
+            <div className="flex cursor-pointer items-center rounded-full bg-[#272727] py-1 pl-3 pr-4 hover:bg-[#3f3f3f]">
+              <img src={share} alt="" className="w-7" />
+              <p className="pl-1 font-[500] ">Share</p>
+            </div>
           </a>
           {/* Download */}
-       
-          <div className="flex cursor-pointer items-center rounded-full bg-[#272727] py-1 pl-3 pr-4 hover:bg-[#3f3f3f]">
+
+          <div
+            className="flex cursor-pointer items-center rounded-full bg-[#272727] py-1 pl-3 pr-4 hover:bg-[#3f3f3f]"
+            // onClick={handleDownload}
+          >
             <img src={download} alt="" className="w-6" />
             <p className="pl-1 font-[500] ">Download</p>
           </div>
-          
-
 
           {/* More */}
           <div className="flex cursor-pointer items-center rounded-full bg-[#272727] px-2 py-1 hover:bg-[#3f3f3f]">
             <img src={more} alt="" className="w-5" />
           </div>
         </div>
-
-      
       </div>
     </>
   );
