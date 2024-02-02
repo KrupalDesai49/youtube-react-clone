@@ -1,18 +1,20 @@
-import React from "react";
-
-import { useAtom } from "jotai";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+
 import ChannelButtonDetail from "../components/ChannelButtonDetail";
-import CommentsSection from "../components/CommentsSection";
 import Description from "../components/Description";
 import VideoList from "../components/VideoList";
+import CommentsSection from "../components/CommentsSection";
+
+import { useAtom } from "jotai";
+
 import { video_item, videos_data } from "../context/atom";
+
 
 const VideoDetail = () => {
   let { videoId } = useParams();
   const [videoItem, setVideoItem] = useAtom(video_item);
-  const [videos , setVideos] = useAtom(videos_data)
+  const [videos ] = useAtom(videos_data)
 
   useEffect(() => {
     if (Object.keys(videoItem).length==0 && videos.length>0) {
