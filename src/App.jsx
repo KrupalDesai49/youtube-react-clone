@@ -18,7 +18,7 @@ import { AuthContextProvider } from "./components/AuthContext";
 import { db } from "./context/firebase";
 
 function App() {
-  const [videos, setVideos] = useAtom(videos_data);
+  const [ , setVideos] = useAtom(videos_data);
 
   //Fetch Data
   useEffect(() => {
@@ -48,7 +48,7 @@ function App() {
               <Route exact path="/signup" element={<Signup />} />
               <Route path="*" element={<NotFound />} />
 
-              <Route exact path="/vv" element={<Shorts />} />
+              <Route exact path="/short" element={<Shorts />} />
             </Routes>
           </div>
         </Router>

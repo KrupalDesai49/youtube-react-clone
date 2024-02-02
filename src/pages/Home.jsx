@@ -72,7 +72,7 @@ const Home = () => {
           </div>
         </Link>
       ))}
-      <Link to='/vv'>okkk
+      <Link to='/short'>okkk
     
         </Link>
     </div>  

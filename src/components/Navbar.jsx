@@ -1,16 +1,19 @@
-import React from "react";
+import { useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
 import logo from "../assets/youtube_name_logo.svg";
 import search from "../assets/search.svg";
-import { Link, useNavigate } from "react-router-dom";
-import { UserAuth } from "./AuthContext";
 import person from "../assets/person.svg";
-import { useParams } from "react-router-dom";
+
+import { UserAuth } from "./AuthContext";
+
 
 const Navbar = () => {
   const { user, logOut } = UserAuth();
   const navigate = useNavigate();
   // console.log(user)
-useParams()
+
+  useParams();
 
   const handleLogout = async () => {
     try {
@@ -22,7 +25,7 @@ useParams()
   };
 
   return (
-    <div className="z-[100] sticky top-0 bg-black flex items-center justify-between py-3 font-roboto">
+    <div className="sticky top-0 z-[100] flex items-center justify-between bg-black py-3 font-roboto">
       {/* Logo */}
       <Link to="/" className="">
         <img src={logo} alt="" className="mx-6 w-24" />
