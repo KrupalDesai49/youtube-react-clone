@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import YoutubeShort from "../components/YoutubeShort";
 import { useState } from "react";
 
-const VideoComponent = () => {
+const Shorts = () => {
   const [videoIds, setVideoIds] = useState([]);
 
   const array = ["5vFhplWQJis", "WhD28kAD7oE", "tUqGNaEv_AA","a8iB4OLlaDE", "NVw3Bkz-d94", "7vZjkstOMOA","s5EH388jycQ", "_AVAOpKhYRU", "ictvN65Z-Vg","J300Hmu8IEA", "Ac86hBkNoVs","Mfb9ZcVCTTU", "k_7meFS5Uqo", "T4ogApc-7nk","aKN9FwTjPZ0", "ngqCimZU04U", "WiLBgh6b2Yo","SajGB8scmwg", "oUG3hwoF0kQ", 
@@ -48,4 +48,4 @@ const VideoComponent = () => {
   );
 };
 
-export default VideoComponent;
+export default Shorts;
