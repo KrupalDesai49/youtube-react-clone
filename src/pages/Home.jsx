@@ -1,23 +1,23 @@
-import { collection, onSnapshot, query } from "firebase/firestore";
-import { useAtom } from "jotai";
-import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+
 import tick from "../assets/tick.svg";
+
+import { useAtom } from "jotai";
+
 import { video_item, videos_data } from "../context/atom";
-import { db } from "../context/firebase";
+
 
 const Home = () => {
 
- 
-
-  const [videos , setVideos] = useAtom(videos_data)
-  const [videoItem , setVideoItem] = useAtom(video_item)
+  const [videos ] = useAtom(videos_data)
+  const [ , setVideoItem] = useAtom(video_item)
 
   return (
 
     <div className="grid justify-center gap-4 bg-black px-8 font-roboto text-white md:grid-cols-2 md:justify-start lg:grid-cols-3 xl:grid-cols-4 ">
       {videos.map((item, index) => (
-        <Link to={'/video/'+item.id} onClick={()=>(setVideoItem(item) )} className="flex max-w-[30rem] flex-col md:max-w-md" key={index}>
+        <Link to={'/video/'+item?.id} onClick={()=>(setVideoItem(item) )} className="flex max-w-[30rem] flex-col md:max-w-md" key={index}>
+          
           {/* Tumbnail */}
           {/* {console.log('oooopoo:',item)} */}
 
