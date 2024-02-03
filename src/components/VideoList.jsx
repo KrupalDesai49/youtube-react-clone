@@ -1,16 +1,14 @@
 import { useAtom } from 'jotai';
-import React from 'react';
-import tick from "../assets/tick.svg";
-import { videos_data } from '../context/atom';
 import { Link } from 'react-router-dom';
+
+import tick from "../assets/tick.svg";
+
+import { videos_data } from '../context/atom';
+
 
 const VideoList = ({setVideoItem}) => {
 
   const [videos] = useAtom(videos_data)
-
-
-
-
   
   return (
     <div>
