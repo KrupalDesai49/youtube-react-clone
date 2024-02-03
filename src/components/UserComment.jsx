@@ -1,25 +1,27 @@
-import React from "react";
-import { useState } from "react";
+import  { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
 import dislike from "../assets/dislike.svg";
 import dislike_fill from "../assets/dislike_fill.svg";
 import down_arrow from "../assets/down_arrow.svg";
 import like from "../assets/like.svg";
 import like_fill from "../assets/like_fill.svg";
 import up_arrow from "../assets/up_arrow.svg";
+
 import ReplySection from "./ReplySection";
-import { UserAuth } from "./AuthContext";
+
 import {
   addDoc,
   collection,
   doc,
-  getDoc,
   onSnapshot,
-  updateDoc,
+  updateDoc
 } from "firebase/firestore";
-import { useParams } from "react-router-dom";
-import { useEffect } from "react";
-import { db } from "../context/firebase";
 import moment from "moment";
+
+import { db } from "../context/firebase";
+import { UserAuth } from "./AuthContext";
+
 
 const UserComment = ({ item, setCommentsData }) => {
   const [isReply, setisReply] = useState(false);
@@ -30,13 +32,13 @@ const UserComment = ({ item, setCommentsData }) => {
   let { videoId } = useParams();
 
   useEffect(() => {
-    if (item.reply) {
+    if (item?.reply) {
       const q = collection(
         db,
         "ytvideo",
         videoId,
         "comments",
-        item.id,
+        item?.id,
         "reply",
       );
       onSnapshot(q, (querySnapshot) => {
