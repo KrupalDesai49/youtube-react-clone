@@ -1,5 +1,5 @@
-import { doc, updateDoc } from "firebase/firestore";
-import React, { useState } from "react";
+import { useState } from "react";
+
 import dislike from "../assets/dislike.svg";
 import dislike_fill from "../assets/dislike_fill.svg";
 import download from "../assets/download.svg";
@@ -8,6 +8,9 @@ import like_fill from "../assets/like_fill.svg";
 import more from "../assets/more.svg";
 import share from "../assets/share.svg";
 import tick from "../assets/tick.svg";
+
+import { doc, updateDoc } from "firebase/firestore";
+
 import { db } from "../context/firebase";
 
 // import axios from 'axios';
