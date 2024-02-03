@@ -1,25 +1,23 @@
-import React from "react";
+import  { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
 import UserComment from "./UserComment";
-import { UserAuth } from "./AuthContext";
-import { useState } from "react";
+
 import {
   addDoc,
   collection,
-  doc,
-  onSnapshot,
-  setDoc,
+  onSnapshot
 } from "firebase/firestore";
-import { useParams } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+
 import { db } from "../context/firebase";
-import { useEffect } from "react";
+import { UserAuth } from "./AuthContext";
 
 const CommentsSection = () => {
   const { user } = UserAuth();
   const [commentEntring, setCommentEntring] = useState(false);
   const [comment, setComment] = useState("");
   const [commentsData, setCommentsData] = useState([]);
-  const [renderComment, setRenderComment] = useState(false);
+  const [, setRenderComment] = useState(false);
   let { videoId } = useParams();
 
   useEffect(() => {
