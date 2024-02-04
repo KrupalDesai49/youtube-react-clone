@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { UserAuth } from "../components/AuthContext";
+
 import login_bg from "../assets/login_bg.webp";
 import google from "../assets/google.svg";
+
+import { UserAuth } from "../components/AuthContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -43,7 +45,7 @@ const Login = () => {
         />
         <div className="fixed left-0 top-0 min-h-screen w-full bg-black/65"></div>
         <div className=" z-10 w-full px-4 pt-7 ">
-          <div className="h-[460px]  mx-auto  max-w-[450px] rounded-xl bg-black/40 text-white backdrop-blur-md">
+          <div className=" mx-auto  max-w-[450px] rounded-xl bg-black/40 text-white backdrop-blur-md">
             <div className="flex flex-col mx-auto w-[320px]  py-12 px-5 sm:px-0 ">
               <h1 className="text-3xl font-bold">Log In</h1>
 
