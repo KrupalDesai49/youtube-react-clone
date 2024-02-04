@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Link , useNavigate} from "react-router-dom";
-import { UserAuth } from "../components/AuthContext";
+
 import login_bg from "../assets/login_bg.webp";
 import google from "../assets/google.svg";
+
+import { UserAuth } from "../components/AuthContext";
 
 const Signup = () => {
   const [username, setUsername] = useState("");
