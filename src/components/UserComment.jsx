@@ -31,6 +31,7 @@ const UserComment = ({ item, setCommentsData }) => {
   const { user } = UserAuth();
   let { videoId } = useParams();
 
+
   useEffect(() => {
     if (item?.reply) {
       const q = collection(
@@ -127,7 +128,9 @@ const UserComment = ({ item, setCommentsData }) => {
   };
 
   const funDisliked = () => {
+
     if (!item.dislike && item.like) {
+
       if (item && item.id) {
         subLike2(item);
       } else {
@@ -170,12 +173,18 @@ const UserComment = ({ item, setCommentsData }) => {
     });
   };
   const subLike2 = async (item) => {
+    try{
+
     await updateDoc(doc(db, "ytvideo", videoId, "comments", item.id), {
       likes_count: parseInt(item.likes_count) - 1,
       like: false,
       dislike:true
 
     });
+
+  }catch(e){
+    console.log(e)
+  }
   };
   const onlyDislike = async (item) => {
     await updateDoc(doc(db, "ytvideo", videoId, "comments", item.id), {
