@@ -129,7 +129,7 @@ const UserComment = ({ item, setCommentsData }) => {
   const funDisliked = () => {
     if (!item.dislike && item.like) {
       if (item && item.id) {
-        subLike(item);
+        subLike2(item);
       } else {
         console("subLike error");
       }
@@ -140,6 +140,7 @@ const UserComment = ({ item, setCommentsData }) => {
               ...comment,
               likes_count: parseInt(comment.likes_count) - 1,
               like: false,
+              dislike: false,
             };
           } else {
             return comment;
@@ -166,6 +167,14 @@ const UserComment = ({ item, setCommentsData }) => {
     await updateDoc(doc(db, "ytvideo", videoId, "comments", item.id), {
       likes_count: parseInt(item.likes_count) - 1,
       like: false,
+    });
+  };
+  const subLike2 = async (item) => {
+    await updateDoc(doc(db, "ytvideo", videoId, "comments", item.id), {
+      likes_count: parseInt(item.likes_count) - 1,
+      like: false,
+      dislike:true
+
     });
   };
   const onlyDislike = async (item) => {

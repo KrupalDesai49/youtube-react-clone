@@ -17,7 +17,7 @@ import { useEffect } from "react";
 import { db } from "../context/firebase";
 import moment from "moment";
 
-const ReplySection = ({ item, reply, setReplyData, setReply ,itemCommentId}) => {
+const ReplySection = ({ item, reply, setReplyData, setReply ,itemCommentId,createReply}) => {
   const [replyEntering, setReplyEntering] = useState(false);
 
   const { user } = UserAuth();
@@ -70,7 +70,7 @@ const ReplySection = ({ item, reply, setReplyData, setReply ,itemCommentId}) => 
   const funDisliked = () => {
     if (!item.dislike && item.like) {
       if (item && item.id) {
-        subLike(item);
+        subLike2(item);
       } else {
         console("subLike error");
       }
@@ -81,6 +81,8 @@ const ReplySection = ({ item, reply, setReplyData, setReply ,itemCommentId}) => 
               ...comment,
               likes_count: parseInt(comment.likes_count) - 1,
               like: false,
+              dislike: true,
+
             };
           } else {
             return comment;
@@ -107,6 +109,15 @@ const ReplySection = ({ item, reply, setReplyData, setReply ,itemCommentId}) => 
     await updateDoc(doc(db,"ytvideo", videoId, "comments", itemCommentId, "reply", item.id), {
       likes_count: parseInt(item.likes_count) - 1,
       like: false,
+
+    });
+  };
+  const subLike2 = async (item) => {
+    await updateDoc(doc(db,"ytvideo", videoId, "comments", itemCommentId, "reply", item.id), {
+      likes_count: parseInt(item.likes_count) - 1,
+      like: false,
+      dislike: true,
+
     });
   };
 
