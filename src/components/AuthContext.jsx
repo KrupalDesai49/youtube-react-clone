@@ -6,7 +6,9 @@ import {
   signOut,
   onAuthStateChanged,
   updateProfile,
-  signInWithPopup, signInWithRedirect ,GoogleAuthProvider
+  signInWithPopup,
+  signInWithRedirect,
+  GoogleAuthProvider,
 } from "firebase/auth";
 import { setDoc, doc } from "firebase/firestore";
 
@@ -15,10 +17,23 @@ const AuthContext = createContext();
 export function AuthContextProvider({ children }) {
   const [user, setUser] = useState({});
 
-const googleSignIn = () =>{
-  const provider = new GoogleAuthProvider();
-  signInWithPopup(auth,provider)
-};
+  const googleSignIn = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      const user = await result.user;
+
+      // Check if the user object exists before proceeding
+      if (user) {
+        await setDoc(doc(db, "user", user.email), {
+          savedShows: [],
+          displayName: user.displayName,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   async function signUp(email, password, displayName) {
     try {
@@ -58,13 +73,13 @@ const googleSignIn = () =>{
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      console.log("User::",currentUser)
+      console.log("User::", currentUser);
     });
 
     return () => {
       unsubscribe();
     };
-  },[]);
+  }, []);
 
   return (
     <AuthContext.Provider value={{ signUp, logIn, logOut, user, googleSignIn }}>
