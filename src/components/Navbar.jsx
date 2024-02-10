@@ -48,7 +48,7 @@ const Navbar = () => {
       {user?.email ? (
         <div className="flex shrink-0 items-center pr-3">
           <button className="mr-3 h-10 w-10 rounded-full bg-[#ff0000] text-xl font-[500] text-white hover:bg-[#ff0000]/90">
-            {user.displayName.charAt(0).toUpperCase()}
+            {user?.displayName?.charAt(0).toUpperCase()}
           </button>
           <button
             onClick={handleLogout}

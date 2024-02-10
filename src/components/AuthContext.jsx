@@ -1,16 +1,19 @@
+import {
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+  updateProfile
+} from "firebase/auth";
+import {
+  doc,
+  getDoc,
+  setDoc
+} from "firebase/firestore";
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth, db } from "../context/firebase";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged,
-  updateProfile,
-  signInWithPopup,
-  signInWithRedirect,
-  GoogleAuthProvider,
-} from "firebase/auth";
-import { setDoc, doc } from "firebase/firestore";
 
 const AuthContext = createContext();
 
@@ -25,10 +28,33 @@ export function AuthContextProvider({ children }) {
 
       // Check if the user object exists before proceeding
       if (user) {
-        await setDoc(doc(db, "user", user.email), {
-          savedShows: [],
-          displayName: user.displayName,
-        });
+        const docRef = doc(db, "user", user.email);
+
+        const checkDocumentExistenceAndExecute = async (docRef) => {
+          const docSnapshot = await getDoc(docRef);
+
+          if (!docSnapshot.exists()) {
+            await setDoc(doc(db, "user", user.email), {
+              displayName: user.displayName,
+              description: null,
+              logo_link: null,
+              banner_link: null,
+              channelID:
+                "@" +
+                user.displayName
+                  ?.split(" ")
+                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                  .join(""),
+              tick: false,
+              subscribers: 0,
+              timestamp: Date.now(),
+              isLogInByGoogle: true,
+            });
+          }
+        };
+
+        await checkDocumentExistenceAndExecute(docRef);
+
       }
     } catch (error) {
       console.error(error);
@@ -46,8 +72,20 @@ export function AuthContextProvider({ children }) {
         displayName: displayName,
       });
       await setDoc(doc(db, "user", email), {
-        savedShows: [],
         displayName: displayName,
+        description: null,
+        logo_link: null,
+        banner_link: null,
+        channelID:
+          "@" +
+          displayName
+            ?.split(" ")
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(""),
+        tick: false,
+        subscribers: 0,
+        timestamp: Date.now(),
+        isLogInByGoogle: false,
       });
     } catch (error) {
       console.error(error);
