@@ -73,9 +73,9 @@ export function AuthContextProvider({ children }) {
       });
       await setDoc(doc(db, "user", email), {
         displayName: displayName,
-        description: null,
-        logo_link: null,
-        banner_link: null,
+        description: '',
+        logo_link: '',
+        banner_link: '',
         channelID:
           "@" +
           displayName
