@@ -14,11 +14,14 @@ import {
 } from "firebase/firestore";
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth, db } from "../context/firebase";
+import { useAtom } from "jotai";
+import { user_data } from "../context/atom";
 
 const AuthContext = createContext();
 
 export function AuthContextProvider({ children }) {
   const [user, setUser] = useState({});
+
 
   const googleSignIn = async () => {
     try {
@@ -36,9 +39,10 @@ export function AuthContextProvider({ children }) {
           if (!docSnapshot.exists()) {
             await setDoc(doc(db, "user", user.email), {
               displayName: user.displayName,
-              description: null,
-              logo_link: null,
-              banner_link: null,
+              description: '',
+              logo_link: '',
+              banner_link: '',
+              photoURL:user.photoURL,
               channelID:
                 "@" +
                 user.displayName
@@ -76,6 +80,7 @@ export function AuthContextProvider({ children }) {
         description: '',
         logo_link: '',
         banner_link: '',
+        photoURL:user.photoURL,
         channelID:
           "@" +
           displayName

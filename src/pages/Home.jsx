@@ -4,13 +4,15 @@ import tick from "../assets/tick.svg";
 
 import { useAtom } from "jotai";
 
-import { video_item, videos_data } from "../context/atom";
+import {  user_data, video_item, videos_data } from "../context/atom";
+import moment from "moment";
 
 
 const Home = () => {
 
   const [videos ] = useAtom(videos_data)
   const [ , setVideoItem] = useAtom(video_item)
+  const [userData, setUserData] = useAtom(user_data);
 
   return (
 
@@ -18,7 +20,7 @@ const Home = () => {
       {videos.map((item, index) => (
         <Link to={'/video/'+item?.id} onClick={()=>(setVideoItem(item) )} className="flex max-w-[30rem] flex-col md:max-w-md" key={index}>
           
-          {/* Tumbnail */}
+          {/* Thumbnail */}
           {/* {console.log('oooopoo:',item)} */}
 
           <div className="relative overflow-hidden rounded-xl  aspect-video ">
@@ -30,13 +32,31 @@ const Home = () => {
 
           {/* Video Detail */}
 
-          <div className="my-3 flex">
+          <div className="my-3 flex shrink-0">
             {/* Channel Logo */}
-            <img
-              src={item?.channel_logo}
+            {/* {console.log("okk",item?.channel_email,userData,)} */}
+            {/* <img */}
+              {userData.filter(email => email.id ==item?.channel_email)[0]?.logo_link !== "" 
+              ?             
+              <img
+              src={ (userData.filter(email => email.id ==item?.channel_email)[0]?.logo_link)}
               alt=""
-              className="top-0 h-10 w-10 rounded-full"
-            />
+              className="top-0 h-10 w-10 rounded-full"/>
+              :
+              (userData.filter(email => email.id ==item?.channel_email)[0]?.photoURL !==""
+              ?
+              <img
+              src={ (userData.filter(email => email.id ==item?.channel_email)[0]?.photoURL)}
+              alt=""
+              className="top-0 h-10 w-10 rounded-full"/>
+              
+              : 
+              <button className="mr-3 h-10 w-10 rounded-full bg-[#ff0000] text-xl font-[500] text-white hover:bg-[#ff0000]/90">
+              {userData.filter(email => email.id ==item?.channel_email)[0]?.displayName}
+            </button>
+              )}
+           
+            {/* /> */}
 
             {/* Video Text */}
             <div className="ml-3 flex flex-col">
@@ -45,13 +65,13 @@ const Home = () => {
               {/* Channel Name */}
               <div className="flex">
                 <p className="mt-1 text-sm font-[500] text-neutral-400 hover:text-white">
-                  {item?.channel_name}
+                  {userData.filter(email => email.id ==item?.channel_email)[0]?.displayName}
                 </p>
-                {item?.channel_tick && (
+                {userData.filter(email => email.id ==item?.channel_email)[0]?.tick && (
                   <img
                     src={tick}
                     alt=""
-                    className="ml-1 mt-1.5 w-3 fill-neutral-400"
+                    className="ml-1 mt-1 w-3 fill-neutral-400"
                   />
                 )}
               </div>
@@ -64,7 +84,8 @@ const Home = () => {
                   views •
                 </p>
                 <p className="ml-1 text-sm font-[500] text-neutral-400">
-                  {item?.upload_time}
+                  {moment(userData.filter(email => email.id ==item?.channel_email)[0]?.timestamp).fromNow()}
+
                 </p>
               </div>
             </div>

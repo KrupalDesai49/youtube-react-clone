@@ -10,29 +10,65 @@ import VideoDetail from "./pages/VideoDetail";
 import Shorts from "./pages/Shorts";
 import NotFound from "./pages/NotFound";
 
-import { collection, onSnapshot, query } from "firebase/firestore";
+import { collection, doc, onSnapshot, query } from "firebase/firestore";
 import { useAtom } from "jotai";
 
-import { videos_data } from "./context/atom";
+import {
+  short_data,
+  user_data,
+  videos_data,
+} from "./context/atom";
 import { AuthContextProvider } from "./components/AuthContext";
 import { db } from "./context/firebase";
 
 function App() {
-  const [ , setVideos] = useAtom(videos_data);
+  const [, setVideosData] = useAtom(videos_data);
+  const [userData, setUserData] = useAtom(user_data);
+  const [shortData, setShortData] = useAtom(short_data);
 
-  //Fetch Data
+  //Fetch  Data
   useEffect(() => {
-    const q = query(collection(db, "ytvideo"));
-    const getData = onSnapshot(q, ({ docs }) => {
+
+    const videoDocRef = query(collection(db, "video"));
+    const shortDocRef = query(collection(db, "short"));
+    const userDocRef = query(collection(db, "user"));
+
+    const getVideoData = onSnapshot(videoDocRef, ({ docs }) => {
       try {
         const DataArr = docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-        setVideos(DataArr);
+        setVideosData(DataArr);
+        console.log("Video List", DataArr);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching Video data from Firebase:", error);
       }
     });
 
-    return () => getData();
+    const getChannelData = onSnapshot(shortDocRef, ({ docs }) => {
+      try {
+        const shortData = docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+        setShortData(shortData);
+        console.log("shortData", shortData);
+      } catch (error) {
+        console.error("Error fetching Short data from Firebase:", error);
+      }
+    });
+
+    const getUserData = onSnapshot(userDocRef, ({ docs }) => {
+      try {
+        const userData = docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+        setUserData(userData);
+        console.log("userData", userData);
+      } catch (error) {
+        console.error("Error fetching User data from Firebase:", error);
+      }
+    });
+
+    return () => {
+      getVideoData();
+      getChannelData();
+      getUserData();
+    };
+
   }, []);
 
   return (
