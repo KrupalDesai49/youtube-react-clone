@@ -12,57 +12,18 @@ import tick from "../assets/tick.svg";
 import { doc, updateDoc } from "firebase/firestore";
 
 import { db } from "../context/firebase";
+import { useAtom } from "jotai";
+import { user_data } from "../context/atom";
 
-// import axios from 'axios';
-// import ytdl from "ytdl-core";
-// import fs from "fs";
-// import fileDownload from 'js-file-download';
-// import ytdl from "ytdl-core";
+
 
 const ChannelButtonDetail = ({ videoItem, setVideoItem }) => {
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
-  // const [videoUrl, setVideoUrl] = useState('https://www.youtube.com/watch?v=HpOBXh02rVc');
+  const [userData, setUserData] = useAtom(user_data);
 
-  // const videoUrl = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"; // Replace with your video URL
-  // const outputFilename = "./output.mp4"; // Output file name
 
-  // ytdl(videoUrl)
-  //  .pipe(fs.createWriteStream(outputFilename))
-  //  .on('finish', () => {
-  //     console.log('Download finished');
-  //  });
-  // const [videoUrl, setVideoUrl] = useState('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
 
-  // const handleDownload = async () => {
-  //   try {
-  //     ytdl(videoUrl)
-  //     .pipe(fs.createWriteStream('video.mp4'))
-  //     .on('finish', () => {
-  //       console.log('Download finished');
-  //     });
-  //   } catch (error) {
-  //     console.error('Error downloading video:', error);
-  //   }
-  // };
-
-  //   const handleDownload = async () => {
-  //  await   ytdl(videoUrl)
-  //  .pipe(fs.createWriteStream(outputFilename))
-  //  .on('finish', () => {
-  //     console.log('Download finished');
-  //  });
-  // const info = await ytdl.getInfo(videoUrl);
-  // const format = ytdl.chooseFormat(info.formats, { quality: 'highest' });
-  // const videoStream = ytdl(videoUrl, { format: format });
-
-  // const link = document.createElement('a');
-  // link.href = videoStream;
-  // link.download = `${info.videoDetails.title}.mp4`;
-  // document.body.appendChild(link);
-  // link.click();
-  // document.body.removeChild(link);
-  //  };
 
   const funLiked = () => {
     if (!liked) {
@@ -77,46 +38,6 @@ const ChannelButtonDetail = ({ videoItem, setVideoItem }) => {
       setDisliked(false);
     }
   };
-
-  // const funLiked = () => {
-  //   if (!videoItem.like) {
-  //     if (videoItem && videoItem.id) {
-  //       addLike(videoItem);
-  //     } else {
-  //       console("addLike error");
-  //     }
-  //     setVideoItem((prevComments) => {
-  //       return prevComments.map((comment) => {
-  //          {
-  //             ...comment,
-  //             likes_count: parseInt(comment.likes_count) + 1,
-  //             like: true,
-  //             dislike: false,
-  //           }
-  //       });
-  //     });
-  //   } else if (item.like) {
-  //     if (item && item.id) {
-  //       subLike(item);
-  //     } else {
-  //       console("subLike error");
-  //     }
-  //     setReplyData((prevComments) => {
-  //       return prevComments.map((comment) => {
-  //         if (comment.id === item.id) {
-  //           return {
-  //             ...comment,
-  //             likes_count: parseInt(comment.likes_count) - 1,
-  //             like: false,
-  //             dislike: false,
-  //           };
-  //         } else {
-  //           return comment;
-  //         }
-  //       });
-  //     });
-  //   }
-  // };
 
   const funDisliked = () => {
     if (!disliked && liked) {
@@ -150,26 +71,42 @@ const ChannelButtonDetail = ({ videoItem, setVideoItem }) => {
         {/* Channel Details */}
         <div className="flex items-center">
           {/* Channel Logo */}
-          <img
-            src={videoItem?.channel_logo}
-            alt=""
-            className="h-10 w-10 rounded-full"
-          />
+
+{userData.filter(email => email.id ==videoItem?.channel_email)[0]?.logo_link !== "" 
+              ?             
+              <img
+              src={ (userData.filter(email => email.id ==videoItem?.channel_email)[0]?.logo_link)}
+              alt=""
+              className="top-0 h-10 w-10 rounded-full"/>
+              :
+              (userData.filter(email => email.id ==videoItem?.channel_email)[0]?.photoURL !==""
+              ?
+              <img
+              src={ (userData.filter(email => email.id ==videoItem?.channel_email)[0]?.photoURL)}
+              alt=""
+              className="top-0 h-10 w-10 rounded-full"/>
+              
+              : 
+              <button className="mr-3 h-10 w-10 rounded-full bg-[#ff0000] text-xl font-[500] text-white hover:bg-[#ff0000]/90">
+              {userData.filter(email => email.id ==videoItem?.channel_email)[0]?.displayName}
+            </button>
+              )}
 
           {/* Channel Name & Subs*/}
           <div className="ml-3 flex flex-col">
             <div className="flex">
               <p className=" font-[500] text-white">
-                {videoItem?.channel_name}
+                {userData.filter(email => email.id ==videoItem?.channel_email)[0]?.displayName}
+
               </p>
-              {videoItem?.channel_tick ? (
+              {userData.filter(email => email.id ==videoItem?.channel_email)[0]?.tick && (
+
+              // {videoItem?.channel_tick ? (
                 <img src={tick} alt="" className="ml-1  w-3 fill-neutral-400" />
-              ) : (
-                ""
-              )}
+              ) }
             </div>
             <p className=" text-xs font-[450] text-neutral-400">
-              {videoItem?.channel_sub} subscribers
+              {userData.filter(email => email.id ==videoItem?.channel_email)[0]?.subscribers} subscribers
             </p>
           </div>
           <button className="' ml-4 rounded-full bg-white px-4 py-2 text-sm font-semibold text-neutral-600 hover:bg-white/85">
@@ -180,15 +117,15 @@ const ChannelButtonDetail = ({ videoItem, setVideoItem }) => {
         {/* Like button & other */}
         <div className="flex space-x-2 py-4">
           {/* Like & Dislike */}
-          <div className="flex ">
+          <div className="flex shrink-0 ">
             {/* Like */}
             <div
               onClick={funLiked}
-              className="flex cursor-pointer items-center rounded-l-full bg-[#272727] py-1 pl-3 hover:bg-[#3f3f3f]"
+              className="flex cursor-pointer items-center rounded-l-full bg-[#272727] py-1 pl-3 hover:bg-[#3f3f3f] shrink-0"
             >
               <img src={liked ? like_fill : like} alt="" className="w-5" />
               <p className="border-r border-r-zinc-600 pl-1 pr-3 font-[500]">
-                {videoItem.like}
+                {videoItem?.likes_count}
               </p>
             </div>
             {/* Dislike */}
@@ -205,7 +142,7 @@ const ChannelButtonDetail = ({ videoItem, setVideoItem }) => {
           </div>
 
           {/* Share */}
-          <a href={videoItem.share_link} target="_blank" rel="noreferrer">
+          <a href={`https://www.youtube.com/watch?v=${videoItem?.VideoID}`} target="_blank" rel="noreferrer">
             <div className="flex cursor-pointer items-center rounded-full bg-[#272727] py-1 pl-3 pr-4 hover:bg-[#3f3f3f]">
               <img src={share} alt="" className="w-7" />
               <p className="pl-1 font-[500] ">Share</p>

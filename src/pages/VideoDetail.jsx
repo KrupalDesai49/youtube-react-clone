@@ -8,13 +8,15 @@ import CommentsSection from "../components/CommentsSection";
 
 import { useAtom } from "jotai";
 
-import { video_item, videos_data } from "../context/atom";
+import { user_data, video_item, videos_data } from "../context/atom";
 
 
 const VideoDetail = () => {
   let { videoId } = useParams();
   const [videoItem, setVideoItem] = useAtom(video_item);
   const [videos ] = useAtom(videos_data)
+  const [userData, setUserData] = useAtom(user_data);
+
 
   useEffect(() => {
     if (Object.keys(videoItem).length==0 && videos.length>0) {
@@ -33,7 +35,7 @@ const VideoDetail = () => {
         <div className="flex flex-col md:w-[75%]">
           {videoItem && Object.keys(videoItem).length!=0 && (<iframe
             className="aspect-video w-full rounded-md md:rounded-xl "
-            src={videoItem.link}
+            src={`https://www.youtube.com/embed/${videoItem.VideoID}`}
             title="YouTube video player"
             style={{ border: "none" }}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
