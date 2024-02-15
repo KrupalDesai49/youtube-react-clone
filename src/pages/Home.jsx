@@ -35,7 +35,6 @@ const Home = () => {
           <div className="my-3 flex shrink-0">
             {/* Channel Logo */}
             {/* {console.log("okk",item?.channel_email,userData,)} */}
-            {/* <img */}
               {userData.filter(email => email.id ==item?.channel_email)[0]?.logo_link !== "" 
               ?             
               <img
@@ -56,7 +55,6 @@ const Home = () => {
             </button>
               )}
            
-            {/* /> */}
 
             {/* Video Text */}
             <div className="ml-3 flex flex-col">

@@ -3,12 +3,14 @@ import { Link } from 'react-router-dom';
 
 import tick from "../assets/tick.svg";
 
-import { videos_data } from '../context/atom';
+import { user_data, videos_data } from '../context/atom';
+import moment from 'moment';
 
 
 const VideoList = ({setVideoItem}) => {
 
   const [videos] = useAtom(videos_data)
+  const [userData, setUserData] = useAtom(user_data);
   
   return (
     <div>
@@ -20,7 +22,7 @@ const VideoList = ({setVideoItem}) => {
             <span className=" absolute bottom-0 right-0 m-[0.35rem]  rounded bg-black px-1 py-[0.1rem] text-xs font-semibold">
               {item?.duration}
             </span>
-            <img src={item?.thumbnail} alt="" className='aspect-video max-w-40' />
+            <img src={item?.thumbnail} alt="" className='aspect-video object-cover max-w-40' />
           </div>
 
           {/* Video Detail */}
@@ -35,9 +37,11 @@ const VideoList = ({setVideoItem}) => {
               {/* Channel Name */}
               <div className="flex">
                 <p className="mt-1 text-xs font-[500] text-neutral-400 line-clamp-1 hover:text-white">
-                  {item?.channel_name}
+                  {userData.filter(email => email.id ==item?.channel_email)[0]?.displayName}
+
                 </p>
-                {item?.channel_tick && (
+                {userData.filter(email => email.id ==item?.channel_email)[0]?.tick && (
+
                   <img
                     src={tick}
                     alt=""
@@ -48,7 +52,7 @@ const VideoList = ({setVideoItem}) => {
               {/* View & Watch Hour */}
               <div className="flex">
                 <p className=" text-xs font-[500] text-neutral-400">
-                  {item?.view}{" "}views • {" "}{item?.upload_time}
+                  {item?.view}{" "}views • {" "} {moment(userData.filter(email => email.id ==item?.channel_email)[0]?.timestamp).fromNow()}
                 </p>
             
             
