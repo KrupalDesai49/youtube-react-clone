@@ -215,7 +215,7 @@ const UserComment = ({ item, setCommentsData }) => {
               className=" h-10 w-10 rounded-full shrink-0  mr-4 "/>
               
               : 
-              <button className="mr-4 h-10 w-10 rounded-full bg-[#ff0000] text-2xl font-[400] text-center text-white hover:bg-[#ff0000]/90">
+              <button className="mr-4 h-10 w-10 rounded-full bg-[#ff0000] text-2xl font-[400] text-center text-white hover:bg-[#ff0000]/90 shrink-0">
               <p className="pt-0.5">
               {userData.filter(email => email.id ==item?.name)[0]?.displayName.charAt(0).toUpperCase()}
 
@@ -300,7 +300,7 @@ const UserComment = ({ item, setCommentsData }) => {
               className=" h-6 w-6 rounded-full shrink-0  mr-3 "/>
               
               : 
-              <button className="mr-3 h-6 w-6 rounded-full bg-[#ff0000]  font-[400] text-center text-white hover:bg-[#ff0000]/90">
+              <button className="mr-3 h-6 w-6 rounded-full bg-[#ff0000]  font-[400] text-center text-white hover:bg-[#ff0000]/90 shrink-0">
               {userData.filter(email => email.id ==user?.email)[0]?.displayName.charAt(0).toUpperCase()}
             </button>
               )}

@@ -61,7 +61,7 @@ const Home = () => {
               {/* Title */}
               <p className="line-clamp-2 font-semibold">{item?.title}</p>
               {/* Channel Name */}
-              <div className="flex">
+              <Link to={`/channel`+userData.filter(email => email.id ==item?.channel_email)[0]?.channelID} className="flex">
                 <p className="mt-1 text-sm font-[500] text-neutral-400 hover:text-white">
                   {userData.filter(email => email.id ==item?.channel_email)[0]?.displayName}
                 </p>
@@ -72,7 +72,7 @@ const Home = () => {
                     className="ml-1 mt-1 w-3 fill-neutral-400"
                   />
                 )}
-              </div>
+              </Link>
               {/* View & Watch Hour */}
               <div className="flex">
                 <p className=" text-sm font-[500] text-neutral-400">

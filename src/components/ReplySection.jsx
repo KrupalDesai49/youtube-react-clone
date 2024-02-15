@@ -152,7 +152,7 @@ const ReplySection = ({ item, reply, setReplyData, setReply ,itemCommentId,creat
               className=" h-6 w-6 rounded-full shrink-0  mr-3 "/>
               
               : 
-              <button className="mr-3 h-6 w-6 rounded-full bg-[#ff0000]  font-[400] text-center text-white hover:bg-[#ff0000]/90">
+              <button className="mr-3 h-6 w-6 rounded-full bg-[#ff0000]  font-[400] text-center text-white hover:bg-[#ff0000]/90 shrink-0">
               {userData.filter(email => email.id ==item?.name)[0]?.displayName.charAt(0).toUpperCase()}
             </button>
               )}
@@ -250,7 +250,7 @@ const ReplySection = ({ item, reply, setReplyData, setReply ,itemCommentId,creat
               className=" h-6 w-6 rounded-full shrink-0  mr-3 "/>
               
               : 
-              <button className="mr-3 h-6 w-6 rounded-full bg-[#ff0000]  font-[400] text-center text-white hover:bg-[#ff0000]/90">
+              <button className="mr-3 h-6 w-6 rounded-full bg-[#ff0000]  font-[400] text-center text-white hover:bg-[#ff0000]/90 shrink-0">
               {userData.filter(email => email.id ==user?.email)[0]?.displayName.charAt(0).toUpperCase()}
             </button>
               )}

@@ -92,9 +92,8 @@ const CommentsSection = () => {
               className=" h-11 w-11 rounded-full shrink-0  mr-3 "/>
               
               : 
-              <button className="mr-3 h-11 w-11 rounded-full bg-[#ff0000] text-2xl font-[400] text-center text-white hover:bg-[#ff0000]/90">
+              <button className="mr-3 h-11 w-11 rounded-full bg-[#ff0000] text-2xl font-[400] text-center text-white hover:bg-[#ff0000]/90 shrink-0">
               {userData.filter(email => email.id ==user?.email)[0]?.displayName.charAt(0).toUpperCase()}
-              {console.log("commmment")}
             </button>
               )}
 
