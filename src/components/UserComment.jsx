@@ -21,6 +21,8 @@ import moment from "moment";
 
 import { db } from "../context/firebase";
 import { UserAuth } from "./AuthContext";
+import { useAtom } from "jotai";
+import { user_data } from "../context/atom";
 
 
 const UserComment = ({ item, setCommentsData }) => {
@@ -30,13 +32,14 @@ const UserComment = ({ item, setCommentsData }) => {
   const [replyEntering, setReplyEntering] = useState(false);
   const { user } = UserAuth();
   let { videoId } = useParams();
+  const [userData, setUserData] = useAtom(user_data);
 
 
   useEffect(() => {
     if (item?.reply) {
       const q = collection(
         db,
-        "ytvideo",
+        "video",
         videoId,
         "comments",
         item?.id,
@@ -58,7 +61,7 @@ const UserComment = ({ item, setCommentsData }) => {
     if (user) {
       try {
         const commentData = {
-          name: user.displayName,
+          name: user.email,
           reply: reply,
           likes_count: 0,
           timestamp: Date.now(),
@@ -66,10 +69,10 @@ const UserComment = ({ item, setCommentsData }) => {
           dislike: false,
         };
         await addDoc(
-          collection(db, "ytvideo", videoId, "comments", item.id, "reply"),
+          collection(db, "video", videoId, "comments", item?.id, "reply"),
           commentData,
         );
-        await updateDoc(doc(db, "ytvideo", videoId, "comments", item.id), {
+        await updateDoc(doc(db, "video", videoId, "comments", item?.id), {
           reply: true,
         });
 
@@ -84,15 +87,15 @@ const UserComment = ({ item, setCommentsData }) => {
   };
 
   const funLiked = () => {
-    if (!item.like) {
-      if (item && item.id) {
+    if (!item?.like) {
+      if (item && item?.id) {
         addLike(item);
       } else {
         console("addLike error");
       }
       setCommentsData((prevComments) => {
         return prevComments.map((comment) => {
-          if (comment.id === item.id) {
+          if (comment.id === item?.id) {
             return {
               ...comment,
               likes_count: parseInt(comment.likes_count) + 1,
@@ -104,15 +107,15 @@ const UserComment = ({ item, setCommentsData }) => {
           }
         });
       });
-    } else if (item.like) {
-      if (item && item.id) {
+    } else if (item?.like) {
+      if (item && item?.id) {
         subLike(item);
       } else {
         console("subLike error");
       }
       setCommentsData((prevComments) => {
         return prevComments.map((comment) => {
-          if (comment.id === item.id) {
+          if (comment.id === item?.id) {
             return {
               ...comment,
               likes_count: parseInt(comment.likes_count) - 1,
@@ -129,16 +132,16 @@ const UserComment = ({ item, setCommentsData }) => {
 
   const funDisliked = () => {
 
-    if (!item.dislike && item.like) {
+    if (!item?.dislike && item?.like) {
 
-      if (item && item.id) {
+      if (item && item?.id) {
         subLike2(item);
       } else {
         console("subLike error");
       }
       setCommentsData((prevComments) => {
         return prevComments.map((comment) => {
-          if (comment.id === item.id) {
+          if (comment.id === item?.id) {
             return {
               ...comment,
               likes_count: parseInt(comment.likes_count) - 1,
@@ -150,8 +153,8 @@ const UserComment = ({ item, setCommentsData }) => {
           }
         });
       });
-    } else if (!item.like) {
-      if (item && item.id) {
+    } else if (!item?.like) {
+      if (item && item?.id) {
         onlyDislike(item);
       } else {
         console("onlyDislike error");
@@ -160,23 +163,23 @@ const UserComment = ({ item, setCommentsData }) => {
   };
 
   const addLike = async (item) => {
-    await updateDoc(doc(db, "ytvideo", videoId, "comments", item.id), {
-      likes_count: parseInt(item.likes_count) + 1,
+    await updateDoc(doc(db, "video", videoId, "comments", item?.id), {
+      likes_count: parseInt(item?.likes_count) + 1,
       like: true,
       dislike: false,
     });
   };
   const subLike = async (item) => {
-    await updateDoc(doc(db, "ytvideo", videoId, "comments", item.id), {
-      likes_count: parseInt(item.likes_count) - 1,
+    await updateDoc(doc(db, "video", videoId, "comments", item?.id), {
+      likes_count: parseInt(item?.likes_count) - 1,
       like: false,
     });
   };
   const subLike2 = async (item) => {
     try{
 
-    await updateDoc(doc(db, "ytvideo", videoId, "comments", item.id), {
-      likes_count: parseInt(item.likes_count) - 1,
+    await updateDoc(doc(db, "video", videoId, "comments", item?.id), {
+      likes_count: parseInt(item?.likes_count) - 1,
       like: false,
       dislike:true
 
@@ -187,20 +190,38 @@ const UserComment = ({ item, setCommentsData }) => {
   }
   };
   const onlyDislike = async (item) => {
-    await updateDoc(doc(db, "ytvideo", videoId, "comments", item.id), {
+    await updateDoc(doc(db, "video", videoId, "comments", item?.id), {
       like: false,
-      dislike: !item.dislike,
+      dislike: !item?.dislike,
     });
   };
 
   return (
     <div className="flex w-full py-2">
       {/* User Logo */}
-      <button className="mr-4 h-10 w-10 shrink-0 rounded-full bg-[#ff0000] text-center text-2xl font-[400] text-white hover:bg-[#ff0000]/90 ">
-        <p className="pt-0.5">
-          {user && user.displayName && item.name?.charAt(0).toUpperCase()}
+  
+      {userData.filter(email => email.id ==item?.name)[0]?.logo_link !== "" 
+              ?             
+              <img
+              src={ (userData.filter(email => email.id ==item?.name)[0]?.logo_link)}
+              alt=""
+              className=" h-10 w-10 rounded-full shrink-0  mr-4 "/>
+              :
+              (userData.filter(email => email.id ==item?.name)[0]?.photoURL !==""
+              ?
+              <img
+              src={ (userData.filter(email => email.id ==item?.name)[0]?.photoURL)}
+              alt=""
+              className=" h-10 w-10 rounded-full shrink-0  mr-4 "/>
+              
+              : 
+              <button className="mr-4 h-10 w-10 rounded-full bg-[#ff0000] text-2xl font-[400] text-center text-white hover:bg-[#ff0000]/90">
+              <p className="pt-0.5">
+              {userData.filter(email => email.id ==item?.name)[0]?.displayName.charAt(0).toUpperCase()}
+
         </p>
-      </button>
+            </button>
+              )}
 
       {/* Comments */}
       <div className="flex grow flex-col">
@@ -208,18 +229,18 @@ const UserComment = ({ item, setCommentsData }) => {
         <div className="flex">
           <p className="text-xs">
             @
-            {item.name
+            {userData.filter(email => email.id ==item?.name)[0]?.displayName
               ?.split(" ")
               .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
               .join("")}
           </p>
           <p className="pl-1 text-xs text-stone-400">
-            {moment(item.timestamp).fromNow()}
+            {moment(item?.timestamp).fromNow()}
           </p>
         </div>
 
         {/* Comments */}
-        <p className="pt-1 text-sm">{item.comment}</p>
+        <p className="pt-1 text-sm">{item?.comment}</p>
 
         {/* Like & Dislike & Reply */}
         <div className="-ml-1.5 flex items-center ">
@@ -227,12 +248,12 @@ const UserComment = ({ item, setCommentsData }) => {
           <div className="flex cursor-pointer items-center rounded-l-full  pt-1 ">
             <img
               onClick={() => funLiked()}
-              src={item.like ? like_fill : like}
+              src={item?.like ? like_fill : like}
               alt=""
               className="w-7 rounded-full p-1.5 hover:bg-[#3f3f3f]"
             />
             <p className=" pl-0.5 pr-3 text-xs  font-[500] text-stone-400">
-              {Number(item.likes_count)}
+              {Number(item?.likes_count)}
             </p>
           </div>
 
@@ -242,7 +263,7 @@ const UserComment = ({ item, setCommentsData }) => {
             className="flex cursor-pointer items-center rounded-r-full  pt-1 "
           >
             <img
-              src={item.dislike ? dislike_fill : dislike}
+              src={item?.dislike ? dislike_fill : dislike}
               alt=""
               className=" w-7  rounded-full p-1.5 hover:bg-[#3f3f3f]"
             />
@@ -262,14 +283,28 @@ const UserComment = ({ item, setCommentsData }) => {
           <div className="flex w-full flex-col">
             <div className="flex w-full py-1">
               {/* User Logo */}
-              <button className="text- mr-4 h-6 w-6 shrink-0 rounded-full bg-[#ff0000] text-center font-[400] text-white hover:bg-[#ff0000]/90 ">
-                {/* {user.displayName.charAt(0).toUpperCase()} */}
-                <p className="">
-                  {user &&
-                    user.displayName &&
-                    user.displayName.charAt(0).toUpperCase()}
-                </p>
-              </button>
+          
+
+              {userData.filter(email => email.id ==user?.email)[0]?.logo_link !== "" 
+              ?             
+              <img
+              src={ (userData.filter(email => email.id ==user?.email)[0]?.logo_link)}
+              alt=""
+              className=" h-6 w-6 rounded-full shrink-0  mr-3 "/>
+              :
+              (userData.filter(email => email.id ==user?.email)[0]?.photoURL !==""
+              ?
+              <img
+              src={ (userData.filter(email => email.id ==user?.email)[0]?.photoURL)}
+              alt=""
+              className=" h-6 w-6 rounded-full shrink-0  mr-3 "/>
+              
+              : 
+              <button className="mr-3 h-6 w-6 rounded-full bg-[#ff0000]  font-[400] text-center text-white hover:bg-[#ff0000]/90">
+              {userData.filter(email => email.id ==user?.email)[0]?.displayName.charAt(0).toUpperCase()}
+            </button>
+              )}
+
               <div className="flex w-full flex-col">
                 {/* Comment Edit box */}
                 <input
@@ -277,7 +312,7 @@ const UserComment = ({ item, setCommentsData }) => {
                   onChange={(e) => setReply(e.target.value)}
                   value={reply}
                   className="line-clamp-3 border-b-2 peer border-b-stone-600 bg-transparent pt-0.5 text-sm transition duration-100 placeholder:text-stone-400  outline-none"
-              placeholder="Add a comment..."
+              placeholder="Add a reply..."
             />
             <p className="border-t-2 border-white  w-full  -my-[2px]  peer-focus:scale-100 scale-0 transition duration-[300ms]  place-self-center "></p>
                 {/* Comment button  */}
@@ -308,7 +343,7 @@ const UserComment = ({ item, setCommentsData }) => {
           </div>
         )}
         {/* No. Of reply */}
-        {item.reply && (
+        {item?.reply && (
           <div
             className="flex cursor-pointer"
             onClick={() => setisReply((e) => (e = !e))}
@@ -339,7 +374,7 @@ const UserComment = ({ item, setCommentsData }) => {
                 item={replyItem}
                 setReplyData={setReplyData}
                 createReply={createReply}
-                itemCommentId={item.id}
+                itemCommentId={item?.id}
               />
             </div>
           ))}

@@ -16,23 +16,27 @@ import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { db } from "../context/firebase";
 import moment from "moment";
+import { useAtom } from "jotai";
+import { user_data } from "../context/atom";
 
 const ReplySection = ({ item, reply, setReplyData, setReply ,itemCommentId,createReply}) => {
   const [replyEntering, setReplyEntering] = useState(false);
 
   const { user } = UserAuth();
   let { videoId } = useParams();
+  const [userData, setUserData] = useAtom(user_data);
+
 
   const funLiked = () => {
-    if (!item.like) {
-      if (item && item.id) {
+    if (!item?.like) {
+      if (item && item?.id) {
         addLike(item);
       } else {
         console("addLike error");
       }
       setReplyData((prevComments) => {
         return prevComments.map((comment) => {
-          if (comment.id === item.id) {
+          if (comment.id === item?.id) {
             return {
               ...comment,
               likes_count: parseInt(comment.likes_count) + 1,
@@ -44,15 +48,15 @@ const ReplySection = ({ item, reply, setReplyData, setReply ,itemCommentId,creat
           }
         });
       });
-    } else if (item.like) {
-      if (item && item.id) {
+    } else if (item?.like) {
+      if (item && item?.id) {
         subLike(item);
       } else {
         console("subLike error");
       }
       setReplyData((prevComments) => {
         return prevComments.map((comment) => {
-          if (comment.id === item.id) {
+          if (comment.id === item?.id) {
             return {
               ...comment,
               likes_count: parseInt(comment.likes_count) - 1,
@@ -68,15 +72,15 @@ const ReplySection = ({ item, reply, setReplyData, setReply ,itemCommentId,creat
   };
 
   const funDisliked = () => {
-    if (!item.dislike && item.like) {
-      if (item && item.id) {
+    if (!item?.dislike && item?.like) {
+      if (item && item?.id) {
         subLike2(item);
       } else {
         console("subLike error");
       }
       setReplyData((prevComments) => {
         return prevComments.map((comment) => {
-          if (comment.id === item.id) {
+          if (comment.id === item?.id) {
             return {
               ...comment,
               likes_count: parseInt(comment.likes_count) - 1,
@@ -89,8 +93,8 @@ const ReplySection = ({ item, reply, setReplyData, setReply ,itemCommentId,creat
           }
         });
       });
-    } else if (!item.like) {
-      if (item && item.id) {
+    } else if (!item?.like) {
+      if (item && item?.id) {
         onlyDislike(item);
       } else {
         console("onlyDislike error");
@@ -99,22 +103,22 @@ const ReplySection = ({ item, reply, setReplyData, setReply ,itemCommentId,creat
   };
 
   const addLike = async (item) => {
-    await updateDoc(doc(db, "ytvideo", videoId, "comments", itemCommentId, "reply", item.id), {
-      likes_count: parseInt(item.likes_count) + 1,
+    await updateDoc(doc(db, "video", videoId, "comments", itemCommentId, "reply", item?.id), {
+      likes_count: parseInt(item?.likes_count) + 1,
       like: true,
       dislike: false,
     });
   };
   const subLike = async (item) => {
-    await updateDoc(doc(db,"ytvideo", videoId, "comments", itemCommentId, "reply", item.id), {
-      likes_count: parseInt(item.likes_count) - 1,
+    await updateDoc(doc(db,"video", videoId, "comments", itemCommentId, "reply", item?.id), {
+      likes_count: parseInt(item?.likes_count) - 1,
       like: false,
 
     });
   };
   const subLike2 = async (item) => {
-    await updateDoc(doc(db,"ytvideo", videoId, "comments", itemCommentId, "reply", item.id), {
-      likes_count: parseInt(item.likes_count) - 1,
+    await updateDoc(doc(db,"video", videoId, "comments", itemCommentId, "reply", item?.id), {
+      likes_count: parseInt(item?.likes_count) - 1,
       like: false,
       dislike: true,
 
@@ -122,9 +126,9 @@ const ReplySection = ({ item, reply, setReplyData, setReply ,itemCommentId,creat
   };
 
   const onlyDislike = async (item) => {
-    await updateDoc(doc(db, "ytvideo", videoId, "comments", itemCommentId, "reply", item.id), {
+    await updateDoc(doc(db, "video", videoId, "comments", itemCommentId, "reply", item?.id), {
       like: false,
-      dislike: !item.dislike,
+      dislike: !item?.dislike,
     });
   };
 
@@ -132,14 +136,28 @@ const ReplySection = ({ item, reply, setReplyData, setReply ,itemCommentId,creat
     <div className="flex flex-col">
       <div className="flex w-full py-1">
         {/* User Logo */}
-        <button className="text- mr-4 h-6 w-6 shrink-0 rounded-full bg-[#ff0000] text-center font-[400] text-white hover:bg-[#ff0000]/90 ">
-          {/* {user.displayName.charAt(0).toUpperCase()} */}
-          <p className="">
-            {user &&
-              user.displayName &&
-              user.displayName.charAt(0).toUpperCase()}
-          </p>
-        </button>
+      
+        {userData.filter(email => email.id ==item?.name)[0]?.logo_link !== "" 
+              ?             
+              <img
+              src={ (userData.filter(email => email.id ==item?.name)[0]?.logo_link)}
+              alt=""
+              className=" h-6 w-6 rounded-full shrink-0  mr-3 "/>
+              :
+              (userData.filter(email => email.id ==item?.name)[0]?.photoURL !==""
+              ?
+              <img
+              src={ (userData.filter(email => email.id ==item?.name)[0]?.photoURL)}
+              alt=""
+              className=" h-6 w-6 rounded-full shrink-0  mr-3 "/>
+              
+              : 
+              <button className="mr-3 h-6 w-6 rounded-full bg-[#ff0000]  font-[400] text-center text-white hover:bg-[#ff0000]/90">
+              {userData.filter(email => email.id ==item?.name)[0]?.displayName.charAt(0).toUpperCase()}
+            </button>
+              )}
+
+
 
         {/* Reply */}
         <div className="flex flex-col">
@@ -147,18 +165,18 @@ const ReplySection = ({ item, reply, setReplyData, setReply ,itemCommentId,creat
           <div className="flex">
             <p className="text-xs">
               @
-              {item.name
+            {userData.filter(email => email.id ==item?.name)[0]?.displayName
                 ?.split(" ")
                 .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
                 .join("")}
             </p>
             <p className="pl-1 text-xs text-stone-400">
-              {moment(item.timestamp).fromNow()}
+              {moment(item?.timestamp).fromNow()}
             </p>
           </div>
 
           {/* Repliys */}
-          <p className="pt-1 text-sm">{item.reply}</p>
+          <p className="pt-1 text-sm">{item?.reply}</p>
 
           {/* Like & Dislike */}
           <div className="-ml-1.5 flex items-center ">
@@ -168,12 +186,12 @@ const ReplySection = ({ item, reply, setReplyData, setReply ,itemCommentId,creat
               className="flex cursor-pointer items-center rounded-l-full  py-1 "
             >
               <img
-                src={item.like ? like_fill : like}
+                src={item?.like ? like_fill : like}
                 alt=""
                 className="w-7 rounded-full p-1.5 hover:bg-[#3f3f3f]"
               />
               <p className=" pl-0.5 pr-3 text-xs  font-[500] text-stone-400">
-                {Number(item.likes_count)}
+                {Number(item?.likes_count)}
               </p>
             </div>
 
@@ -183,7 +201,7 @@ const ReplySection = ({ item, reply, setReplyData, setReply ,itemCommentId,creat
               className="flex cursor-pointer items-center rounded-r-full bg-[#272727] py-1 "
             >
               <img
-                src={item.dislike ? dislike_fill : dislike}
+                src={item?.dislike ? dislike_fill : dislike}
                 alt=""
                 className=" w-7  rounded-full p-1.5 hover:bg-[#3f3f3f]"
               />
@@ -194,12 +212,13 @@ const ReplySection = ({ item, reply, setReplyData, setReply ,itemCommentId,creat
                 setReplyEntering(true);
                 setReply(
                   "@" +
-                    item.name
+            userData.filter(email => email.id ==item?.name)[0]?.displayName
+
                       ?.split(" ")
                       .map(
                         (word) => word.charAt(0).toUpperCase() + word.slice(1),
                       )
-                      .join(""),
+                      .join("") + " ",
                 );
               }}
             >
@@ -215,14 +234,26 @@ const ReplySection = ({ item, reply, setReplyData, setReply ,itemCommentId,creat
         <div className="-mt-1.5 flex w-full flex-col pl-10">
           <div className="flex w-full ">
             {/* User Logo */}
-            <button className="text- mr-4 h-6 w-6 shrink-0 rounded-full bg-[#ff0000] text-center font-[400] text-white hover:bg-[#ff0000]/90 ">
-              {/* {user.displayName.charAt(0).toUpperCase()} */}
-              <p className="">
-                {user &&
-                  user.displayName &&
-                  user.displayName.charAt(0).toUpperCase()}
-              </p>
+           
+            {userData.filter(email => email.id ==user?.email)[0]?.logo_link !== "" 
+              ?             
+              <img
+              src={ (userData.filter(email => email.id ==user?.email)[0]?.logo_link)}
+              alt=""
+              className=" h-6 w-6 rounded-full shrink-0  mr-3 "/>
+              :
+              (userData.filter(email => email.id ==user?.email)[0]?.photoURL !==""
+              ?
+              <img
+              src={ (userData.filter(email => email.id ==user?.email)[0]?.photoURL)}
+              alt=""
+              className=" h-6 w-6 rounded-full shrink-0  mr-3 "/>
+              
+              : 
+              <button className="mr-3 h-6 w-6 rounded-full bg-[#ff0000]  font-[400] text-center text-white hover:bg-[#ff0000]/90">
+              {userData.filter(email => email.id ==user?.email)[0]?.displayName.charAt(0).toUpperCase()}
             </button>
+              )}
             <div className="flex w-full flex-col">
               {/* reply Edit box */}
               <input
@@ -230,7 +261,7 @@ const ReplySection = ({ item, reply, setReplyData, setReply ,itemCommentId,creat
                 onChange={(e) => setReply(e.target.value)}
                 value={reply}
                 className="line-clamp-3 border-b-2 peer border-b-stone-600 bg-transparent pt-0.5 text-sm transition duration-100 placeholder:text-stone-400  outline-none"
-                placeholder="Add a comment..."
+                placeholder="Add a reply..."
               />
               <p className="border-t-2 border-white  w-full  -my-[2px]  peer-focus:scale-100 scale-0 transition duration-[300ms]  place-self-center "></p>
               {/* reply button  */}
@@ -252,7 +283,7 @@ const ReplySection = ({ item, reply, setReplyData, setReply ,itemCommentId,creat
                 {/* Cancel Button */}
                 <button
                   className="rounded-full bg-transparent px-4 py-2 text-sm font-[500] hover:bg-[#3f3f3f]"
-                  onClick={() => setReplyEntering(false)}
+                  onClick={() => {setReplyEntering(false); setReply("")}}
                 >
                   Cancel
                 </button>

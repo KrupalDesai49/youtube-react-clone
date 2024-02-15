@@ -11,6 +11,8 @@ import {
 
 import { db } from "../context/firebase";
 import { UserAuth } from "./AuthContext";
+import { useAtom } from "jotai";
+import { user_data } from "../context/atom";
 
 const CommentsSection = () => {
   const { user } = UserAuth();
@@ -19,9 +21,10 @@ const CommentsSection = () => {
   const [commentsData, setCommentsData] = useState([]);
   const [, setRenderComment] = useState(false);
   let { videoId } = useParams();
+  const [userData, setUserData] = useAtom(user_data);
 
   useEffect(() => {
-    const q = collection(db, "ytvideo", videoId, "comments");
+    const q = collection(db, "video", videoId, "comments");
     onSnapshot(q, (querySnapshot) => {
       let commentsArray = [];
       querySnapshot.forEach((doc) => {
@@ -37,7 +40,7 @@ const CommentsSection = () => {
     if (user) {
       try {
         const commentData = {
-          name: user.displayName,
+          name: user.email,
           comment: comment,
           likes_count: 0,
           timestamp: Date.now(),
@@ -46,7 +49,7 @@ const CommentsSection = () => {
           dislike: false,
         };
         await addDoc(
-          collection(db, "ytvideo", videoId, "comments"),
+          collection(db, "video", videoId, "comments"),
           commentData,
         );
 
@@ -72,11 +75,28 @@ const CommentsSection = () => {
         {/* User Comment Box */}
         <div className="mt-5 flex mb-4">
           {/* User Logo */}
-          <button className="mr-4 h-11 w-11 shrink-0 rounded-full bg-[#ff0000] text-center text-2xl font-[400] text-white hover:bg-[#ff0000]/90 ">
-            <p className="pt-1">
-               {user && user.displayName && user.displayName.charAt(0).toUpperCase()}
-            </p>
-          </button>
+       
+
+          {userData.filter(email => email.id ==user?.email)[0]?.logo_link !== "" 
+              ?             
+              <img
+              src={ (userData.filter(email => email.id ==user?.email)[0]?.logo_link)}
+              alt=""
+              className=" h-11 w-11 rounded-full shrink-0  mr-3 "/>
+              :
+              (userData.filter(email => email.id ==user?.email)[0]?.photoURL !==""
+              ?
+              <img
+              src={ (userData.filter(email => email.id ==user?.email)[0]?.photoURL)}
+              alt=""
+              className=" h-11 w-11 rounded-full shrink-0  mr-3 "/>
+              
+              : 
+              <button className="mr-3 h-11 w-11 rounded-full bg-[#ff0000] text-2xl font-[400] text-center text-white hover:bg-[#ff0000]/90">
+              {userData.filter(email => email.id ==user?.email)[0]?.displayName.charAt(0).toUpperCase()}
+              {console.log("commmment")}
+            </button>
+              )}
 
           {/* Comment Edit box &  button */}
           <div className="flex w-full flex-col">

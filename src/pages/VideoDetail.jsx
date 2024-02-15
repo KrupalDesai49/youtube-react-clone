@@ -68,7 +68,7 @@ const VideoDetail = () => {
         <div className="flex flex-col">
           <VideoList setVideoItem={setVideoItem} />
           <div className="block md:hidden mt-4">
-            <CommentsSection />
+            <CommentsSection  />
           </div>
         </div>
       </div>

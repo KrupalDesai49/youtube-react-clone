@@ -10,7 +10,8 @@ import {
 import {
   doc,
   getDoc,
-  setDoc
+  setDoc,
+  updateDoc
 } from "firebase/firestore";
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth, db } from "../context/firebase";
@@ -35,6 +36,11 @@ export function AuthContextProvider({ children }) {
 
         const checkDocumentExistenceAndExecute = async (docRef) => {
           const docSnapshot = await getDoc(docRef);
+          // if( user?.photoURL){
+
+          // }
+          // const url = ?user.photoURL:""
+          // console.log(url);
 
           if (!docSnapshot.exists()) {
             await setDoc(doc(db, "user", user.email), {
@@ -42,7 +48,7 @@ export function AuthContextProvider({ children }) {
               description: '',
               logo_link: '',
               banner_link: '',
-              photoURL:user.photoURL,
+              photoURL: user?.photoURL,
               channelID:
                 "@" +
                 user.displayName
@@ -55,6 +61,10 @@ export function AuthContextProvider({ children }) {
               isLogInByGoogle: true,
             });
           }
+
+          await updateDoc(doc(db, "user", user.email), {
+            photoURL: user?.photoURL,
+          });
         };
 
         await checkDocumentExistenceAndExecute(docRef);
@@ -71,16 +81,18 @@ export function AuthContextProvider({ children }) {
         auth,
         email,
         password,
-      );
-      await updateProfile(userCredential.user, {
-        displayName: displayName,
-      });
+        );
+        await updateProfile(userCredential.user, {
+          displayName: displayName,
+        });
+        
+
       await setDoc(doc(db, "user", email), {
         displayName: displayName,
         description: '',
         logo_link: '',
         banner_link: '',
-        photoURL:user.photoURL,
+        photoURL:'',
         channelID:
           "@" +
           displayName
