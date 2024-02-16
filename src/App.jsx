@@ -20,6 +20,7 @@ import {
 } from "./context/atom";
 import { AuthContextProvider } from "./components/AuthContext";
 import { db } from "./context/firebase";
+import Channel from "./pages/Channel/Channel";
 
 function App() {
   const [, setVideosData] = useAtom(videos_data);
@@ -75,11 +76,12 @@ function App() {
     <>
       <AuthContextProvider>
         <Router>
-          <div className=" flex min-h-screen flex-col bg-black">
+          <div className=" flex min-h-screen flex-col text-white bg-black">
             <Navbar />
             <Routes>
               <Route exact path="/" element={<Home />} />
               <Route exact path="/video/:videoId" element={<VideoDetail />} />
+              <Route exact path="/channel/:channelId" element={<Channel />} />
               <Route exact path="/login" element={<Login />} />
               <Route exact path="/signup" element={<Signup />} />
               <Route path="*" element={<NotFound />} />

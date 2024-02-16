@@ -35,6 +35,7 @@ const Home = () => {
           <div className="my-3 flex shrink-0">
             {/* Channel Logo */}
             {/* {console.log("okk",item?.channel_email,userData,)} */}
+            <Link className="shrink-0" to={`/channel/`+userData.filter(email => email.id ==item?.channel_email)[0]?.channelID}>
               {userData.filter(email => email.id ==item?.channel_email)[0]?.logo_link !== "" 
               ?             
               <img
@@ -54,14 +55,14 @@ const Home = () => {
               {userData.filter(email => email.id ==item?.channel_email)[0]?.displayName}
             </button>
               )}
-           
+           </Link>
 
             {/* Video Text */}
             <div className="ml-3 flex flex-col">
               {/* Title */}
               <p className="line-clamp-2 font-semibold">{item?.title}</p>
               {/* Channel Name */}
-              <Link to={`/channel`+userData.filter(email => email.id ==item?.channel_email)[0]?.channelID} className="flex">
+              <Link to={`/channel/`+userData.filter(email => email.id ==item?.channel_email)[0]?.channelID} className="flex">
                 <p className="mt-1 text-sm font-[500] text-neutral-400 hover:text-white">
                   {userData.filter(email => email.id ==item?.channel_email)[0]?.displayName}
                 </p>

@@ -14,6 +14,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../context/firebase";
 import { useAtom } from "jotai";
 import { user_data } from "../context/atom";
+import { Link } from "react-router-dom";
 
 
 
@@ -72,6 +73,7 @@ const ChannelButtonDetail = ({ videoItem, setVideoItem }) => {
         <div className="flex items-center">
           {/* Channel Logo */}
 
+<Link className=" shrink-0" to={`/channel/`+userData.filter(email => email.id ==videoItem?.channel_email)[0]?.channelID}>
 {userData.filter(email => email.id ==videoItem?.channel_email)[0]?.logo_link !== "" 
               ?             
               <img
@@ -91,14 +93,16 @@ const ChannelButtonDetail = ({ videoItem, setVideoItem }) => {
               {userData.filter(email => email.id ==videoItem?.channel_email)[0]?.displayName}
             </button>
               )}
-
+</Link>
           {/* Channel Name & Subs*/}
           <div className="ml-3 flex flex-col">
             <div className="flex">
+<Link className=" shrink-0" to={`/channel/`+userData.filter(email => email.id ==videoItem?.channel_email)[0]?.channelID}>
               <p className=" font-[500] text-white">
                 {userData.filter(email => email.id ==videoItem?.channel_email)[0]?.displayName}
 
               </p>
+              </Link>
               {userData.filter(email => email.id ==videoItem?.channel_email)[0]?.tick && (
 
               // {videoItem?.channel_tick ? (
