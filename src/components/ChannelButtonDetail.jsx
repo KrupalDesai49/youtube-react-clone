@@ -13,9 +13,10 @@ import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 
 import { db } from "../context/firebase";
 import { useAtom } from "jotai";
-import { user_data } from "../context/atom";
+import { userChannel_data, user_data } from "../context/atom";
 import { Link } from "react-router-dom";
 import { UserAuth } from "./AuthContext";
+import { useEffect } from "react";
 
 const ChannelButtonDetail = ({ videoItem, setVideoItem }) => {
   const [liked, setLiked] = useState(false);
@@ -26,20 +27,26 @@ const ChannelButtonDetail = ({ videoItem, setVideoItem }) => {
 
   const { user } = UserAuth();
   const [userData, setUserData] = useAtom(user_data);
+  const [userChannelData, setUserChannelData] = useAtom(userChannel_data);
+
+  useEffect(() => {
+    if (user && userChannelData) {
+      setIsSub(userChannelData?.subscribers);
+      setIsLike(userChannelData?.like);
+      setIsDislike(userChannelData?.dislike);
+    }
+  }, [user, userChannelData]);
 
   const handleSub = async () => {
-    if (user) {
+    if (user && videoItem) {
       try {
-        const currentChannelEmail = await userData.filter(
-          (email) => email.id == videoItem?.channel_email,
-        )[0]?.id;
+ 
 
         const channelDocRef = doc(
           db,
           "user",
           user?.email,
-          "channel",
-          currentChannelEmail,
+          "channel",videoItem?.email
         );
         const videoDocRef = doc(db, "video", videoItem?.id);
         if (isSub) {
@@ -56,7 +63,12 @@ const ChannelButtonDetail = ({ videoItem, setVideoItem }) => {
             subscribe: parseInt(videoItem?.subscribe) - 1,
           };
 
-          await setDoc(channelDocRef, subData);
+          const docSnapshot = await getDoc(channelDocRef);
+          if (!docSnapshot.exists()) {
+            await setDoc(channelDocRef, subData);
+          } else {
+            await updateDoc(channelDocRef, subData);
+          }
           await updateDoc(videoDocRef, VideoData);
         } else {
           setIsSub(true);
@@ -72,11 +84,17 @@ const ChannelButtonDetail = ({ videoItem, setVideoItem }) => {
             subscribe: parseInt(videoItem?.subscribe) + 1,
           };
 
-          await setDoc(channelDocRef, subData);
+          const docSnapshot = await getDoc(channelDocRef);
+          if (!docSnapshot.exists()) {
+            await setDoc(channelDocRef, subData);
+          } else {
+            await updateDoc(channelDocRef, subData);
+          }
           await updateDoc(videoDocRef, VideoData);
         }
       } catch (e) {
         console.log(e);
+        console.log("eeeeeeeeeeeee");
       }
     }
   };
@@ -84,16 +102,14 @@ const ChannelButtonDetail = ({ videoItem, setVideoItem }) => {
   const handleLike = async () => {
     if (user) {
       try {
-        const currentChannelEmail = await userData.filter(
-          (email) => email.id == videoItem?.channel_email,
-        )[0]?.id;
+ 
 
         const channelDocRef = doc(
           db,
           "user",
           user?.email,
-          "channel",
-          currentChannelEmail,
+          "channel",videoItem?.email,"otherData",
+          videoItem?.id,
         );
         const videoDocRef = doc(db, "video", videoItem?.id);
 
@@ -113,8 +129,12 @@ const ChannelButtonDetail = ({ videoItem, setVideoItem }) => {
             likes_count: parseInt(videoItem?.likes_count) - 1,
             like: false,
           };
-
-          await setDoc(channelDocRef, subData);
+          const docSnapshot = await getDoc(channelDocRef);
+          if (!docSnapshot.exists()) {
+            await setDoc(channelDocRef, subData);
+          } else {
+            await updateDoc(channelDocRef, subData);
+          }
           await updateDoc(videoDocRef, VideoData);
         } else {
           setIsLike(true);
@@ -136,8 +156,12 @@ const ChannelButtonDetail = ({ videoItem, setVideoItem }) => {
             like: true,
             dislike: false,
           };
-
-          await setDoc(channelDocRef, subData);
+          const docSnapshot = await getDoc(channelDocRef);
+          if (!docSnapshot.exists()) {
+            await setDoc(channelDocRef, subData);
+          } else {
+            await updateDoc(channelDocRef, subData);
+          }
           await updateDoc(videoDocRef, VideoData);
         }
       } catch (e) {
@@ -148,16 +172,14 @@ const ChannelButtonDetail = ({ videoItem, setVideoItem }) => {
   const handleDislike = async () => {
     if (user) {
       try {
-        const currentChannelEmail = await userData.filter(
-          (email) => email.id == videoItem?.channel_email,
-        )[0]?.id;
+
 
         const channelDocRef = doc(
           db,
           "user",
           user?.email,
-          "channel",
-          currentChannelEmail,
+          "channel",videoItem?.email,"otherData",
+          videoItem?.id,
         );
         const videoDocRef = doc(db, "video", videoItem?.id);
 
@@ -175,8 +197,12 @@ const ChannelButtonDetail = ({ videoItem, setVideoItem }) => {
           const VideoData = {
             dislike: false,
           };
-
-          await setDoc(channelDocRef, subData);
+          const docSnapshot = await getDoc(channelDocRef);
+          if (!docSnapshot.exists()) {
+            await setDoc(channelDocRef, subData);
+          } else {
+            await updateDoc(channelDocRef, subData);
+          }
           await updateDoc(videoDocRef, VideoData);
         } else {
           setIsDislike(true);
@@ -199,10 +225,13 @@ const ChannelButtonDetail = ({ videoItem, setVideoItem }) => {
               like: false,
               dislike: true,
             };
-
-            await setDoc(channelDocRef, subData);
+            const docSnapshot = await getDoc(channelDocRef);
+            if (!docSnapshot.exists()) {
+              await setDoc(channelDocRef, subData);
+            } else {
+              await updateDoc(channelDocRef, subData);
+            }
             await updateDoc(videoDocRef, VideoData);
-
           } else {
             setVideoItem({
               ...videoItem,
@@ -215,8 +244,12 @@ const ChannelButtonDetail = ({ videoItem, setVideoItem }) => {
             const VideoData = {
               dislike: true,
             };
-
-            await setDoc(channelDocRef, subData);
+            const docSnapshot = await getDoc(channelDocRef);
+            if (!docSnapshot.exists()) {
+              await setDoc(channelDocRef, subData);
+            } else {
+              await updateDoc(channelDocRef, subData);
+            }
             await updateDoc(videoDocRef, VideoData);
           }
         }
@@ -225,8 +258,6 @@ const ChannelButtonDetail = ({ videoItem, setVideoItem }) => {
       }
     }
   };
-
-
 
   return (
     <>

@@ -8,14 +8,20 @@ import CommentsSection from "../components/CommentsSection";
 
 import { useAtom } from "jotai";
 
-import { user_data, video_item, videos_data } from "../context/atom";
+import { userChannel_data, user_data, video_item, videos_data } from "../context/atom";
+import { collection, doc, onSnapshot, query } from "firebase/firestore";
+import { db } from "../context/firebase";
+import { UserAuth } from "../components/AuthContext";
 
 
 const VideoDetail = () => {
+  const { user } = UserAuth();
+
   let { videoId } = useParams();
   const [videoItem, setVideoItem] = useAtom(video_item);
   const [videos ] = useAtom(videos_data)
   const [userData, setUserData] = useAtom(user_data);
+  const [userChannelData, setUserChannelData] = useAtom(userChannel_data);
 
 
   useEffect(() => {
@@ -26,7 +32,67 @@ const VideoDetail = () => {
     }
   }, [videoId, videoItem, videos]);
 
+  // useEffect(() => {
+    
+  //   if(user && videoItem.id){
 
+  //     const userChannelDocRef = (doc(db, "user",user.email,"channel",videoItem?.id));
+  //     console.log("userChannelData000001");
+  
+  //   const getUserChannelData = onSnapshot(userChannelDocRef, ({ docs }) => {
+  //       try {
+  //         const userData = docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+  //         setUserChannelData(userData);
+  //         console.log("userChannelData00000", userData);
+  //       } catch (error) {
+  //         console.error("Error fetching User data from Firebase:", error);
+  //       }
+  //     }, (error) => {
+  //       // Handle the error
+  //       console.error("Error fetching document: ", error);
+  //     });
+  //     getUserChannelData()
+  
+  //   }
+     
+  //   }, [user,videoItem])
+  useEffect(() => {
+    if (user &&   user.email && videoItem && videoItem.email && videoItem.id) {
+      const userChannelDocRef = doc(db, "user", user.email, "channel",videoItem?.email,"otherData", videoItem?.id);
+      const userSubDocRef = doc(db, "user", user.email, "channel",videoItem?.email);
+      console.log("userChannelDocRef", "user", user.email, "channel",videoItem?.email,"otherData", videoItem?.id);
+  
+      const unsubscribe = onSnapshot(userChannelDocRef, (docSnapshot) => {
+        if (docSnapshot.exists()) {
+          const userData = { ...docSnapshot.data(), id: docSnapshot.id };
+          setUserChannelData(prevUserChannelData => ({ ...prevUserChannelData, ...userData }));
+          console.log("userChannelData", userData);
+        } else {
+          console.log("No such document!");
+        }
+      }, (error) => {
+        console.error("Error fetching document: ", error);
+      });
+  
+      const unsubscribe2 = onSnapshot(userSubDocRef, (docSnapshot) => {
+        if (docSnapshot.exists()) {
+          const userData = { ...docSnapshot.data(), id: docSnapshot.id };
+          setUserChannelData(prevUserChannelData => ({ ...prevUserChannelData, ...userData }));
+          console.log("userChannelData", userData);
+        } else {
+          console.log("No such document!");
+        }
+      }, (error) => {
+        console.error("Error fetching document: ", error);
+      });
+  
+      // Clean up the listener when the component unmounts
+      return () => {
+        unsubscribe();
+        unsubscribe2();
+      };
+    }
+  }, [user, videoItem]);
   return (
     <div className="mx-auto max-w-[85rem]  bg-black px-6 py-5 font-roboto text-white">
       <div className="flex flex-col items-center space-x-0 md:flex-row md:items-start md:space-x-6">
