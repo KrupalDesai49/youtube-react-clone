@@ -32,35 +32,12 @@ const VideoDetail = () => {
     }
   }, [videoId, videoItem, videos]);
 
-  // useEffect(() => {
-    
-  //   if(user && videoItem.id){
 
-  //     const userChannelDocRef = (doc(db, "user",user.email,"channel",videoItem?.id));
-  //     console.log("userChannelData000001");
-  
-  //   const getUserChannelData = onSnapshot(userChannelDocRef, ({ docs }) => {
-  //       try {
-  //         const userData = docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-  //         setUserChannelData(userData);
-  //         console.log("userChannelData00000", userData);
-  //       } catch (error) {
-  //         console.error("Error fetching User data from Firebase:", error);
-  //       }
-  //     }, (error) => {
-  //       // Handle the error
-  //       console.error("Error fetching document: ", error);
-  //     });
-  //     getUserChannelData()
-  
-  //   }
-     
-  //   }, [user,videoItem])
   useEffect(() => {
     if (user &&   user.email && videoItem && videoItem.email && videoItem.id) {
-      const userChannelDocRef = doc(db, "user", user.email, "channel",videoItem?.email,"otherData", videoItem?.id);
-      const userSubDocRef = doc(db, "user", user.email, "channel",videoItem?.email);
-      console.log("userChannelDocRef", "user", user.email, "channel",videoItem?.email,"otherData", videoItem?.id);
+      const userChannelDocRef = doc(db, "user", user.email, "channel",videoItem?.channel_email,"otherData", videoItem?.id);
+      const userSubDocRef = doc(db, "user", user.email, "channel",videoItem?.channel_email);
+      console.log("userChannelDocRef", "user", user.email, "channel",videoItem?.channel_email,"otherData", videoItem?.id);
   
       const unsubscribe = onSnapshot(userChannelDocRef, (docSnapshot) => {
         if (docSnapshot.exists()) {
@@ -122,7 +99,7 @@ const VideoDetail = () => {
           />
 
           {/* Description Section */}
-          <Description videoItem={videoItem} />
+          <Description />
 
           {/* Comment Section */}
           <div className="hidden md:block mt-3">

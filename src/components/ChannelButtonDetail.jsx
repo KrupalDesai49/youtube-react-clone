@@ -30,12 +30,13 @@ const ChannelButtonDetail = ({ videoItem, setVideoItem }) => {
   const [userChannelData, setUserChannelData] = useAtom(userChannel_data);
 
   useEffect(() => {
-    if (user && userChannelData) {
+    if (user && userChannelData ) {
+  
       setIsSub(userChannelData?.subscribers);
       setIsLike(userChannelData?.like);
       setIsDislike(userChannelData?.dislike);
     }
-  }, [user, userChannelData]);
+  }, []);
 
   const handleSub = async () => {
     if (user && videoItem) {
@@ -46,7 +47,7 @@ const ChannelButtonDetail = ({ videoItem, setVideoItem }) => {
           db,
           "user",
           user?.email,
-          "channel",videoItem?.email
+          "channel",videoItem?.channel_email
         );
         const videoDocRef = doc(db, "video", videoItem?.id);
         if (isSub) {
@@ -108,7 +109,7 @@ const ChannelButtonDetail = ({ videoItem, setVideoItem }) => {
           db,
           "user",
           user?.email,
-          "channel",videoItem?.email,"otherData",
+          "channel",videoItem?.channel_email,"otherData",
           videoItem?.id,
         );
         const videoDocRef = doc(db, "video", videoItem?.id);
@@ -178,7 +179,7 @@ const ChannelButtonDetail = ({ videoItem, setVideoItem }) => {
           db,
           "user",
           user?.email,
-          "channel",videoItem?.email,"otherData",
+          "channel",videoItem?.channel_email,"otherData",
           videoItem?.id,
         );
         const videoDocRef = doc(db, "video", videoItem?.id);
