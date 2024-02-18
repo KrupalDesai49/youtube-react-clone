@@ -8,7 +8,7 @@ const YoutubeShort = ({ index, videoId }) => {
    
   });
   const [inViewRef2, inView2] = useInView({
-    threshold: 1,
+    threshold: 0.9,
   });
 
   const setRefs = (node) => {
@@ -23,7 +23,7 @@ const YoutubeShort = ({ index, videoId }) => {
     <div>
         <iframe
           ref={setRefs}
-          className="    h-[82.5vh] min-h-[35.5rem] aspect-[9/16] rounded-xl border-2 border-white"
+          className="    h-[82.5vh] min-h-[35.5rem] aspect-[9/16] rounded-xl "
           src={inView?`https://www.youtube.com/embed/${videoId}?${inView2?'autoplay=1&mute=0':'autoplay=0&mute=1'}`:null}
           title="We Bought The Cheapest iPhone 15 Pro In the World!"
           frameBorder="0"

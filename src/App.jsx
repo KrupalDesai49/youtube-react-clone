@@ -83,7 +83,7 @@ function App() {
     <>
       <AuthContextProvider>
         <Router>
-          <div className=" flex min-h-screen flex-col text-white bg-black">
+          <div className=" flex min-h-screen  flex-col text-white bg-black">
             <Navbar />
             <Routes>
               <Route exact path="/" element={<Home />} />

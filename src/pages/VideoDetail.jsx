@@ -37,7 +37,7 @@ const VideoDetail = () => {
     if (user &&   user?.email && videoItem && videoItem?.channel_email && videoItem?.id) {
       const userChannelDocRef = doc(db, "user", user.email, "channel",videoItem?.channel_email,"otherData", videoItem?.id);
       const userSubDocRef = doc(db, "user", user.email, "channel",videoItem?.channel_email);
-      // console.log("userChannelDocRef", "user", user.email, "channel",videoItem?.channel_email,"otherData", videoItem?.id);
+      // console.log("userChannelDoc`Ref", "user", user.email, "channel",videoItem?.channel_email,"otherData", videoItem?.id);
   
       const unsubscribe = onSnapshot(userChannelDocRef, (docSnapshot) => {
         if (docSnapshot.exists()) {

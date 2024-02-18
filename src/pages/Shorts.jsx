@@ -29,22 +29,25 @@ const Shorts = () => {
   }
 
   useEffect(() => {
+    window.scrollTo(0,  0);
     setVideoIds(shuffleArray(array));
     console.log("videoIds", videoIds);
   }, []);
 
-  
+  useEffect(() => {
+    window.scrollTo(0,  0);
+  }, []); 
 
   return (
-    <div>
-      <div className="flex container container_short flex-col items-center justify-start space-y-6 ">
+    <div className="  ">
+      <div className="flex container mx-auto w-full container_short flex-col items-center justify-start space-y-6 ">
         {videoIds.map((videoId, index) => (
-          <div className="section_short snap-start  " key={index}>
+          <div className="section_short   " key={index}>
             <YoutubeShort videoId={videoId} index={index} />
           </div>
         ))}
       </div>
-    </div>
+      </div>
   );
 };
 
