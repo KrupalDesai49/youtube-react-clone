@@ -36,7 +36,8 @@ const Description = () => {
           <p className="text-sm font-[500]">
             {/* {videoItem?.view.toLocaleString('en-US')} */}
             {/* {videoItem && videoItem?.view ? videoItem?.view.toLocaleString('en-US') : 'ppp'} */}
-            {videoItem && videoItem?.view ? videoItem?.view : '00'}
+            {/* {videoItem && videoItem?.view ? videoItem?.view : '00'} */}
+            {videoItem?.view ?? "0"}
 
           </p>
           
