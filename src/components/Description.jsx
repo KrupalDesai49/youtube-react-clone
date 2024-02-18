@@ -1,25 +1,13 @@
 import { useAtom } from "jotai";
 import moment from "moment";
 import React, { useState } from "react";
-import { user_data, video_item } from "../context/atom";
-import { useEffect } from "react";
+import { video_item } from "../context/atom";
 
 const Description = () => {
   const [desClicked, setDesClicked] = useState(false);
-  const [userData, setUserData] = useAtom(user_data);
   const [videoItem, setVideoItem] = useAtom(video_item);
 
   const desFunc = () => setDesClicked((e) => !e);
-
-  // useEffect(() => {
-  //   if(videoItem && userData && videoItem?.view && videoItem?.timestamp){
-  //     //
-  //   }
-  
-
-  //   }, [videoItem, userData])
-
-
 
 
   return (
@@ -31,7 +19,6 @@ const Description = () => {
         } rounded-xl bg-[#272727] px-3 py-2 `}
       >
         {/* Views & Date */}
-        {/* {videoItem.view && videoItem.timestamp && */}
         <div className="flex">
           <p className="text-sm font-[500]">
             {/* {videoItem?.view.toLocaleString('en-US')} */}

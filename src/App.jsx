@@ -39,7 +39,7 @@ function App() {
     const getVideoData = onSnapshot(videoDocRef, ({ docs }) => {
       try {
         const DataArr = docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-        setVideosData(DataArr);
+        setVideosData(shuffleArray(DataArr));
         console.log("Video List", DataArr);
       } catch (error) {
         console.error("Error fetching Video data from Firebase:", error);
@@ -49,7 +49,7 @@ function App() {
     const getChannelData = onSnapshot(shortDocRef, ({ docs }) => {
       try {
         const shortData = docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-        setShortData(shortData);
+        setShortData(shuffleArray(shortData));
         console.log("shortData", shortData);
       } catch (error) {
         console.error("Error fetching Short data from Firebase:", error);
@@ -76,7 +76,25 @@ function App() {
 
   }, []);
 
+  function shuffleArray(array) {
+    let currentIndex = array.length,
+      randomIndex;
 
+    // While there remain elements to shuffle.
+    while (currentIndex > 0) {
+      // Pick a remaining element.
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex],
+        array[currentIndex],
+      ];
+    }
+
+    return array;
+  }
   
 
   return (
