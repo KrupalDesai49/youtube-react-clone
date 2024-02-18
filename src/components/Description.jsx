@@ -34,8 +34,12 @@ const Description = () => {
         {/* {videoItem.view && videoItem.timestamp && */}
         <div className="flex">
           <p className="text-sm font-[500]">
-            {videoItem?.view.toLocaleString('en-US')}
+            {/* {videoItem?.view.toLocaleString('en-US')} */}
+            {/* {videoItem && videoItem?.view ? videoItem?.view.toLocaleString('en-US') : 'ppp'} */}
+            {videoItem && videoItem?.view ? videoItem?.view : '00'}
+
           </p>
+          
           <p className="pl-1 text-sm font-[500]">views</p>
           <p className="pl-2.5 text-sm font-[500]">
             {!desClicked
