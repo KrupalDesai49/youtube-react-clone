@@ -5,7 +5,7 @@ const Channel = () => {
   let { channelId } = useParams();
 
   return (
-    <h1 className=''>
+    <h1 className='text-white'>
       Channel : {channelId}
     </h1>
   )
