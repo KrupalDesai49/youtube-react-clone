@@ -62,14 +62,14 @@ const Home = () => {
               <img
               src={ (userData.filter(email => email.id ==item?.channel_email)[0]?.logo_link)}
               alt=""
-              className="top-0 h-10 w-10 rounded-full"/>
+              className="top-0 h-10 w-10 rounded-full object-cover"/>
               :
               (userData.filter(email => email.id ==item?.channel_email)[0]?.photoURL !==""
               ?
               <img
               src={ (userData.filter(email => email.id ==item?.channel_email)[0]?.photoURL)}
               alt=""
-              className="top-0 h-10 w-10 rounded-full"/>
+              className="top-0 h-10 w-10 rounded-full object-cover"/>
               
               : 
               <button className="mr-3 h-10 w-10 rounded-full bg-[#ff0000] text-xl font-[500] text-white hover:bg-[#ff0000]/90">

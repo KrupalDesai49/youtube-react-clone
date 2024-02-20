@@ -142,14 +142,14 @@ const ReplySection = ({ item, reply, setReplyData, setReply ,itemCommentId,creat
               <img
               src={ (userData.filter(email => email.id ==item?.name)[0]?.logo_link)}
               alt=""
-              className=" h-6 w-6 rounded-full shrink-0  mr-3 "/>
+              className=" h-6 w-6 rounded-full shrink-0  mr-3 object-cover"/>
               :
               (userData.filter(email => email.id ==item?.name)[0]?.photoURL !==""
               ?
               <img
               src={ (userData.filter(email => email.id ==item?.name)[0]?.photoURL)}
               alt=""
-              className=" h-6 w-6 rounded-full shrink-0  mr-3 "/>
+              className=" h-6 w-6 rounded-full shrink-0  mr-3 object-cover"/>
               
               : 
               <button className="mr-3 h-6 w-6 rounded-full bg-[#ff0000]  font-[400] text-center text-white hover:bg-[#ff0000]/90 shrink-0">
@@ -240,14 +240,14 @@ const ReplySection = ({ item, reply, setReplyData, setReply ,itemCommentId,creat
               <img
               src={ (userData.filter(email => email.id ==user?.email)[0]?.logo_link)}
               alt=""
-              className=" h-6 w-6 rounded-full shrink-0  mr-3 "/>
+              className=" h-6 w-6 rounded-full shrink-0  mr-3 object-cover"/>
               :
               (userData.filter(email => email.id ==user?.email)[0]?.photoURL !==""
               ?
               <img
               src={ (userData.filter(email => email.id ==user?.email)[0]?.photoURL)}
               alt=""
-              className=" h-6 w-6 rounded-full shrink-0  mr-3 "/>
+              className=" h-6 w-6 rounded-full shrink-0  mr-3 object-cover"/>
               
               : 
               <button className="mr-3 h-6 w-6 rounded-full bg-[#ff0000]  font-[400] text-center text-white hover:bg-[#ff0000]/90 shrink-0">

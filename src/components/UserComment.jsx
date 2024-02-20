@@ -205,14 +205,14 @@ const UserComment = ({ item, setCommentsData }) => {
               <img
               src={ (userData.filter(email => email.id ==item?.name)[0]?.logo_link)}
               alt=""
-              className=" h-10 w-10 rounded-full shrink-0  mr-4 "/>
+              className=" h-10 w-10 rounded-full shrink-0  mr-4 object-cover"/>
               :
               (userData.filter(email => email.id ==item?.name)[0]?.photoURL !==""
               ?
               <img
               src={ (userData.filter(email => email.id ==item?.name)[0]?.photoURL)}
               alt=""
-              className=" h-10 w-10 rounded-full shrink-0  mr-4 "/>
+              className=" h-10 w-10 rounded-full shrink-0  mr-4 object-cover"/>
               
               : 
               <button className="mr-4 h-10 w-10 rounded-full bg-[#ff0000] text-2xl font-[400] text-center text-white hover:bg-[#ff0000]/90 shrink-0">
@@ -290,14 +290,14 @@ const UserComment = ({ item, setCommentsData }) => {
               <img
               src={ (userData.filter(email => email.id ==user?.email)[0]?.logo_link)}
               alt=""
-              className=" h-6 w-6 rounded-full shrink-0  mr-3 "/>
+              className=" h-6 w-6 rounded-full shrink-0  mr-3 object-cover"/>
               :
               (userData.filter(email => email.id ==user?.email)[0]?.photoURL !==""
               ?
               <img
               src={ (userData.filter(email => email.id ==user?.email)[0]?.photoURL)}
               alt=""
-              className=" h-6 w-6 rounded-full shrink-0  mr-3 "/>
+              className=" h-6 w-6 rounded-full shrink-0  mr-3 object-cover"/>
               
               : 
               <button className="mr-3 h-6 w-6 rounded-full bg-[#ff0000]  font-[400] text-center text-white hover:bg-[#ff0000]/90 shrink-0">

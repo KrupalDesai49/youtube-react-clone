@@ -82,14 +82,14 @@ const CommentsSection = () => {
               <img
               src={ (userData.filter(email => email.id ==user?.email)[0]?.logo_link)}
               alt=""
-              className=" h-11 w-11 rounded-full shrink-0  mr-3 "/>
+              className=" h-11 w-11 rounded-full shrink-0  mr-3 object-cover"/>
               :
               (userData.filter(email => email.id ==user?.email)[0]?.photoURL !==""
               ?
               <img
               src={ (userData.filter(email => email.id ==user?.email)[0]?.photoURL)}
               alt=""
-              className=" h-11 w-11 rounded-full shrink-0  mr-3 "/>
+              className=" h-11 w-11 rounded-full shrink-0  mr-3 object-cover"/>
               
               : 
               <button className="mr-3 h-11 w-11 rounded-full bg-[#ff0000] text-2xl font-[400] text-center text-white hover:bg-[#ff0000]/90 shrink-0">
