@@ -31,7 +31,7 @@ const ChannelButtonDetail = ({ videoItem, setVideoItem }) => {
 
   useEffect(() => {
     if ( userChannelData ) {
-  // console.log("userChannelData?.subscribers:",userChannelData?.subscribers,"userChannelData?.like:",userChannelData?.like,"userChannelData?.dislike:",userChannelData?.dislike);
+  console.log("userChannelData?.subscribers:",userChannelData?.subscribers,"userChannelData?.like:",userChannelData?.like,"userChannelData?.dislike:",userChannelData?.dislike);
       setIsSub(userChannelData?.isSubscriber ?? false);
       setIsLike(userChannelData?.like ?? false);
       setIsDislike(userChannelData?.dislike ?? false);
@@ -329,7 +329,7 @@ const ChannelButtonDetail = ({ videoItem, setVideoItem }) => {
             </div>
             <p className=" text-xs font-[450] text-neutral-400">
               {
-                userChannelData?.subscribers
+                userChannelData?.subscribers ??"00"
                 // userData.filter(
                 //   (email) => email.id == videoItem?.channel_email,
                 // )[0]?.subscribers

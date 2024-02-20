@@ -65,9 +65,9 @@ const VideoDetail = () => {
       });
       const unsubscribe3 = onSnapshot(SubDocRef, (docSnapshot) => {
         if (docSnapshot.exists()) {
-          const userData = { ...docSnapshot.data().subscribers };
-          setUserChannelData(prevUserChannelData => ({ ...prevUserChannelData, ...userData }));
-          console.log("userChannelData", userChannelData);
+          const userData = { ...docSnapshot.data() };
+          setUserChannelData(prevUserChannelData => ({ ...prevUserChannelData, subscribers: userData.subscribers }));
+          console.log("userChannelData0000", userChannelData);
         } else {
           console.log("No such document!");
         }
