@@ -15,7 +15,6 @@ import { useAtom } from "jotai";
 
 import {
   short_data,
-  userChannel_data,
   user_data,
   videos_data,
 } from "./context/atom";

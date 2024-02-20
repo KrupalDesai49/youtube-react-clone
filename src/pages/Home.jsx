@@ -6,6 +6,8 @@ import { useAtom } from "jotai";
 
 import {  user_data, video_item, videos_data } from "../context/atom";
 import moment from "moment";
+import { db } from "../context/firebase";
+import { doc, updateDoc } from "firebase/firestore";
 
 
 const Home = () => {
@@ -14,11 +16,30 @@ const Home = () => {
   const [ , setVideoItem] = useAtom(video_item)
   const [userData, setUserData] = useAtom(user_data);
 
+  const handleView = async (videoItem) => {
+      try {
+ 
+
+       
+        const videoDocRef = doc(db, "video", videoItem?.id);
+
+          const VideoData = {
+            view: parseInt(videoItem?.view) + 1,
+          };
+          setVideoItem(previosValue => ({...previosValue, view:parseInt(videoItem?.view) + 1}))
+         
+          await updateDoc(videoDocRef, VideoData);
+       
+      } catch (e) {
+        console.log(e);
+      }
+  };
+
   return (
 
     <div className="grid justify-center gap-4 bg-black px-8 font-roboto text-white md:grid-cols-2 md:justify-start lg:grid-cols-3 xl:grid-cols-4 ">
       {videos.map((item, index) => (
-        <Link to={'/video/'+item?.id} onClick={()=>(setVideoItem(item) )} className="flex max-w-[30rem] flex-col md:max-w-md" key={index}>
+        <Link to={'/video/'+item?.id} onClick={()=>{setVideoItem(item);handleView(item)}} className="flex max-w-[30rem] flex-col md:max-w-md" key={index}>
           
           {/* Thumbnail */}
           {/* {console.log('oooopoo:',item)} */}
