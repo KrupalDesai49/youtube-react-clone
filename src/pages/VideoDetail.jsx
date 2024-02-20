@@ -37,13 +37,14 @@ const VideoDetail = () => {
     if (user &&   user?.email && videoItem && videoItem?.channel_email && videoItem?.id) {
       const userChannelDocRef = doc(db, "user", user.email, "channel",videoItem?.channel_email,"otherData", videoItem?.id);
       const userSubDocRef = doc(db, "user", user.email, "channel",videoItem?.channel_email);
+      const SubDocRef = doc(db, "user", videoItem?.channel_email);
       // console.log("userChannelDoc`Ref", "user", user.email, "channel",videoItem?.channel_email,"otherData", videoItem?.id);
   
-      const unsubscribe = onSnapshot(userChannelDocRef, (docSnapshot) => {
+      const unsubscribe =  onSnapshot(userChannelDocRef, (docSnapshot) => {
         if (docSnapshot.exists()) {
           const userData = { ...docSnapshot.data(), id: docSnapshot.id };
           setUserChannelData(prevUserChannelData => ({ ...prevUserChannelData, ...userData }));
-          console.log("userChannelData", userData);
+          // console.log("userChannelData", userData);
         } else {
           console.log("No such document!");
         }
@@ -55,7 +56,18 @@ const VideoDetail = () => {
         if (docSnapshot.exists()) {
           const userData = { ...docSnapshot.data(), id: docSnapshot.id };
           setUserChannelData(prevUserChannelData => ({ ...prevUserChannelData, ...userData }));
-          console.log("userChannelData", userData);
+          // console.log("userChannelData", userData);
+        } else {
+          console.log("No such document!");
+        }
+      }, (error) => {
+        console.error("Error fetching document: ", error);
+      });
+      const unsubscribe3 = onSnapshot(SubDocRef, (docSnapshot) => {
+        if (docSnapshot.exists()) {
+          const userData = { ...docSnapshot.data().subscribers };
+          setUserChannelData(prevUserChannelData => ({ ...prevUserChannelData, ...userData }));
+          console.log("userChannelData", userChannelData);
         } else {
           console.log("No such document!");
         }
@@ -67,6 +79,7 @@ const VideoDetail = () => {
       return () => {
         unsubscribe();
         unsubscribe2();
+        unsubscribe3();
       };
     }
   }, [user, videoItem]);

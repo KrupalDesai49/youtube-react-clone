@@ -31,10 +31,10 @@ const ChannelButtonDetail = ({ videoItem, setVideoItem }) => {
 
   useEffect(() => {
     if ( userChannelData ) {
-  console.log("userChannelData?.subscribers:",userChannelData?.subscribers,"userChannelData?.like:",userChannelData?.like,"userChannelData?.dislike:",userChannelData?.dislike);
-      setIsSub(userChannelData?.subscribers);
-      setIsLike(userChannelData?.like);
-      setIsDislike(userChannelData?.dislike);
+  // console.log("userChannelData?.subscribers:",userChannelData?.subscribers,"userChannelData?.like:",userChannelData?.like,"userChannelData?.dislike:",userChannelData?.dislike);
+      setIsSub(userChannelData?.isSubscriber ?? false);
+      setIsLike(userChannelData?.like ?? false);
+      setIsDislike(userChannelData?.dislike ?? false);
     }
   }, [userChannelData]);
 
@@ -49,19 +49,15 @@ const ChannelButtonDetail = ({ videoItem, setVideoItem }) => {
           user?.email,
           "channel",videoItem?.channel_email
         );
-        const videoDocRef = doc(db, "video", videoItem?.id);
+        const videoDocRef = doc(db, "user", videoItem?.channel_email);
         if (isSub) {
           setIsSub(false);
-          setVideoItem({
-            ...videoItem,
-            subscribe: parseInt(videoItem?.subscribe) - 1,
-          });
 
           const subData = {
-            subscribers: false,
+            isSubscriber: false,
           };
           const VideoData = {
-            subscribe: parseInt(videoItem?.subscribe) - 1,
+            subscribers: parseInt(userChannelData?.subscribers) - 1,
           };
 
           const docSnapshot = await getDoc(channelDocRef);
@@ -73,16 +69,11 @@ const ChannelButtonDetail = ({ videoItem, setVideoItem }) => {
           await updateDoc(videoDocRef, VideoData);
         } else {
           setIsSub(true);
-          setVideoItem({
-            ...videoItem,
-            subscribe: parseInt(videoItem?.subscribe) + 1,
-          });
-
           const subData = {
-            subscribers: true,
+            isSubscriber: true,
           };
           const VideoData = {
-            subscribe: parseInt(videoItem?.subscribe) + 1,
+            subscribers: parseInt(userChannelData?.subscribers) + 1,
           };
 
           const docSnapshot = await getDoc(channelDocRef);
@@ -338,7 +329,7 @@ const ChannelButtonDetail = ({ videoItem, setVideoItem }) => {
             </div>
             <p className=" text-xs font-[450] text-neutral-400">
               {
-                videoItem?.subscribe
+                userChannelData?.subscribers
                 // userData.filter(
                 //   (email) => email.id == videoItem?.channel_email,
                 // )[0]?.subscribers
