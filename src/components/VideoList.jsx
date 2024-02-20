@@ -8,20 +8,22 @@ import moment from 'moment';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../context/firebase';
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 
 const VideoList = ({setVideoItem}) => {
 
   const [videos] = useAtom(videos_data)
   const [userData, setUserData] = useAtom(user_data);
-  const [prevItem, setPrevItem] = useState(null)
+
+  let { videoId } = useParams();
+
 
   const handleView = async (videoItem) => {
     try {
 
 
-if(videoItem?.id !== prevItem?.id) {
-  // if (!_.isEqual(videoItem, prevItem)) {
+if(videoItem?.id !== videoId) {
 
       const videoDocRef = doc(db, "video", videoItem?.id);
 
@@ -31,7 +33,6 @@ if(videoItem?.id !== prevItem?.id) {
         setVideoItem(previosValue => ({...previosValue, view:parseInt(videoItem?.view) + 1}))
        
         await updateDoc(videoDocRef, VideoData);
-        setPrevItem(videoItem)
       }
      
     } catch (e) {
