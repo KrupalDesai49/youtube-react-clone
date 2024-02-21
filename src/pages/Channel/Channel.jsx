@@ -6,13 +6,14 @@ import { UserAuth } from "../../components/AuthContext";
 import { useAtom } from "jotai";
 import { user_data } from "../../context/atom";
 import { useEffect } from "react";
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from "firebase/firestore";
 import { db } from "../../context/firebase";
 
 const Channel = () => {
   let { channelId } = useParams();
   const [isSub, setIsSub] = useState(false);
   const [channelData, setChannelData] = useState({});
+  const [totalVideo, setTotalVideo] = useState(0);
   const [userData, setUserData] = useAtom(user_data);
 
   const { user } = UserAuth();
@@ -21,12 +22,39 @@ const Channel = () => {
     if (userData.length !== 0) {
       // console.log("okkkkkkk",userData);
       setChannelData(userData?.find((e) => e?.channelID == channelId));
+      console.log("size0000::");
+      
+     
+
     } else {
       // console.log("noooooo");
     }
 
-    return () => {};
   }, [channelId, userData]);
+
+  useEffect(() => {
+    const getTotalNoOfVideo= async()=>{
+      try {
+        console.log("size1111::");
+        const videosRef = collection(db, "video");
+
+      // if(channelData?.id){
+    const q = query(videosRef, where("channel_email", "==", channelData?.id));
+    const querySnapshot = await getDocs(q);
+    console.log("size::",querySnapshot.size);
+    setTotalVideo(querySnapshot.size);
+      // }
+          
+    } catch (error) {
+      console.log(error);
+      
+    }
+    }
+  
+    getTotalNoOfVideo()
+
+  }, [channelData])
+  
 
   const handleSub = async () => {
     if (user) {
@@ -139,7 +167,7 @@ const Channel = () => {
               {/* Container of no. of subs & Video */}
               <div className="mt-0.5 flex md:mt-1">
                 <p className="line-clamp-1 text-sm text-[#aaaaaa] md:text-base">
-                  {channelData?.subscribers} subscribers ‧ 82 videos
+                  {channelData?.subscribers} subscribers ‧ {totalVideo} videos
                 </p>
               </div>
 
