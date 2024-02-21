@@ -6,7 +6,17 @@ import { UserAuth } from "../../components/AuthContext";
 import { useAtom } from "jotai";
 import { user_data } from "../../context/atom";
 import { useEffect } from "react";
-import { collection, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  onSnapshot,
+  query,
+  setDoc,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import { db } from "../../context/firebase";
 
 const Channel = () => {
@@ -20,41 +30,54 @@ const Channel = () => {
 
   useEffect(() => {
     if (userData.length !== 0) {
-      // console.log("okkkkkkk",userData);
       setChannelData(userData?.find((e) => e?.channelID == channelId));
-      console.log("size0000::");
-      
-     
-
-    } else {
-      // console.log("noooooo");
     }
-
   }, [channelId, userData]);
 
   useEffect(() => {
-    const getTotalNoOfVideo= async()=>{
+    const getTotalNoOfVideo = async () => {
       try {
-        console.log("size1111::");
         const videosRef = collection(db, "video");
 
-      // if(channelData?.id){
-    const q = query(videosRef, where("channel_email", "==", channelData?.id));
-    const querySnapshot = await getDocs(q);
-    console.log("size::",querySnapshot.size);
-    setTotalVideo(querySnapshot.size);
-      // }
-          
-    } catch (error) {
-      console.log(error);
-      
-    }
-    }
-  
-    getTotalNoOfVideo()
+        const q = query(
+          videosRef,
+          where("channel_email", "==", channelData?.id),
+        );
+        const querySnapshot = await getDocs(q);
+        setTotalVideo(querySnapshot.size);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-  }, [channelData])
-  
+    getTotalNoOfVideo();
+  }, [channelData]);
+
+  useEffect(() => {
+    if( channelData?.id && user?.email){
+    const channelDocRef = doc(
+      db,
+      "user",
+      user?.email,
+      "channel",
+      channelData?.id,
+    );
+
+    const isChannelSubscribed = onSnapshot(channelDocRef, (doc) => {
+      try {
+        const Data = doc.data();
+        console.log("Data List", Data);
+        setIsSub(Data.isSubscriber);
+      } catch (error) {
+        console.error("Error fetching data from Firebase:", error);
+      }
+    });
+
+    return () => {
+      isChannelSubscribed();
+    };
+    }
+  }, [channelData]);
 
   const handleSub = async () => {
     if (user) {
