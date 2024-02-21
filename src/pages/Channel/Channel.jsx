@@ -218,6 +218,9 @@ const Channel = () => {
             </div>
           </div>
         </div>
+
+        {/* Channel Navbar Container */}
+        <div className="w-full border">55</div>
       </div>
     </>
   );
