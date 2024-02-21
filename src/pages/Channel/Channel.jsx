@@ -3,117 +3,149 @@ import { useParams } from "react-router-dom";
 import tick from "../../assets/tick.svg";
 import { useState } from "react";
 import { UserAuth } from "../../components/AuthContext";
+import { useAtom } from "jotai";
+import { user_data } from "../../context/atom";
+import { useEffect } from "react";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { db } from "../../context/firebase";
 
 const Channel = () => {
   let { channelId } = useParams();
   const [isSub, setIsSub] = useState(false);
+  const [channelData, setChannelData] = useState({});
+  const [userData, setUserData] = useAtom(user_data);
 
   const { user } = UserAuth();
 
+  useEffect(() => {
+    if (userData.length !== 0) {
+      // console.log("okkkkkkk",userData);
+      setChannelData(userData?.find((e) => e?.channelID == channelId));
+    } else {
+      // console.log("noooooo");
+    }
+
+    return () => {};
+  }, [channelId, userData]);
+
   const handleSub = async () => {
-    // if (user && videoItem) {
-    //   try {
-    //     const channelDocRef = doc(
-    //       db,
-    //       "user",
-    //       user?.email,
-    //       "channel",videoItem?.channel_email
-    //     );
-    //     const videoDocRef = doc(db, "user", videoItem?.channel_email);
-    //     if (isSub) {
-    //       setIsSub(false);
-    //       const subData = {
-    //         isSubscriber: false,
-    //       };
-    //       const VideoData = {
-    //         subscribers: parseInt(userChannelData?.subscribers) - 1,
-    //       };
-    //       const docSnapshot = await getDoc(channelDocRef);
-    //       if (!docSnapshot.exists()) {
-    //         await setDoc(channelDocRef, subData);
-    //       } else {
-    //         await updateDoc(channelDocRef, subData);
-    //       }
-    //       await updateDoc(videoDocRef, VideoData);
-    //     } else {
-    //       setIsSub(true);
-    //       const subData = {
-    //         isSubscriber: true,
-    //       };
-    //       const VideoData = {
-    //         subscribers: parseInt(userChannelData?.subscribers) + 1,
-    //       };
-    //       const docSnapshot = await getDoc(channelDocRef);
-    //       if (!docSnapshot.exists()) {
-    //         await setDoc(channelDocRef, subData);
-    //       } else {
-    //         await updateDoc(channelDocRef, subData);
-    //       }
-    //       await updateDoc(videoDocRef, VideoData);
-    //     }
-    //   } catch (e) {
-    //     console.log(e);
-    //     console.log("eeeeeeeeeeeee");
-    //   }
-    // }
+    if (user) {
+      try {
+        const channelDocRef = doc(
+          db,
+          "user",
+          user?.email,
+          "channel",
+          channelData?.id,
+        );
+        const videoDocRef = doc(db, "user", channelData?.id);
+        if (isSub) {
+          setIsSub(false);
+          const subData = {
+            isSubscriber: false,
+          };
+          const VideoData = {
+            subscribers: parseInt(channelData?.subscribers) - 1,
+          };
+          const docSnapshot = await getDoc(channelDocRef);
+          if (!docSnapshot.exists()) {
+            await setDoc(channelDocRef, subData);
+          } else {
+            await updateDoc(channelDocRef, subData);
+          }
+          await updateDoc(videoDocRef, VideoData);
+        } else {
+          setIsSub(true);
+          const subData = {
+            isSubscriber: true,
+          };
+          const VideoData = {
+            subscribers: parseInt(channelData?.subscribers) + 1,
+          };
+          const docSnapshot = await getDoc(channelDocRef);
+          if (!docSnapshot.exists()) {
+            await setDoc(channelDocRef, subData);
+          } else {
+            await updateDoc(channelDocRef, subData);
+          }
+          await updateDoc(videoDocRef, VideoData);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
   };
 
   return (
     <>
-      {/* <h1 className='text-white'>
-      Channel : {channelId}
-    </h1> */}
       {/* Main Container */}
       <div className="flex flex-col">
         {/* Container for Banner & Channel Details */}
         <div className="mx-3  md:mx-10 lg:mx-24">
           {/* Channel Banner */}
-          <img
-            src="https://yt3.googleusercontent.com/IHsFb5t8eC5-Lr742a2_4fpmr6QPSRatY2oEHlDHJiaKjkXOBQ1AA_O-3iKTo50fPPrH_RgdzQ=w2120-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj"
-            className="aspect-[4/1] rounded-lg object-cover md:aspect-auto md:rounded-xl"
-            alt=""
-          />
+          {channelData?.banner_link !== "" && (
+            <img
+              src="https://yt3.googleusercontent.com/IHsFb5t8eC5-Lr742a2_4fpmr6QPSRatY2oEHlDHJiaKjkXOBQ1AA_O-3iKTo50fPPrH_RgdzQ=w2120-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj"
+              className="aspect-[4/1] rounded-lg object-cover md:aspect-auto md:rounded-xl"
+              alt=""
+            />
+          )}
 
           {/* Container Of Channel Detail */}
           <div className="mt-3 flex md:mt-8">
-            
             {/* Channel Logo */}
             <div className=" shrink-0">
-              <img
-                src="https://yt3.googleusercontent.com/ytc/AIf8zZQjMbV3-9TaCwDvPAcpnLZpBottwufJjkYb2GAr=s176-c-k-c0x00ffffff-no-rj"
-                alt=""
-                className="w-24 rounded-full md:w-40"
-              />
+              {channelData?.logo_link !== "" ? (
+                <img
+                  src={channelData?.logo_link}
+                  alt=""
+                  className="size-24 rounded-full  object-cover md:size-40"
+                />
+              ) : channelData?.photoURL !== "" ? (
+                <img
+                  src={channelData?.photoURL}
+                  alt=""
+                  className="size-24 rounded-full object-cover md:size-40"
+                />
+              ) : (
+                <button className="size-24 rounded-full bg-[#ff0000] text-5xl font-[500] text-white hover:bg-[#ff0000]/90 md:size-40 md:text-7xl">
+                  {channelData?.id?.charAt(0).toUpperCase()}
+                </button>
+              )}
             </div>
 
             {/* Channel Name & Details */}
             <div className="ml-4 flex shrink flex-col md:ml-7 ">
-
               {/* Name & Tick */}
-              <div className="flex items-center justify-center  ">
+              <div className="flex w-fit items-center  justify-center ">
                 <p className="line-clamp-1 text-2xl font-bold md:text-4xl">
-                  Lama Dev Lama Dev
+                  {channelData?.displayName}
                 </p>
 
-                <img src={tick} alt="" className="ml-1 w-3 md:ml-2" />
+                {channelData?.tick && (
+                  <img
+                    src={tick}
+                    alt=""
+                    className="ml-1 size-3 md:ml-2 md:size-4"
+                  />
+                )}
               </div>
 
               {/* Channel ID */}
-              <p className="text-sm text-[#aaaaaa] md:text-base mt-0.5 md:mt-1.5">
+              <p className="mt-0.5 text-sm text-[#aaaaaa] md:mt-1.5 md:text-base">
                 {channelId}{" "}
               </p>
 
               {/* Container of no. of subs & Video */}
-              <div className="flex mt-0.5 md:mt-1">
+              <div className="mt-0.5 flex md:mt-1">
                 <p className="line-clamp-1 text-sm text-[#aaaaaa] md:text-base">
-                  {" "}
-                  283K subscribers ‧ 82 videos{" "}
+                  {channelData?.subscribers} subscribers ‧ 82 videos
                 </p>
               </div>
 
               {/* SUBSCRIBE Button */}
               <button
-                className={` w-fit rounded-full mt-2 md:mt-4  px-4 py-2 text-sm font-semibold transition duration-500  ${isSub ? "bg-[#272727] text-white hover:bg-[#3f3f3f]" : "bg-white text-black hover:bg-white/85"}`}
+                className={` mt-2 w-fit rounded-full px-4  py-2 text-sm font-semibold transition duration-500 md:mt-4  ${isSub ? "bg-[#272727] text-white hover:bg-[#3f3f3f]" : "bg-white text-black hover:bg-white/85"}`}
                 onClick={handleSub}
               >
                 <div className={`flex  `}>
@@ -132,7 +164,6 @@ const Channel = () => {
                   </p>
                 </div>
               </button>
-
             </div>
           </div>
         </div>
