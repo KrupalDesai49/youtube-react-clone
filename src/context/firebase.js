@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { GoogleAuthProvider} from "firebase/auth";
+import { getFunctions, connectFunctionsEmulator} from "firebase/functions";
 
 
 
@@ -20,6 +21,10 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_REACT_APP_APP_ID,
 
 };
+
+if (import.meta.env.VITE_REACT_APP_NODE_ENV === "development") {
+  connectFunctionsEmulator(getFunctions(app),"localhost",5001)
+}
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
