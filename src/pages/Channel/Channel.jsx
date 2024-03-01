@@ -18,9 +18,12 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../../context/firebase";
+import ChannelNavBar from "./ChannelNavBar";
+
+
 
 const Channel = () => {
-  let { channelId } = useParams();
+  let { channelId,channelNav } = useParams();
   const [isSub, setIsSub] = useState(false);
   const [channelData, setChannelData] = useState({});
   const [totalVideo, setTotalVideo] = useState(0);
@@ -136,8 +139,9 @@ const Channel = () => {
           {/* Channel Banner */}
           {channelData?.banner_link !== "" && (
             <img
-              src="https://yt3.googleusercontent.com/IHsFb5t8eC5-Lr742a2_4fpmr6QPSRatY2oEHlDHJiaKjkXOBQ1AA_O-3iKTo50fPPrH_RgdzQ=w2120-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj"
-              className="aspect-[4/1] rounded-lg object-cover md:aspect-auto md:rounded-xl"
+              src={channelData?.banner_link}
+              // src="https://yt3.googleusercontent.com/IHsFb5t8eC5-Lr742a2_4fpmr6QPSRatY2oEHlDHJiaKjkXOBQ1AA_O-3iKTo50fPPrH_RgdzQ=w2120-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj"
+              className="aspect-[4/1] rounded-lg  object-cover  w-full md:aspect-[5/1] md:rounded-xl"
               alt=""
             />
           )}
@@ -220,7 +224,19 @@ const Channel = () => {
         </div>
 
         {/* Channel Navbar Container */}
-        <div className="w-full border">55</div>
+        <div className="w-full ">
+          <ChannelNavBar channelId={channelId} />
+        </div>
+
+        {/* <Router> */}
+        {/* <div className=" flex ">
+          <Routes>
+            <Route exact path={`${path}/videoes`} element={<ChannelVideo />} />
+            <Route exact path={`${path}/shorts`}  element={<ChannelShort />} />
+            <Route exact path={`${path}/about`}  element={<ChannelDes />} />
+          </Routes>
+        </div> */}
+      {/* </Router> */}
       </div>
     </>
   );

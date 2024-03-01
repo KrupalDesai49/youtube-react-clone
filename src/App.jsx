@@ -13,14 +13,13 @@ import NotFound from "./pages/NotFound";
 import { collection, doc, onSnapshot, query } from "firebase/firestore";
 import { useAtom } from "jotai";
 
-import {
-  short_data,
-  user_data,
-  videos_data,
-} from "./context/atom";
+import { short_data, user_data, videos_data } from "./context/atom";
 import { AuthContextProvider } from "./components/AuthContext";
 import { db } from "./context/firebase";
 import Channel from "./pages/Channel/Channel";
+import ChannelDes from "./pages/Channel/ChannelDes";
+import ChannelShort from "./pages/Channel/ChannelShort";
+import ChannelVideo from "./pages/Channel/ChannelVideo";
 
 function App() {
   const [, setVideosData] = useAtom(videos_data);
@@ -29,8 +28,6 @@ function App() {
 
   //Fetch  Data
   useEffect(() => {
-  
-
     const videoDocRef = query(collection(db, "video"));
     const shortDocRef = query(collection(db, "short"));
     const userDocRef = query(collection(db, "user"));
@@ -65,14 +62,11 @@ function App() {
       }
     });
 
-  
-
     return () => {
       getVideoData();
       getChannelData();
       getUserData();
     };
-
   }, []);
 
   function shuffleArray(array) {
@@ -94,18 +88,36 @@ function App() {
 
     return array;
   }
-  
 
   return (
     <>
       <AuthContextProvider>
         <Router>
-          <div className=" flex min-h-screen  flex-col text-white bg-black">
+          <div className=" flex min-h-screen  flex-col bg-black text-white">
             <Navbar />
             <Routes>
               <Route exact path="/" element={<Home />} />
               <Route exact path="/video/:videoId" element={<VideoDetail />} />
-              <Route exact path="/channel/:channelId" element={<Channel />} />
+              <Route
+                path="/channel/:channelId/"
+                element={<Channel />}
+              >
+                <Route
+                  
+                  path="/channel/:channelId/videoes"
+                  element={<ChannelVideo />}
+                />
+                <Route
+                  
+                  path="/channel/:channelId/shorts"
+                  element={<ChannelShort />}
+                />
+                <Route
+                  
+                  path="/channel/:channelId/about"
+                  element={<ChannelDes />}
+                />
+              </Route>
               <Route exact path="/login" element={<Login />} />
               <Route exact path="/signup" element={<Signup />} />
               <Route path="*" element={<NotFound />} />

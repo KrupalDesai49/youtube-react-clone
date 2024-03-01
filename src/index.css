@@ -26,3 +26,8 @@
   scroll-snap-align: start;
 }
 
+.active{
+color: #fff;
+border-bottom-width: 3px;
+
+}
