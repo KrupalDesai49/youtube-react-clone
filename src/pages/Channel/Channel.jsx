@@ -19,6 +19,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../../context/firebase";
 import ChannelNavBar from "./ChannelNavBar";
+import { Outlet } from "react-router-dom";
 
 
 
@@ -227,6 +228,7 @@ const Channel = () => {
         <div className="w-full ">
           <ChannelNavBar channelId={channelId} />
         </div>
+        <Outlet/>
 
         {/* <Router> */}
         {/* <div className=" flex ">

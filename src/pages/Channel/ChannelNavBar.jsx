@@ -6,19 +6,19 @@ const ChannelNavBar = ({ channelId }) => {
       {/* Navbar Container */}
       <div className="mx-3 flex space-x-6 md:mx-10 lg:mx-24 ">
         <NavLink
-          to={`/channel/${channelId}/videoes`}
+          to={`./videoes`}
           className="py-3 font-[600]  text-[#aaaaaa]"
         >
           Video
         </NavLink>
         <NavLink
-          to={`/channel/${channelId}/shorts`}
+          to={`./shorts`}
           className="py-3 font-[600] text-[#aaaaaa]"
         >
           Short
         </NavLink>
         <NavLink
-          to={`/channel/${channelId}/about`}
+          to={`./about`}
           className="py-3 font-[600] text-[#aaaaaa]"
         >
           About Us
