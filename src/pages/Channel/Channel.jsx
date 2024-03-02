@@ -142,7 +142,7 @@ const Channel = () => {
             <img
               src={channelData?.banner_link}
               // src="https://yt3.googleusercontent.com/IHsFb5t8eC5-Lr742a2_4fpmr6QPSRatY2oEHlDHJiaKjkXOBQ1AA_O-3iKTo50fPPrH_RgdzQ=w2120-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj"
-              className="aspect-[4/1] rounded-lg  object-cover  w-full md:aspect-[5/1] md:rounded-xl"
+              className="aspect-[4/1] rounded-lg  object-cover  w-full md:aspect-[5.4/1] md:rounded-xl"
               alt=""
             />
           )}
