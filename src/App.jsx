@@ -99,7 +99,7 @@ function App() {
               <Route exact path="/" element={<Home />} />
               <Route exact path="/video/:videoId" element={<VideoDetail />} />
               <Route
-                path="/channel/:channelId/*"
+                path="/channel/:channelId/"
                 element={<Channel />}
               >
                 <Route

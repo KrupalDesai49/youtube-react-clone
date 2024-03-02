@@ -253,7 +253,7 @@ const ChannelButtonDetail = ({ videoItem, setVideoItem }) => {
 
   return (
     <>
-      <div className="flex flex-col xl:flex-row xl:justify-between ">
+      <div className="flex flex-col xl:flex-row xl:justify-between  ">
         {/* Channel Details */}
         <div className="flex items-center">
           {/* Channel Logo */}
@@ -264,7 +264,7 @@ const ChannelButtonDetail = ({ videoItem, setVideoItem }) => {
               `/channel/` +
               userData.filter(
                 (email) => email.id == videoItem?.channel_email,
-              )[0]?.channelID
+              )[0]?.channelID+'/videoes'
             }
           >
             {userData.filter((email) => email.id == videoItem?.channel_email)[0]
@@ -309,7 +309,7 @@ const ChannelButtonDetail = ({ videoItem, setVideoItem }) => {
                   `/channel/` +
                   userData.filter(
                     (email) => email.id == videoItem?.channel_email,
-                  )[0]?.channelID
+                  )[0]?.channelID+'/videoes'
                 }
               >
                 <p className=" font-[500] text-white">
