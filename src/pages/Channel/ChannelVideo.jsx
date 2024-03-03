@@ -12,6 +12,9 @@ import { useEffect } from "react";
 import { UserAuth } from "../../components/AuthContext";
 import { useParams } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import {functions} from '../../context/firebase';
+
+
 
 const ChannelVideo = () => {
   const [videos] = useAtom(videos_data);
@@ -53,8 +56,19 @@ const ChannelVideo = () => {
     }
   };
 
+  const callDownloadVideoFunction = async () => {
+    const downloadVideo = functions.httpsCallable('downloadVideo');
+    try {
+      const result = await downloadVideo({ videoUrl: 'YOUR_YOUTUBE_VIDEO_URL' });
+      console.log(result.data);
+    } catch (error) {
+      console.error("Error calling downloadVideo function:", error);
+    }
+  };
+
   return (
     <>
+    {/* <button onClick={callDownloadVideoFunction}>download</button> */}
       <div className="mx-3 my-8 grid justify-center  gap-4 bg-black font-roboto text-white md:mx-10 md:grid-cols-2 md:justify-start  lg:mx-24 lg:grid-cols-3 xl:grid-cols-4">
         {ChannelVideo?.map((item, index) => (
           <Link

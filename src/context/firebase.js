@@ -4,6 +4,9 @@ import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { GoogleAuthProvider} from "firebase/auth";
 
+import firebase from 'firebase/app';
+import 'firebase/functions';
+import { getFunctions } from "firebase/functions";
 
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -24,10 +27,24 @@ const firebaseConfig = {
 // if (import.meta.env.VITE_REACT_APP_NODE_ENV === "development") {
 //   connectFunctionsEmulator(getFunctions(app),"localhost",5001)
 // }
+// Initialize Firebase
+// firebase.initializeApp(firebaseConfig);
+
+// Initialize Cloud Functions
+// export const functions = firebase.functions();
+// export const functions = getFunctions(app);
+
+// // Initialize Firebase
+// export const app = initializeApp(firebaseConfig);
+// export const auth = getAuth(app);
+// export const db = getFirestore(app);
+// export const provider = new GoogleAuthProvider();
 
 // Initialize Firebase
-export const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
-export const db = getFirestore(app);
-export const provider = new GoogleAuthProvider();
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const provider = new GoogleAuthProvider();
+const functions = getFunctions(app);
 
+export { app, auth, db, provider, functions };
