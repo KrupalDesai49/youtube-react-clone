@@ -56,15 +56,15 @@ const ChannelVideo = () => {
     }
   };
 
-  const callDownloadVideoFunction = async () => {
-    const downloadVideo = functions.httpsCallable('downloadVideo');
-    try {
-      const result = await downloadVideo({ videoUrl: 'YOUR_YOUTUBE_VIDEO_URL' });
-      console.log(result.data);
-    } catch (error) {
-      console.error("Error calling downloadVideo function:", error);
-    }
-  };
+  // const callDownloadVideoFunction = async () => {
+  //   const downloadVideo = functions.httpsCallable('downloadVideo');
+  //   try {
+  //     const result = await downloadVideo({ videoUrl: 'YOUR_YOUTUBE_VIDEO_URL' });
+  //     console.log(result.data);
+  //   } catch (error) {
+  //     console.error("Error calling downloadVideo function:", error);
+  //   }
+  // };
 
   return (
     <>

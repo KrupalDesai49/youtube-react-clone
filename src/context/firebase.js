@@ -35,16 +35,16 @@ const firebaseConfig = {
 // export const functions = getFunctions(app);
 
 // // Initialize Firebase
-// export const app = initializeApp(firebaseConfig);
-// export const auth = getAuth(app);
-// export const db = getFirestore(app);
-// export const provider = new GoogleAuthProvider();
+export const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+export const provider = new GoogleAuthProvider();
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const provider = new GoogleAuthProvider();
-const functions = getFunctions(app);
+// const app = initializeApp(firebaseConfig);
+// const auth = getAuth(app);
+// const db = getFirestore(app);
+// const provider = new GoogleAuthProvider();
+// const functions = getFunctions(app);
 
-export { app, auth, db, provider, functions };
+// export { app, auth, db, provider, functions };
