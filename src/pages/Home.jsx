@@ -41,12 +41,12 @@ const Home = () => {
           {/* Thumbnail */}
           {/* {console.log('oooopoo:',item)} */}
 
-          <div className="relative overflow-hidden rounded-xl  aspect-video ">
+          {/* <div className="relative overflow-hidden rounded-xl  aspect-video ">
             <span className=" absolute bottom-0 right-0 m-[0.35rem]  rounded bg-black px-1 py-[0.1rem] text-xs font-semibold">
               {item?.duration}
             </span>
             <img src={item?.thumbnail} alt="" className="object-cover w-full h-full" />
-          </div>
+          </div> */}
 
           {/* Video Detail */}
 
