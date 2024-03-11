@@ -4,9 +4,9 @@ import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { GoogleAuthProvider} from "firebase/auth";
 
-import firebase from 'firebase/app';
+// import firebase from 'firebase/app';
 import 'firebase/functions';
-import { getFunctions } from "firebase/functions";
+// import { getFunctions } from "firebase/functions";
 
 
 // TODO: Add SDKs for Firebase products that you want to use

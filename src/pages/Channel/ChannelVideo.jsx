@@ -12,7 +12,7 @@ import { useEffect } from "react";
 import { UserAuth } from "../../components/AuthContext";
 import { useParams } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import {functions} from '../../context/firebase';
+// import {functions} from '../../context/firebase';
 
 
 

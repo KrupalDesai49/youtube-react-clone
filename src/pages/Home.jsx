@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 import tick from "../assets/tick.svg";
 
-import { useAtom } from "jotai";
+// import { useAtom } from "jotai";
 
 import {  user_data, video_item, videos_data } from "../context/atom";
 import moment from "moment";
