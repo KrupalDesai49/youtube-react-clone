@@ -10,7 +10,7 @@ import { db } from "../context/firebase";
 import { doc, updateDoc } from "firebase/firestore";
 
 
-// const Home = () => {
+const Home = () => {
 
   const [videos ] = useAtom(videos_data)
   const [ , setVideoItem] = useAtom(video_item)
