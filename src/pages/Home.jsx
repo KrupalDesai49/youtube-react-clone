@@ -7,7 +7,7 @@ import { useAtom } from "jotai";
 import {  user_data, video_item, videos_data } from "../context/atom";
 import moment from "moment";
 import { db } from "../context/firebase";
-// import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 
 
 const Home = () => {
