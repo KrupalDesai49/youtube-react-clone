@@ -14,7 +14,7 @@ const Home = () => {
 
   const [videos ] = useAtom(videos_data)
   const [ , setVideoItem] = useAtom(video_item)
-  // const [userData, setUserData] = useAtom(user_data);
+  const [userData, setUserData] = useAtom(user_data);
 
   const handleView = async (videoItem) => {
       try {       
