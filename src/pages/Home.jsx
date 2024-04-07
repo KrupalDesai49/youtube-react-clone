@@ -17,6 +17,7 @@ const Home = () => {
   const [userData, setUserData] = useAtom(user_data);
 
 
+  
   const handleView = async (videoItem) => {
       try {       
         const videoDocRef = doc(db, "video", videoItem?.id);
